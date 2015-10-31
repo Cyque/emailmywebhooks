@@ -44,7 +44,7 @@ exports.createWebhook = function(req, res) {
 				if (!error && response.statusCode == 200) {
 					console.log('Success adding webhook:')
 					console.log(body.webhook);
-					res.end('Success adding webhook');
+					res.send('Success adding webhook');
 				}
 				else {
 					res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error);
