@@ -121,8 +121,8 @@ function addAccessTokenFor(shop, accessToken) {
 	var object = JSON.parse(fs.readFileSync(filePath));
 
 	object.accessToken = accessToken; 
-	
-	fs.writeFile(filePath, JSON.stringifiy(object), function(err) {
+
+	fs.writeFile(filePath, JSON.stringify(object), function(err) {
 		if(err) {
 			return console.log(err);
 		}
