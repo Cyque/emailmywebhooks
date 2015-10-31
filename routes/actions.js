@@ -10,7 +10,7 @@ exports.createWebhook = function(req, res) {
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
 
 	var method;
-	var url = (req.headers.cookie.GLOB_SHOP) + "/";
+	var url = req.headers.cookie.GLOB_SHOP + "/";
 	var body;
 
 
