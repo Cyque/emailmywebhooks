@@ -32,7 +32,7 @@ exports.createWebhook = function(req, res) {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
 	}
 
-
+	console.log("SENDING WEBHOOK REQUEST");
 	if(method == "POST" || method == "post")
 	{
 		request.post(
@@ -42,7 +42,7 @@ exports.createWebhook = function(req, res) {
 			},	
 			function (error, response, body) {
 				if (!error && response.statusCode == 200) {
-					console.log('Success adding webhook:')
+					console.log('Success adding webhook:');
 					console.log(body.webhook);
 					res.send('Success adding webhook');
 				}
