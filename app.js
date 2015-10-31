@@ -30,6 +30,7 @@ app.get('/auth/permission', routes.auth.permission);
 app.get('/auth/confirm', routes.auth.confirm);
 app.get('/home', routes.pages.home);
 app.get('/action/createhook', routes.actions.createWebhook);
+app.get('/handlewebhook', routes.hookhandle.handleWebhook);
 
 
 /// catch 404 and forwarding to error handler

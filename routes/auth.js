@@ -79,8 +79,7 @@ exports.confirm = function(req, res) {
 				// res.sendfile('public/html/home.html');
 				res.redirect('home');
 			}
-		}
-		);	
+		});	
 };
 
 
