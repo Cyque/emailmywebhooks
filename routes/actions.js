@@ -10,7 +10,7 @@ exports.createWebhook = function(req, res) {
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
 
 	var method;
-	var url = "https://" + (req.headers.cookie.GLOB_SHOP | "damian.polan.myshopify.com") + "/";
+	var url = "https://" + (req.headers.cookie.GLOB_SHOP) + "/";
 	var body;
 
 
@@ -26,7 +26,7 @@ exports.createWebhook = function(req, res) {
 		}
 	}
 	else {
-		res.end("Failed to create webhook. Unknown topic: " + topic + " " + req.query.topic)
+		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + req.query);
 	}
 
 
