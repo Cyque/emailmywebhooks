@@ -1,5 +1,6 @@
 var request = require("request");
 // var cookie = require("./../public/javascripts/cookie.js");
+var fs = require('fs');
 
 
 function read_cookie(k, cookies, r) {
