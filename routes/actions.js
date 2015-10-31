@@ -1,12 +1,17 @@
 var request = require("request");
-var cookie = require("./../public/javascripts/cookie.js");
+// var cookie = require("./../public/javascripts/cookie.js");
+
+
+function read_cookie(k, cookies, r) {
+	return ( r = RegExp('(^|; )' + encodeURIComponent(k) + '=([^;]*)').exec(cookies))?r[2]:null;
+}
 
 exports.createWebhook = function(req, res) {
 
 	// COOKIES
 	// req.headers.cookie.GLOB_API_KEY
 	// req.headers.cookie.GLOB_SHOP
-	var GLOB_SHOP = cookie.read_cookie("GLOB_SHOP");
+	var GLOB_SHOP = cookie.read_cookie("GLOB_SHOP", req.headers.cookie);
 
 	var hostBase = "https://emailmywebhooks.herokuapp.com/";
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
@@ -16,7 +21,7 @@ exports.createWebhook = function(req, res) {
 	// console.log("GLOB_SHOP:  " + GLOB_SHOP);
 	var body;
 
-	
+
 
 	if(topic == "customers/create") {
 		method = "POST";
