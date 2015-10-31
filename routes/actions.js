@@ -1,5 +1,5 @@
 var request = require("request");
-var cookie = require("public/javascripts/cookie");
+var cookie = require("./../public/javascripts/cookie.js");
 
 exports.createWebhook = function(req, res) {
 
