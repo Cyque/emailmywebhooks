@@ -5,3 +5,4 @@
 
 exports.auth = require("./auth.js");
 exports.pages = require("./pages.js");
+exports.actions = require("./actions.js");
