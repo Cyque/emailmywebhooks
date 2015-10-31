@@ -10,7 +10,7 @@ exports.createWebhook = function(req, res) {
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
 
 	var method;
-	var url = "https://" + (req.headers.cookie.GLOB_SHOP) + "/";
+	var url = (req.headers.cookie.GLOB_SHOP) + "/";
 	var body;
 
 
@@ -36,7 +36,7 @@ exports.createWebhook = function(req, res) {
 			url,
 			{ 
 				form: body
-			},
+			},	
 			function (error, response, body) {
 				if (!error && response.statusCode == 200) {
 					console.log('Success adding webhook:')
