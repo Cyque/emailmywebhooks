@@ -3,7 +3,7 @@ function read_cookie(k,r) {
 }
 
 
-if(module)
+if(typeof module !== 'undefined')
 	module.exports = {
 		read_cookie:read_cookie
 	};
