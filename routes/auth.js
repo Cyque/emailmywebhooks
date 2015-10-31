@@ -52,7 +52,11 @@ exports.confirm = function(req, res) {
 	var shop = req.query.shop;
 	var code = req.query.code;
 	var token = req.query.state;
+
+
 	//CHECK AUTH CONFIRMS HERE
+	//check shop, state, and confirm OAUTH hmac
+
 
 	var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
@@ -83,16 +87,28 @@ exports.confirm = function(req, res) {
 
 /*	Creates a unique token 	*/
 function registerTokenFor(shop) {
+	// FORMAT: 
 	var token;
-	var filePath;
+	filePath = "./authorized/" + shop;
 
-	do 
+	var object;
+
+	if(fs.existsSync(filePath)){
+		object = JSON.parse(fs.readFileSync(filePath));
+		token = crypto.randomBytes(16).toString('hex');
+		object.tokens.push(token); 
+	}
+	else	
 	{
 		token = crypto.randomBytes(16).toString('hex');
-		filePath = "./authorized/" + token;
-	} while (fs.existsSync(filePath));
-	
-	fs.writeFile(filePath, shop, function(err) {
+		object = {
+			shop: shop,
+			tokens: [ token ]
+		}
+	}
+
+
+	fs.writeFile(filePath, JSON.stringify(object), function(err) {
 		if(err) {
 			return console.log(err);
 		}
@@ -103,12 +119,13 @@ function registerTokenFor(shop) {
 
 function addAccessTokenFor(token, accessToken) {
 	var filePath = "./authorized/" + token;
-	var text = fs.readFileSync(filePath);
-
-	text += ";" + accessToken;
-	fs.writeFile(filePath, text, function(err) {
-		if(err) {
-			return console.log(err);
-		}
-	}); 
+	if(fs.existsSync(filePath)){
+		var object = JSON.parse(fs.readFileSync(filePath));
+		object.accessToken = accessToken; 
+		fs.writeFile(filePath, JSON.stringifiy(object), function(err) {
+			if(err) {
+				return console.log(err);
+			}
+		}); 
+	}
 }
