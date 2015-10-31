@@ -13,9 +13,10 @@ exports.createWebhook = function(req, res) {
 
 	var method;
 	var url = GLOB_SHOP + "/";
-	console.log("GLOB_SHOP:  " + GLOB_SHOP);
+	// console.log("GLOB_SHOP:  " + GLOB_SHOP);
 	var body;
 
+	
 
 	if(topic == "customers/create") {
 		method = "POST";
