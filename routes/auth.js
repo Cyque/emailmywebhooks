@@ -91,7 +91,7 @@ function registerTokenFor(shop) {
 		token = crypto.randomBytes(16).toString('hex');
 		filePath = "./authorized/" + token;
 	} while (fs.existsSync(filePath));
-
+	
 	fs.writeFile(filePath, shop, function(err) {
 		if(err) {
 			return console.log(err);
