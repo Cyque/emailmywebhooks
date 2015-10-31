@@ -24,7 +24,7 @@ exports.createWebhook = function(req, res) {
 
 
 
-	if(topic == "customers/create") {
+	if(topic == "customers\\/create") {
 		method = "POST";
 		url += "admin/webhooks.json";
 		body = {
