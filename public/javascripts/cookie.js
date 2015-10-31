@@ -3,6 +3,7 @@ function read_cookie(k,r) {
 }
 
 
-module.exports = {
-	read_cookie:read_cookie
-};
+if(module)
+	module.exports = {
+		read_cookie:read_cookie
+	};
