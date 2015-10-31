@@ -39,7 +39,7 @@ exports.createWebhook = function(req, res) {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
 	}
 
-	var shopObject = getShop();
+	var shopObject = getShop(GLOB_SHOP);
 
 	console.log("SENDING WEBHOOK REQUEST");
 	if(method == "POST" || method == "post")
