@@ -44,7 +44,7 @@ exports.createWebhook = function(req, res) {
 					res.end('Success adding webhook');
 				}
 				else {
-					res.send("Failure adding webhook \n" + JSON.stringify(body));
+					res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error);
 				}
 			});	
 	} else if (method == "GET" || method == "get") {
