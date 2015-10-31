@@ -13,6 +13,7 @@ exports.createWebhook = function(req, res) {
 	var url = "https://" + req.headers.cookie.GLOB_SHOP + "/";
 	var body;
 
+
 	if(topic == "customers/create") {
 		method = "POST";
 		url += "admin/webhooks.json";
@@ -25,7 +26,7 @@ exports.createWebhook = function(req, res) {
 		}
 	}
 	else {
-		res.end("Failed to create webhook. Unknown topic.")
+		res.end("Failed to create webhook. Unknown topic: " + topic)
 	}
 
 
