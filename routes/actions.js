@@ -11,6 +11,7 @@ exports.createWebhook = function(req, res) {
 
 	var method;
 	var url = req.headers.cookie.GLOB_SHOP + "/";
+	console.log("GLOB_SHOP:  " + req.headers.cookie.GLOB_SHOP);
 	var body;
 
 
