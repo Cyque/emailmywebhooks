@@ -11,7 +11,7 @@ exports.createWebhook = function(req, res) {
 	// COOKIES
 	// req.headers.cookie.GLOB_API_KEY
 	// req.headers.cookie.GLOB_SHOP
-	var GLOB_SHOP = cookie.read_cookie("GLOB_SHOP", req.headers.cookie);
+	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
 
 	var hostBase = "https://emailmywebhooks.herokuapp.com/";
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
