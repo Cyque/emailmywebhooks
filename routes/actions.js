@@ -1,17 +1,19 @@
 var request = require("request");
+var cookie = require("public/javascripts/cookie");
 
 exports.createWebhook = function(req, res) {
 
 	// COOKIES
 	// req.headers.cookie.GLOB_API_KEY
 	// req.headers.cookie.GLOB_SHOP
+	var GLOB_SHOP = cookie.read_cookie("GLOB_SHOP");
 
 	var hostBase = "https://emailmywebhooks.herokuapp.com/";
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
 
 	var method;
-	var url = req.headers.cookie.GLOB_SHOP + "/";
-	console.log("cookies:  " + req.headers.cookie);
+	var url = GLOB_SHOP + "/";
+	console.log("GLOB_SHOP:  " + GLOB_SHOP);
 	var body;
 
 
