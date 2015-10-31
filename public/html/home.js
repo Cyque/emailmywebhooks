@@ -8,3 +8,4 @@ ShopifyApp.init({
 ShopifyApp.ready(function(){
   	ShopifyApp.Bar.loadingOff()
 });
+
