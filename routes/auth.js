@@ -16,10 +16,11 @@ exports.permission = function(req, res) {
 	// http://localhost:3000/auth/permission?shop=damianpolan.myshopify.com
 
 	var host = req.headers.host;
+	console.log(host);
 	if(host == undefined) {
 		host = "emailmywebhooks.herokuapp.com"
 	}
-	
+
 	var shop = req.query.shop;
 	var api_key = "4bf79cc58eecd7f509f94ce7cd61c6b0";
 	var redirect_uri = encodeURIComponent("http://" + host + "/auth/confirm");
