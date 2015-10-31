@@ -1,5 +1,7 @@
 function read_cookie(k,cookies,r) {
-	return(r=RegExp('(^|; )'+encodeURIComponent(k)+'=([^;]*)').exec(cookies))?r[2]:null;
+	if(cookies == undefined)
+		cookies = document.cookie;
+	return ( r = RegExp('(^|; )' + encodeURIComponent(k) + '=([^;]*)').exec(cookies))?r[2]:null;
 }
 
 
