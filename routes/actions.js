@@ -26,7 +26,7 @@ exports.createWebhook = function(req, res) {
 		}
 	}
 	else {
-		res.end("Failed to create webhook. Unknown topic: " + topic)
+		res.end("Failed to create webhook. Unknown topic: " + topic + " " + req.query.topic)
 	}
 
 
