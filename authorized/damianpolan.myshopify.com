@@ -1,1 +1,1 @@
-{"shop":"damianpolan.myshopify.com","tokens":["55dc115cfd264c5da99f433c0c20862d"]}
+{"shop":"damianpolan.myshopify.com","tokens":["667676df98991a78b2bb91c979f31145"]}

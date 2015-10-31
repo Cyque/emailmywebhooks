@@ -38,12 +38,21 @@ exports.createWebhook = function(req, res) {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
 	}
 
+	var shopObject = getShop();
+
 	console.log("SENDING WEBHOOK REQUEST");
 	if(method == "POST" || method == "post")
 	{
 		request.post(
 			url,
 			{ 
+				auth: {
+				    user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+				    pass: "1604e972c082a4a3bb6384c1460f3458"				
+				},
+				headers:{
+					 'X-Shopify-Access-Token': shopObject.accessToken
+				},
 				form: body
 			},	
 			function (error, response, body) {
@@ -60,3 +69,11 @@ exports.createWebhook = function(req, res) {
 		//
 	}
 };
+
+
+
+
+function getShop(shop) {
+	var filePath = "./authorized/" + shop;
+	return JSON.parse(fs.readFileSync(filePath));
+}

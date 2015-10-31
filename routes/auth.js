@@ -72,7 +72,7 @@ exports.confirm = function(req, res) {
 		function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				//body format: {"access_token":"xxxxx ... xxxx"}
-				addAccessTokenFor(token, JSON.parse(body).access_token);
+				addAccessTokenFor(shop, JSON.parse(body).access_token);
 				res.cookie('GLOB_API_KEY', api_key);
 				res.cookie('GLOB_SHOP', shop);
 				//FULLY AUTHENTICATED HERE
@@ -116,15 +116,16 @@ function registerTokenFor(shop) {
 	return token;
 }
 
-function addAccessTokenFor(token, accessToken) {
-	var filePath = "./authorized/" + token;
-	if(fs.existsSync(filePath)){
-		var object = JSON.parse(fs.readFileSync(filePath));
-		object.accessToken = accessToken; 
-		fs.writeFile(filePath, JSON.stringifiy(object), function(err) {
-			if(err) {
-				return console.log(err);
-			}
-		}); 
-	}
+function addAccessTokenFor(shop, accessToken) {
+	var filePath = "./authorized/" + shop;
+	var object = JSON.parse(fs.readFileSync(filePath));
+
+	object.accessToken = accessToken; 
+	
+	fs.writeFile(filePath, JSON.stringifiy(object), function(err) {
+		if(err) {
+			return console.log(err);
+		}
+	}); 
+	
 }
