@@ -30,7 +30,7 @@ exports.createWebhook = function(req, res) {
 		body = {
 			"webhook": {
 				// "topic": "customers\/create",
-				"topic": "carts\/update",
+				"topic": "products\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json"
 			}
@@ -60,7 +60,7 @@ exports.createWebhook = function(req, res) {
 			function (error, response, body) {
 				if (!error) {
 					console.log('Success adding webhook:');
-					console.log(body.webhook);
+					console.log(body);
 					res.send('Success adding webhook.');
 				}
 				else {
