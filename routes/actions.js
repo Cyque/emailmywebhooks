@@ -29,7 +29,8 @@ exports.createWebhook = function(req, res) {
 		url += "admin/webhooks.json";
 		body = {
 			"webhook": {
-				"topic": "customers\/create",
+				// "topic": "customers\/create",
+				"topic": "carts\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json"
 			}
