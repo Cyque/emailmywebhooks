@@ -49,19 +49,21 @@ exports.createWebhook = function(req, res) {
 			url,
 			{ 
 				auth: {
-				    user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-				    pass: "1604e972c082a4a3bb6384c1460f3458"				
+					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+					pass: "1604e972c082a4a3bb6384c1460f3458"				
 				},
 				headers:{
-					 'X-Shopify-Access-Token': shopObject.accessToken
+					'X-Shopify-Access-Token': shopObject.accessToken
 				},
 				form: body
 			},	
 			function (error, response, body) {
-				if (!error) {
+				var bodyP = JSON.parse(body);
+				if (!error || (typeof body[errors] == "undefined")) {
 					console.log('Success adding webhook:');
 					console.log(body);
-					res.send('Success adding webhook.');
+
+					res.send('Success adding webhook. </br>' + body);
 				}
 				else {
 					res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error);
