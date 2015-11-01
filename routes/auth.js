@@ -24,7 +24,7 @@ exports.permission = function(req, res) {
 	var shop = req.query.shop;
 	var api_key = "4bf79cc58eecd7f509f94ce7cd61c6b0";
 	var redirect_uri = encodeURIComponent("https://" + host + "/auth/confirm");
-	var scope = "read_customers,write_customers";
+	var scope = "read_customers,write_customers,read_products";
 	var state = encodeURIComponent(registerTokenFor(shop));
 
 	var getPermissionURL = "https://" + shop + "/admin/oauth/authorize?client_id=" +  api_key + "&scope=" + scope + "&redirect_uri=" + redirect_uri + "&state=" + state;
