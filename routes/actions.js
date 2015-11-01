@@ -59,6 +59,7 @@ exports.createWebhook = function(req, res) {
 			},	
 			function (error, response, body) {
 				var bodyP = JSON.parse(body);
+				console.log(bodyP.errors);
 				if (!error || (typeof body["errors"] == "undefined")) {
 					console.log('Success adding webhook:');
 					console.log(body);
