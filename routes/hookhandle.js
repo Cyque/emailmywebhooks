@@ -1,13 +1,14 @@
 
 var nodemailer = require('nodemailer');
 
+var transporter = nodemailer.createTransport();
+
 exports.handleWebhook = function(req, res) {
 	console.log("RECIEVED A WEBHOOK CALL!!");
 
 
 	console.log(req.body);
 
-	var transporter = nodemailer.createTransport();
 
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply.com',
