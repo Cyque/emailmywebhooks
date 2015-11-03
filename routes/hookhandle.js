@@ -3,6 +3,8 @@ var nodemailer = require('nodemailer');
 
 exports.handleWebhook = function(req, res) {
 
+
+	console.log("RECIEVED A WEBHOOK CALL!!");
 	var transporter = nodemailer.createTransport({
 		service: 'Gmail',
 		auth: {
@@ -31,7 +33,5 @@ exports.handleWebhook = function(req, res) {
 		console.log('Message sent: ' + info.response);
 
 	});
-
-	console.log("RECIEVED A WEBHOOK CALL!!");
 	res.send("Not implemented.");
 }
