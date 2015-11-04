@@ -6,6 +6,7 @@
 var fs = require('fs');
 var crypto = require('crypto');
 var request = require('request');
+var db = require('../modules/database.js')
 
 exports.permission = function(req, res) {
 
@@ -88,17 +89,14 @@ exports.confirm = function(req, res) {
 function registerTokenFor(shop) {
 	// FORMAT: 
 	var token;
-	filePath = "./authorized/" + shop;
+	filePath = "users/" + shop;
+	var object = db.getObject(filePath);
 
-	var object;
-
-	if(fs.existsSync(filePath)){
-		object = JSON.parse(fs.readFileSync(filePath));
+	if(object != undefined) {
 		token = crypto.randomBytes(16).toString('hex');
 		object.tokens.push(token); 
 	}
-	else	
-	{
+	else {
 		token = crypto.randomBytes(16).toString('hex');
 		object = {
 			shop: shop,
@@ -106,26 +104,47 @@ function registerTokenFor(shop) {
 		}
 	}
 
-
-	fs.writeFile(filePath, JSON.stringify(object), function(err) {
-		if(err) {
-			return console.log(err);
-		}
-	}); 
-
+	db.saveObject(filePath, object);
 	return token;
+
+	// if(fs.existsSync(filePath)){
+	// 	object = JSON.parse(fs.readFileSync(filePath));
+	// 	token = crypto.randomBytes(16).toString('hex');
+	// 	object.tokens.push(token); 
+	// }
+	// else	
+	// {
+	// 	token = crypto.randomBytes(16).toString('hex');
+	// 	object = {
+	// 		shop: shop,
+	// 		tokens: [ token ]
+	// 	}
+	// }
+
+
+	// fs.writeFile(filePath, JSON.stringify(object), function(err) {
+	// 	if(err) {
+	// 		return console.log(err);
+	// 	}
+	// }); 
+
 }
 
 function addAccessTokenFor(shop, accessToken) {
-	var filePath = "./authorized/" + shop;
-	var object = JSON.parse(fs.readFileSync(filePath));
+	var filePath = "authorized/" + shop;
 
+	var object = db.getObject(filePath);
 	object.accessToken = accessToken; 
 
-	fs.writeFile(filePath, JSON.stringify(object), function(err) {
-		if(err) {
-			return console.log(err);
-		}
-	}); 
-	
+	db.saveObject(filePath, object);
+
+	// var object = JSON.parse(fs.readFileSync(filePath));
+
+	// object.accessToken = accessToken; 
+
+	// fs.writeFile(filePath, JSON.stringify(object), function(err) {
+	// 	if(err) {
+	// 		return console.log(err);
+	// 	}
+	// }); 	
 }
