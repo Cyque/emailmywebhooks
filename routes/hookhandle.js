@@ -16,8 +16,8 @@ exports.handleWebhook = function(req, res) {
 		if(error){
 			return console.log(error);
 		}
-		
-		res.sendStatus(200);
+
+		res.status(200).send();
 	});
 
 }
