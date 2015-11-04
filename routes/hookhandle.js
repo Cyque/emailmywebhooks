@@ -11,7 +11,7 @@ exports.handleWebhook = function(req, res) {
 
 
 	transporter.sendMail({
-		from: 'emailmywebhooks@noreply.com',
+		from: 'emailmywebhooks@noreply',
 		to: 'damian.polan@gmail.com',
 		subject: 'WEBHOOK',
 		text: JSON.stringify(req.body)
