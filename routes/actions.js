@@ -30,7 +30,7 @@ exports.createWebhook = function(req, res) {
 		body = {
 			"webhook": {
 				// "topic": "customers\/create",
-				"topic": "products\/create",
+				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json"
 			}
