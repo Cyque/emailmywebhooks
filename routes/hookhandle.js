@@ -17,5 +17,5 @@ exports.handleWebhook = function(req, res) {
 		text: JSON.stringify(req.body)
 	});
 
-	res.send("Success");
+	res.sendStatus(200);
 }
