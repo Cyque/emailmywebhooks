@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 
-exports.dbpath = "db/";
+var dbpath = "db/";
 
 exports.getObject = function(filename){
 	if(fs.existsSync(dbpath + filename)) {
