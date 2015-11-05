@@ -1,7 +1,7 @@
 var request = require("request");
 // var cookie = require("./../public/javascripts/cookie.js");
 var fs = require('fs');
-var db = require('../modules/database.js')
+var db = require('../modules/database.js');
 
 
 function read_cookie(k, cookies, r) {
@@ -46,8 +46,6 @@ exports.createWebhook = function(req, res) {
 	console.log("SENDING WEBHOOK REQUEST");
 	if(method == "POST" || method == "post")
 	{
-		
-		
 		request.post(
 			url,
 			{ 
