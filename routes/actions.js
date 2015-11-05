@@ -52,14 +52,11 @@ exports.createWebhook = function(req, res) {
 						'X-Shopify-Access-Token': shopObject.accessToken
 					}
 				},	
-				function (error, response, body) {
-					res.send(response);				
+				function (error, response, body) {			
 				});
 			}
+			res.send(body);	
 		});
-		
-
-
 	}
 	else if(topic == "customers_create") {
 		method = "POST";
