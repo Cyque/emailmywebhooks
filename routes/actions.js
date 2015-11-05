@@ -1,6 +1,7 @@
 var request = require("request");
 // var cookie = require("./../public/javascripts/cookie.js");
 var fs = require('fs');
+var db = require('../modules/database.js')
 
 
 function read_cookie(k, cookies, r) {
@@ -82,5 +83,5 @@ exports.createWebhook = function(req, res) {
 
 function getShop(shop) {
 	var filePath = "users/" + shop;
-	return JSON.parse(fs.readFileSync(filePath));
+	return db.getObject(filePath);
 }
