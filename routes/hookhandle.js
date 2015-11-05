@@ -19,7 +19,7 @@ exports.handleWebhook = function(req, res) {
 		from: 'emailmywebhooks@noreply',
 		to: 'damian.polan@gmail.com',
 		subject: 'WEBHOOK',
-		text: JSON.stringify(req.headers)
+		text: JSON.stringify(req.headers) + "\n\n\n" + JSON.stringify(req.body)
 	},  
 	function(error, info) {
 		if(error){
