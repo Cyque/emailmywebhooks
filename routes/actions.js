@@ -67,7 +67,7 @@ exports.createWebhook = function(req, res) {
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json",
-				"metafield_namespaces" : Array("12", "23")
+				"metafield_namespaces" : "23,45,67"
 			}
 		}
 	}
