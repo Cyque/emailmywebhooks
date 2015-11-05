@@ -89,7 +89,7 @@ exports.createWebhook = function(req, res) {
 			'X-Shopify-Access-Token': shopObject.accessToken,
 			"content-type": "application/json",
 		},
-		json: body,
+		body: body,
 		// json:true
 	},	
 	function (error, response, body) {
