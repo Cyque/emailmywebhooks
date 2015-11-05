@@ -88,7 +88,7 @@ exports.createWebhook = function(req, res) {
 			"content-type": "application/json",
 		},
 		form: JSON.stringify(body),
-		// json:true
+		json:true
 	},	
 	function (error, response, body) {
 		var bodyP = JSON.parse(body);
