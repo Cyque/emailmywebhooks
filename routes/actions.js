@@ -96,7 +96,8 @@ exports.createWebhook = function(req, res) {
 				console.log('Success adding webhook:');
 				console.log(body);
 
-				db.saveObject("webhooks/" + bodyP.id, bodyP.webhook);
+				// db.saveObject("webhooks/" + bodyP.id, bodyP.webhook);
+				db.saveObject("webhooks/" + "12345", bodyP.webhook);
 
 				res.send('Success adding webhook. </br>' + body);
 			}
