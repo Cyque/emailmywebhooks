@@ -66,7 +66,8 @@ exports.createWebhook = function(req, res) {
 				// "topic": "customers\/create",
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
-				"format": "json"
+				"format": "json",
+				"metafield_namespaces" : [shop, "hello world"]
 			}
 		}
 	}
@@ -97,7 +98,6 @@ exports.createWebhook = function(req, res) {
 				console.log(body);
 
 				// db.saveObject("webhooks/" + bodyP.id, bodyP.webhook);
-				db.saveObject("webhooks/" + "12345", bodyP.webhook);
 
 				res.send('Success adding webhook. </br>' + body);
 			}
