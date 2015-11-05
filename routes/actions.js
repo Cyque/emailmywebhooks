@@ -63,7 +63,6 @@ exports.createWebhook = function(req, res) {
 		url += "admin/webhooks.json";
 		body = {
 			"webhook": {
-				// "topic": "customers\/create",
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json",
@@ -86,7 +85,8 @@ exports.createWebhook = function(req, res) {
 				pass: "1604e972c082a4a3bb6384c1460f3458"				
 			},
 			headers: {
-				'X-Shopify-Access-Token': shopObject.accessToken
+				'X-Shopify-Access-Token': shopObject.accessToken.
+				"content-type": "application/json"
 			},
 			form: body
 		},	
