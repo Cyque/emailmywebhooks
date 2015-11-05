@@ -9,6 +9,7 @@ exports.handleWebhook = function(req, res) {
 
 	var webhookInfo = db.getObject("webhooks/" + req.body.id);
 
+	console.log(req.body.id);
 	console.log(webhookInfo);
 
 
