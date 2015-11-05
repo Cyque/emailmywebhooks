@@ -74,7 +74,7 @@ exports.createWebhook = function(req, res) {
 	}
 	else {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
-	}
+	} 
 
 
 	console.log("SENDING WEBHOOK REQUEST");
