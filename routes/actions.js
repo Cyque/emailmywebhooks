@@ -38,7 +38,12 @@ exports.createWebhook = function(req, res) {
 			} 
 		},
 		function(error, response, body) {
-			res.send(body);
+			var webhooks = JSON.parse(body).webhooks;
+			var sdasd = "";
+			for(var i = 0; i < webhooks.length; i++) {
+				sdasd += webhooks[i].id;
+			}
+			res.send(sdasd);
 		});
 		// request.del(url + "/admin/webhooks/" + + ".json",
 		// { 
