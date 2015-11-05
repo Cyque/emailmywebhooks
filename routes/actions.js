@@ -71,15 +71,6 @@ exports.createWebhook = function(req, res) {
 				"fields" : ["id"]
 			}
 		}
-		body = {
-			webhook: {
-				topic: "customers\/create",
-				address: hostBase + "handlewebhook",
-				format: "json",
-				fields : ["id"]
-			}
-		}
-
 	}
 	else {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
@@ -98,8 +89,7 @@ exports.createWebhook = function(req, res) {
 			'X-Shopify-Access-Token': shopObject.accessToken,
 			"content-type": "application/json",
 		},
-		json: body,
-		//body: JSON.stringify(body), //uses json encoding
+		body: JSON.stringify(body), //uses json encoding
 		// form:body, //this uses form-url encoding
 		// json:true
 	},	
