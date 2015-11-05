@@ -96,14 +96,14 @@ exports.createWebhook = function(req, res) {
 				console.log('Success adding webhook:');
 				console.log(body);
 
-					// db.saveObject("")
+				db.saveObject("webhooks/" + bodyP.id, bodyP.webhook);
 
-					res.send('Success adding webhook. </br>' + body);
-				}
-				else {
-					res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error);
-				}
-			});	
+				res.send('Success adding webhook. </br>' + body);
+			}
+			else {
+				res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error);
+			}
+		});	
 	} else if (method == "GET" || method == "get") {
 		//
 	}
