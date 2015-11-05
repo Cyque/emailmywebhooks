@@ -66,7 +66,7 @@ exports.createWebhook = function(req, res) {
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json",
-				"fields" : "id"
+				"fields" : []
 			}
 		}
 	}
