@@ -27,7 +27,7 @@ exports.createWebhook = function(req, res) {
 
 	if( topic == "deleteall") {
 
-		request.get(url + "admin/webhooks/count.json", 
+		request.get(url + "admin/webhooks.json", 
 		{ 
 			auth: {
 				user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
