@@ -131,7 +131,7 @@ function registerTokenFor(shop) {
 }
 
 function addAccessTokenFor(shop, accessToken) {
-	var filePath = "authorized/" + shop;
+	var filePath = "users/" + shop;
 
 	var object = db.getObject(filePath);
 	object.accessToken = accessToken; 
