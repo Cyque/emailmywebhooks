@@ -57,6 +57,8 @@ exports.createWebhook = function(req, res) {
 			}
 			res.send(body);	
 		});
+
+		return;
 	}
 	else if(topic == "customers_create") {
 		method = "POST";
