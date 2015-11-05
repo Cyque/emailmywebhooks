@@ -66,7 +66,10 @@ exports.createWebhook = function(req, res) {
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json",
-				"fields" : [1]
+				fields : [
+					"id",
+					"updated_at"
+				]
 			}
 		}
 	}
