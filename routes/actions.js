@@ -81,6 +81,6 @@ exports.createWebhook = function(req, res) {
 
 
 function getShop(shop) {
-	var filePath = "./authorized/" + shop;
+	var filePath = "users/" + shop;
 	return JSON.parse(fs.readFileSync(filePath));
 }
