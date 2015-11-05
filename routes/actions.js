@@ -41,33 +41,31 @@ exports.createWebhook = function(req, res) {
 			var webhooks = JSON.parse(body).webhooks;
 			var sdasd = "";
 			for(var i = 0; i < webhooks.length; i++) {
-				sdasd += webhooks[i].id;
+				
+				request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json",
+				{ 
+					auth: {
+						user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+						pass: "1604e972c082a4a3bb6384c1460f3458"				
+					},
+					headers: {
+						'X-Shopify-Access-Token': shopObject.accessToken
+					}
+				},	
+				function (error, response, body) {
+					res.send(response);				
+				});
 			}
-			res.send(sdasd);
 		});
-		// request.del(url + "/admin/webhooks/" + + ".json",
-		// { 
-		// 	auth: {
-		// 		user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-		// 		pass: "1604e972c082a4a3bb6384c1460f3458"				
-		// 	},
-		// 	headers: {
-		// 		'X-Shopify-Access-Token': shopObject.accessToken
-		// 	},
-		// 	form: {
-		// 	}
-		// },	
-		// function (error, response, body) {
-
-		// });
+		
 
 
-}
-else if(topic == "customers_create") {
-	method = "POST";
-	url += "admin/webhooks.json";
-	body = {
-		"webhook": {
+	}
+	else if(topic == "customers_create") {
+		method = "POST";
+		url += "admin/webhooks.json";
+		body = {
+			"webhook": {
 				// "topic": "customers\/create",
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
