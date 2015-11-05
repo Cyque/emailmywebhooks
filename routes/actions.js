@@ -24,12 +24,44 @@ exports.createWebhook = function(req, res) {
 	var body;
 
 
+	if( topic == "deleteall") {
 
-	if(topic == "customers_create") {
-		method = "POST";
-		url += "admin/webhooks.json";
-		body = {
-			"webhook": {
+		request.get(url + "admin/webhooks/count.json", 
+		{ 
+			auth: {
+				user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+				pass: "1604e972c082a4a3bb6384c1460f3458"				
+			},
+			headers: {
+				'X-Shopify-Access-Token': shopObject.accessToken
+			} 
+		},
+		function(error, response, body) {
+			res.send(body);
+		});
+		// request.del(url + "/admin/webhooks/" + + ".json",
+		// { 
+		// 	auth: {
+		// 		user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+		// 		pass: "1604e972c082a4a3bb6384c1460f3458"				
+		// 	},
+		// 	headers: {
+		// 		'X-Shopify-Access-Token': shopObject.accessToken
+		// 	},
+		// 	form: {
+		// 	}
+		// },	
+		// function (error, response, body) {
+
+		// });
+
+
+}
+else if(topic == "customers_create") {
+	method = "POST";
+	url += "admin/webhooks.json";
+	body = {
+		"webhook": {
 				// "topic": "customers\/create",
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
@@ -46,24 +78,25 @@ exports.createWebhook = function(req, res) {
 	console.log("SENDING WEBHOOK REQUEST");
 	if(method == "POST" || method == "post")
 	{
-		request.post(
-			url,
-			{ 
-				auth: {
-					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-					pass: "1604e972c082a4a3bb6384c1460f3458"				
-				},
-				headers:{
-					'X-Shopify-Access-Token': shopObject.accessToken
-				},
-				form: body
-			},	
-			function (error, response, body) {
-				var bodyP = JSON.parse(body);
+		request.post(url,
+		{ 
+			auth: {
+				user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+				pass: "1604e972c082a4a3bb6384c1460f3458"				
+			},
+			headers: {
+				'X-Shopify-Access-Token': shopObject.accessToken
+			},
+			form: body
+		},	
+		function (error, response, body) {
+			var bodyP = JSON.parse(body);
 
-				if (!error && (typeof bodyP["errors"] == "undefined")) {
-					console.log('Success adding webhook:');
-					console.log(body);
+			if (!error && (typeof bodyP["errors"] == "undefined")) {
+				console.log('Success adding webhook:');
+				console.log(body);
+
+					// db.saveObject("")
 
 					res.send('Success adding webhook. </br>' + body);
 				}

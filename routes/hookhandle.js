@@ -7,20 +7,20 @@ var db = require('../modules/database.js');
 exports.handleWebhook = function(req, res) {
 	console.log("RECIEVED A WEBHOOK CALL!!");
 
-	console.log(req.header)
-	// var webhookInfo = db.getObject("webhooks" + req.body.id)
+	var webhookInfo = db.getObject("webhooks/" + req.body.id);
+
+	
 
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply',
 		to: 'damian.polan@gmail.com',
 		subject: 'WEBHOOK',
-		text: "<b>" + JSON.stringify(req.body) + "</b>"
+		text: JSON.stringify(req.body)
 	},  
 	function(error, info) {
 		if(error){
 			return console.log(error);
 		}
-
 		res.status(200).send();
 	});
 
