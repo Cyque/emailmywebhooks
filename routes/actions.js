@@ -66,7 +66,7 @@ exports.createWebhook = function(req, res) {
 				"topic": "customers\/create",
 				"address": hostBase + "handlewebhook",
 				"format": "json",
-				"fields" : ["id"]
+				"fields" : Array(["id"])
 			}
 		}
 	}
@@ -87,8 +87,8 @@ exports.createWebhook = function(req, res) {
 			'X-Shopify-Access-Token': shopObject.accessToken,
 			"content-type": "application/json",
 		},
-		form: JSON.stringify(body),
-		json:true
+		form: body,
+		// json:true
 	},	
 	function (error, response, body) {
 		var bodyP = JSON.parse(body);
