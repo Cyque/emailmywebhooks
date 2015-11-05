@@ -14,6 +14,7 @@ exports.createWebhook = function(req, res) {
 	// req.headers.cookie.GLOB_API_KEY
 	// req.headers.cookie.GLOB_SHOP
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
+	var shopObject = getShop(GLOB_SHOP);
 
 	var hostBase = "https://emailmywebhooks.herokuapp.com/";
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
@@ -73,7 +74,6 @@ else if(topic == "customers_create") {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
 	}
 
-	var shopObject = getShop(GLOB_SHOP);
 
 	console.log("SENDING WEBHOOK REQUEST");
 	if(method == "POST" || method == "post")
