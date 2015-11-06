@@ -59,7 +59,7 @@ exports.createWebhook = function(req, res) {
 		});
 
 		return;
-	}
+	} //143357507
 	else if(topic == "customers_create") {
 		method = "POST";
 		url += "admin/webhooks.json";
@@ -69,7 +69,7 @@ exports.createWebhook = function(req, res) {
 				"address": hostBase + "handlewebhook",
 				"format": "json",
 				// "fields" : ["id"],
-				"metafield_namespaces" : ["hello world"]
+				"metafield_namespaces" : ["id"]
 			}
 		}
 	}
