@@ -66,10 +66,10 @@ exports.createWebhook = function(req, res) {
 		body = {
 			"webhook": {
 				"topic": "customers\/create",
-				"address": hostBase + "handlewebhook?someid=abcds",
+				"address": hostBase + "handlewebhook",
 				"format": "json",
 				// "fields" : ["id"],
-				"metafield_namespaces" : ["id"]
+				// "metafield_namespaces" : ["id"]
 			}
 		}
 	}
@@ -96,19 +96,44 @@ exports.createWebhook = function(req, res) {
 	},	
 	function (error, response, body) {
 		var bodyP = JSON.parse(body);
-
 		if (!error && (typeof bodyP["errors"] == "undefined")) {
 			console.log('Success adding webhook:');
 			console.log(body);
 
-				// db.saveObject("webhooks/" + bodyP.id, bodyP.webhook);
+			// db.saveObject("webhooks/" + bodyP.id, bodyP.webhook);
 
-				res.send('Success adding webhook. </br>' + body);
-			}
-			else {
-				res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error +"</br>" + JSON.stringify(response));
-			}
-		});	
+			//ONCE THE WEBHOOK IS ADDED AND AN ID IS ASSIGNED, THE WEBHOOK ADDRESS MUST BE MODIFIED TO INCLUDE THE WEBHOOK ID.
+
+			request.post({ 
+				method: method,
+				uri: url,
+				auth: {
+					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+					pass: "1604e972c082a4a3bb6384c1460f3458"
+				},
+				headers: {
+					'X-Shopify-Access-Token': shopObject.accessToken,
+					"content-type": "application/json",
+				},
+				body: JSON.stringify({
+					"webhook": {
+						"id": bodyP.webhook.id,
+						"address": bodyP.webhook.address + "?id=" + bodyP.webhook.id
+					}
+				})
+			}, function (error, response, body2) {
+				var bodyP = JSON.parse(body2);
+				if (!error && (typeof body2P["errors"] == "undefined")) {
+					res.send('Success adding webhook. </br>' + body2);
+				} else {
+					res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body2) + "</br> " + error +"</br>" + JSON.stringify(response));
+				}
+			});
+		}
+		else {
+			res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error +"</br>" + JSON.stringify(response));
+		}
+	});	
 };
 
 
