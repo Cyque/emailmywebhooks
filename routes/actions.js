@@ -20,7 +20,8 @@ exports.createWebhook = function(req, res) {
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
 
 	var method;
-	var url = "https://" + GLOB_SHOP + "/";
+	var baseUrl = "https://" + GLOB_SHOP + "/"
+	var url = baseUrl;
 	// console.log("GLOB_SHOP:  " + GLOB_SHOP);
 	var body;
 
@@ -104,9 +105,9 @@ exports.createWebhook = function(req, res) {
 
 			//ONCE THE WEBHOOK IS ADDED AND AN ID IS ASSIGNED, THE WEBHOOK ADDRESS MUST BE MODIFIED TO INCLUDE THE WEBHOOK ID.
 
-			request.post({ 
+			request.put({ 
 				method: method,
-				uri: url,
+				uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
 				auth: {
 					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
 					pass: "1604e972c082a4a3bb6384c1460f3458"
@@ -117,13 +118,12 @@ exports.createWebhook = function(req, res) {
 				},
 				body: JSON.stringify({
 					"webhook": {
-						"id": bodyP.webhook.id,
 						"address": bodyP.webhook.address + "?id=" + bodyP.webhook.id
 					}
 				})
 			}, function (error, response, body2) {
 				var bodyP = JSON.parse(body2);
-				if (!error && (typeof body2P["errors"] == "undefined")) {
+				if (!error && (typeof bodyP["errors"] == "undefined")) {
 					res.send('Success adding webhook. </br>' + body2);
 				} else {
 					res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body2) + "</br> " + error +"</br>" + JSON.stringify(response));
