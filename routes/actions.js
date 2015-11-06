@@ -65,8 +65,8 @@ exports.createWebhook = function(req, res) {
 		url += "admin/webhooks.json";
 		body = {
 			"webhook": {
-				"topic": "customers\/create?someid=abcds",
-				"address": hostBase + "handlewebhook",
+				"topic": "customers\/create",
+				"address": hostBase + "handlewebhook?someid=abcds",
 				"format": "json",
 				// "fields" : ["id"],
 				"metafield_namespaces" : ["id"]
