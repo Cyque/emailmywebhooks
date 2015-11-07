@@ -138,6 +138,7 @@ function addShopInfoFor(shop, info) {
 
 	var object = db.getObject(filePath);
 	object.info = info; 
+	console.log(object);
 
 	db.saveObject(filePath, object);
 }
