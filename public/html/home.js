@@ -7,5 +7,7 @@ ShopifyApp.init({
 
 ShopifyApp.ready(function(){
   	ShopifyApp.Bar.loadingOff()
+
+  	console.log(ShopifyApp.User.current);
 });
 
