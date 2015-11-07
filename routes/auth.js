@@ -74,11 +74,26 @@ exports.confirm = function(req, res) {
 			if (!error && response.statusCode == 200) {
 				//body format: {"access_token":"xxxxx ... xxxx"}
 				addAccessTokenFor(shop, JSON.parse(body).access_token);
-				res.cookie('GLOB_API_KEY', api_key);
-				res.cookie('GLOB_SHOP', shop);
-				//FULLY AUTHENTICATED HERE
-				// res.sendfile('public/html/home.html');
-				res.redirect('home');
+				
+
+				//get shop information
+
+				request.get(
+					"https://" + shop + "/admin/shop.json",
+					function (error, response, body) {
+						if(!error && response.statusCode == 200) {
+							addShopInfoFor(JSON.parse(body).shop);
+							res.cookie('GLOB_API_KEY', api_key);
+							res.cookie('GLOB_SHOP', shop);
+							//FULLY AUTHENTICATED HERE
+							res.redirect('home');
+						} else {
+							console.log("ERROR WITH FETCHING SHOP INFO")
+							res.error("ERROR WITH FETCHING SHOP INFO");
+						}
+					});
+
+
 			}
 		});	
 };
@@ -106,28 +121,15 @@ function registerTokenFor(shop) {
 
 	db.saveObject(filePath, object);
 	return token;
+}
 
-	// if(fs.existsSync(filePath)){
-	// 	object = JSON.parse(fs.readFileSync(filePath));
-	// 	token = crypto.randomBytes(16).toString('hex');
-	// 	object.tokens.push(token); 
-	// }
-	// else	
-	// {
-	// 	token = crypto.randomBytes(16).toString('hex');
-	// 	object = {
-	// 		shop: shop,
-	// 		tokens: [ token ]
-	// 	}
-	// }
+function addShopInfoFor(shop, info) {
+	var filePath = "users/" + shop;
 
+	var object = db.getObject(filePath);
+	object.info = info; 
 
-	// fs.writeFile(filePath, JSON.stringify(object), function(err) {
-	// 	if(err) {
-	// 		return console.log(err);
-	// 	}
-	// }); 
-
+	db.saveObject(filePath, object);
 }
 
 function addAccessTokenFor(shop, accessToken) {
@@ -137,14 +139,4 @@ function addAccessTokenFor(shop, accessToken) {
 	object.accessToken = accessToken; 
 
 	db.saveObject(filePath, object);
-
-	// var object = JSON.parse(fs.readFileSync(filePath));
-
-	// object.accessToken = accessToken; 
-
-	// fs.writeFile(filePath, JSON.stringify(object), function(err) {
-	// 	if(err) {
-	// 		return console.log(err);
-	// 	}
-	// }); 	
 }
