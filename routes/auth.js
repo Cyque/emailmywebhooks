@@ -92,7 +92,7 @@ exports.confirm = function(req, res) {
 						} 
 					},	function (error, response, body) {
 						if(!error && response.statusCode == 200) {
-							addShopInfoFor(JSON.parse(body).shop);
+							addShopInfoFor(shop, JSON.parse(body).shop);
 							res.cookie('GLOB_API_KEY', api_key);
 							res.cookie('GLOB_SHOP', shop);
 							//FULLY AUTHENTICATED HERE
