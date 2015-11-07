@@ -89,7 +89,7 @@ exports.confirm = function(req, res) {
 							res.redirect('home');
 						} else {
 							console.log("ERROR WITH FETCHING SHOP INFO")
-							res.error("ERROR WITH FETCHING SHOP INFO");
+							res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
 						}
 					});
 
