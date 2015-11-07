@@ -73,14 +73,24 @@ exports.confirm = function(req, res) {
 		function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				//body format: {"access_token":"xxxxx ... xxxx"}
-				addAccessTokenFor(shop, JSON.parse(body).access_token);
+
+				var accTok = JSON.parse(body).access_token;
+				addAccessTokenFor(shop, accTok);
 				
 
 				//get shop information
 
 				request.get(
 					"https://" + shop + "/admin/shop.json",
-					function (error, response, body) {
+					{ 
+						auth: {
+							user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+							pass: "1604e972c082a4a3bb6384c1460f3458"
+						},
+						headers: {
+							'X-Shopify-Access-Token': accTok
+						} 
+					},	function (error, response, body) {
 						if(!error && response.statusCode == 200) {
 							addShopInfoFor(JSON.parse(body).shop);
 							res.cookie('GLOB_API_KEY', api_key);
