@@ -10,17 +10,20 @@ exports.handleWebhook = function(req, res) {
 
 	// var webhookInfo = db.getObject("webhooks/" + req.body.id);
 	var webhookObject = db.getObject("webhooks/" + req.query.id);
+	var shopObject = db.getObject("users/" + webhookObject.shop);
 
-	console.log(webhookObject.shop);
-	console.log(webhookObject.info);
+	console.log("webhookObject: " + webhookObject);
+	console.log("shopObject: " + shopObject);
 
-	// var emailContent = JSON.stringify(req.headers) + "\n\n\n" + JSON.stringify(req.body) + "\n\n\n" + JSON.stringify(req.query);
+
+
 	console.log("COMPILING JADE");
 	var jadePath = "email_templates/" + webhookObject.info.topic + ".jade";
 	console.log(jadePath);
-	
+
 	var emailContent = jade.renderFile(jadePath, {
-		webhook:webhookObject
+		webhook:webhookObject,
+		shop:shopObject
 	}); // Gets the JADE template file and compiles it
 	console.log(emailContent);
 
