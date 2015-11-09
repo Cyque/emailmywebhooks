@@ -23,9 +23,9 @@ exports.handleWebhook = function(req, res) {
 
 	var emailContent = jade.renderFile(jadePath, {
 		webhook:webhookObject,
-		shop:shopObject
+		shop:shopObject,
+		body:req.body
 	}); // Gets the JADE template file and compiles it
-	console.log(emailContent);
 
 
 	console.log("SENDING EMAIL");

@@ -1,9 +1,10 @@
 doctype html
 html
-  body
-  	if shop.shopInfo.name
-    	div Hello #{shop.shopInfo.name},
-    else 
-    	div Hello Shop Manager,
-    br
-    div A new customer has been created for your shop.
+body
+	if shop.shopInfo.name
+		div Hello #{shop.shopInfo.name},
+	else 
+		div Hello Shop Manager,
+	br
+	div A new customer has been created for your shop.
+		a https://#{shop.shop}/admin/customers
