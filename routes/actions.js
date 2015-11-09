@@ -122,6 +122,7 @@ exports.createWebhook = function(req, res) {
 				var bodyP2 = JSON.parse(body2);
 				if (!error && (typeof bodyP2["errors"] == "undefined")) {
 
+					console.log("CREATED WEBHOOK " + bodyP2.id);
 					db.saveObject("webhooks/" + bodyP2.id, { 
 						info: bodyP2.webhook,
 						shop: GLOB_SHOP
