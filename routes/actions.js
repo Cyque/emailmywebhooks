@@ -78,12 +78,8 @@ exports.createWebhook = function(req, res) {
 		method = "POST";
 		url += "admin/webhooks.json";
 		body = {
-			"webhook": {
-				// "topic": "customers\/create",
-				"topic": topic.replace("_", "\/"),
-				"address": hostBase + "handlewebhook",
-				"format": "json"
-			}
+			"topic": topic.replace("_", "\/"),
+			"address": hostBase + "handlewebhook"
 		}
 	}
 	else {
