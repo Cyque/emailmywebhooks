@@ -1,8 +1,11 @@
 
 var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport();
+var transporter = nodemailer.createTransport({
+
+});
 var db = require('../modules/database.js');
+var jade = require('jade');
 
 exports.handleWebhook = function(req, res) {
 	console.log("RECIEVED A WEBHOOK CALL!!");
@@ -13,6 +16,8 @@ exports.handleWebhook = function(req, res) {
 	console.log(webhookObject.shop);
 	console.log(webhookObject.info);
 
+
+
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply',
 		to: 'damian.polan@gmail.com',
@@ -20,6 +25,7 @@ exports.handleWebhook = function(req, res) {
 		text: JSON.stringify(req.headers) + "\n\n\n" + JSON.stringify(req.body) + "\n\n\n" + JSON.stringify(req.query)
 	},  
 	function(error, info) {
+		console.log(info);
 		if(error){
 			return console.log(error);
 		}
