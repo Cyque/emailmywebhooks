@@ -84,11 +84,11 @@ exports.createWebhook = function(req, res) {
 	//todo: deleteWebhook
 
 	//CREATE THE WEBHOOK
-	createWebhook(baseURL, body.address, body.topic, function (error, response, body) {
+	createWebhook(baseUrl, body.address, body.topic, function (error, response, body) {
 		var body2_create = JSON.parse(body);
 		if (!error && (typeof body_create["errors"] == "undefined")) {
 			//MODIFY THE WEBHOOK ADDRESS
-			modifyWebhookAddress(baseURL, body_create.webhook.address + "?id=" + body_create.webhook.id, 
+			modifyWebhookAddress(baseUrl, body_create.webhook.address + "?id=" + body_create.webhook.id, 
 				function (error, response, body) {
 
 					var body_modify = JSON.parse(body);
