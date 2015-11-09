@@ -137,7 +137,7 @@ function addShopInfoFor(shop, info) {
 	var filePath = "users/" + shop;
 
 	var object = db.getObject(filePath);
-	object.info = info; 
+	object.shopInfo = info; 
 	console.log(object);
 
 	db.saveObject(filePath, object);
