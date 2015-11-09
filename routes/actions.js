@@ -26,6 +26,18 @@ exports.createWebhook = function(req, res) {
 	// console.log("GLOB_SHOP:  " + GLOB_SHOP);
 	var body;
 
+	var callProperties = {
+		auth: {
+			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+			pass: "1604e972c082a4a3bb6384c1460f3458"
+		},
+		headers: {
+			'X-Shopify-Access-Token': shopObject.accessToken,
+			"content-type": "application/json",
+		},
+		baseUrl: baseUrl
+	}
+
 
 	if(topic == "deleteall") {
 		request.get(url + "admin/webhooks.json", 
@@ -84,11 +96,11 @@ exports.createWebhook = function(req, res) {
 	//todo: deleteWebhook
 
 	//CREATE THE WEBHOOK
-	createWebhook(baseUrl, body.address, body.topic, function (error, response, body) {
+	createWebhook(callProperties, body.address, body.topic, function (error, response, body) {
 		var body2_create = JSON.parse(body);
 		if (!error && (typeof body_create["errors"] == "undefined")) {
 			//MODIFY THE WEBHOOK ADDRESS
-			modifyWebhookAddress(baseUrl, body_create.webhook.address + "?id=" + body_create.webhook.id, 
+			modifyWebhookAddress(callProperties, body_create.webhook.address + "?id=" + body_create.webhook.id, 
 				function (error, response, body) {
 
 					var body_modify = JSON.parse(body);
@@ -176,19 +188,14 @@ Deletes all webhooks with the given topic.
 callback format: function (error, response, body) {}
 is called at the end of all the delete calls. The callback function's paramaters will be that off the last delete call.
 */
-function deleteWebhook(baseURL, topic, callback) {
+function deleteWebhook(callprops, topic, callback) {
 	topic = topic.replace("_", "\/");
 
 	//Gets a list of all webhooks with the type of the given topic
-	request.get(baseURL + "admin/webhooks.json?topic=" + topic, 
+	request.get(callprops.baseURL + "admin/webhooks.json?topic=" + topic, 
 	{ 
-		auth: {
-			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-			pass: "1604e972c082a4a3bb6384c1460f3458"				
-		},
-		headers: {
-			'X-Shopify-Access-Token': shopObject.accessToken
-		} 
+		auth: callprops.auth,
+		headers: callprops.headers
 	},
 	function (error, response, body) {
 		//response with list of mathing webhooks
@@ -206,13 +213,8 @@ function deleteWebhook(baseURL, topic, callback) {
 		for(var i = 0; i < webhooks.length; i++) {
 			request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json",
 			{ 
-				auth: {
-					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-					pass: "1604e972c082a4a3bb6384c1460f3458"				
-				},
-				headers: {
-					'X-Shopify-Access-Token': shopObject.accessToken
-				}
+				auth: callprops.auth,
+				headers: callprops.headers
 			},	
 			function (error, response, body) {
 				//response from deleted webhook
@@ -223,17 +225,11 @@ function deleteWebhook(baseURL, topic, callback) {
 }
 
 
-function createWebhook(baseURL, address, topic, callback) {
+function createWebhook(callprops, address, topic, callback) {
 	request.post({
-		uri: baseURL + "admin/webhooks.json",
-		auth: {
-			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-			pass: "1604e972c082a4a3bb6384c1460f3458"
-		},
-		headers: {
-			'X-Shopify-Access-Token': shopObject.accessToken,
-			"content-type": "application/json",
-		},
+		uri: callprops.baseURL + "admin/webhooks.json",
+		auth: callprops.auth,
+		headers: callprops.headers
 		body: JSON.stringify({
 			"topic": topic,
 			"address": address,
@@ -244,18 +240,12 @@ function createWebhook(baseURL, address, topic, callback) {
 }
 
 
-function modifyWebhookAddress(baseUrl, address, callback) {
+function modifyWebhookAddress(callprops, address, callback) {
 	request.put({ 
 		// method: "PUT",
-		uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
-		auth: {
-			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-			pass: "1604e972c082a4a3bb6384c1460f3458"
-		},
-		headers: {
-			'X-Shopify-Access-Token': shopObject.accessToken,
-			"content-type": "application/json",
-		},
+		uri: callprops.baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
+		auth: callprops.auth,
+		headers: callprops.headers,
 		body: JSON.stringify({
 			"webhook": {
 				"address": address
