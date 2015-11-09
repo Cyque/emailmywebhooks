@@ -19,7 +19,9 @@ exports.handleWebhook = function(req, res) {
 	var emailContent = jade.renderFile("email_templates/" + webhookObject.info.topic + ".jade", {
 		webhook:webhookObject
 	}); // Gets the JADE template file and compiles it
+	console.log(emailContent);
 
+	
 	console.log("SENDING EMAIL");
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply',
