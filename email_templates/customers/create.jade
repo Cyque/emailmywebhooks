@@ -6,5 +6,12 @@ body
 	else 
 		div Hello Shop Manager,
 	br
-	div A new customer has been created for your shop.
-		a https://#{shop.shop}/admin/customers
+	div 
+		| A new customer has been created for your shop. Check out your new customer 
+		| a(href='https://#{shop.shop}/admin/customers/#{body.id}' here
+		| .
+	br
+	div 
+		| Regards,
+	div
+		| EmailMyWebhooks
