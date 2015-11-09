@@ -8,13 +8,12 @@ var jade = require('jade');
 exports.handleWebhook = function(req, res) {
 	console.log("RECIEVED A WEBHOOK CALL!!");
 
-	// var webhookInfo = db.getObject("webhooks/" + req.body.id);
 	var webhookObject = db.getObject("webhooks/" + req.query.id);
 	var shopObject = db.getObject("users/" + webhookObject.shop);
 
 	console.log(webhookObject);
 	console.log(shopObject);
-	console.log(res.body);
+	console.log(req.body);
 
 
 
