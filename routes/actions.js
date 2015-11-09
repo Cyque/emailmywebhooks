@@ -229,7 +229,7 @@ function createWebhook(callprops, address, topic, callback) {
 	request.post({
 		uri: callprops.baseURL + "admin/webhooks.json",
 		auth: callprops.auth,
-		headers: callprops.headers
+		headers: callprops.headers,
 		body: JSON.stringify({
 			"topic": topic,
 			"address": address,
