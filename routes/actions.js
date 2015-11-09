@@ -222,6 +222,9 @@ function deleteWebhook(callprops, topic, callback) {
 
 
 function createWebhook(callprops, address, topic, callback) {
+	console.log(callprops)
+	console.log(address)
+	console.log(topic)
 	request.post({
 		uri: callprops.baseUrl + "admin/webhooks.json",
 		auth: callprops.auth,
