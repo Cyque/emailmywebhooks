@@ -1,4 +1,9 @@
 doctype html
 html
   body
-    div #{webhook.info.id}
+  	if shop.shopInfo.name
+    	div Hello #{shop.shopInfo.name},
+    else 
+    	div Hello Shop Manager,
+    br
+    div A new customer has been created for your shop.

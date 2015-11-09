@@ -14,6 +14,7 @@ exports.handleWebhook = function(req, res) {
 
 	console.log(webhookObject);
 	console.log(shopObject);
+	console.log(res.body);
 
 
 
