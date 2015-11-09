@@ -230,7 +230,7 @@ function createWebhook(callprops, address, topic, callback) {
 		auth: callprops.auth,
 		headers: callprops.headers,
 		body: JSON.stringify({
-			"topic": topic,
+			"topic": "customers\/create",
 			"address": address,
 			"format": "json"
 		})
