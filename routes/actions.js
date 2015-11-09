@@ -85,7 +85,7 @@ exports.createWebhook = function(req, res) {
 
 	//CREATE THE WEBHOOK
 	createWebhook(body.address, body.topic, function (error, response, body) {
-		var body_create = JSON.parse(body);
+		var body2_create = JSON.parse(body);
 		if (!error && (typeof body_create["errors"] == "undefined")) {
 			//MODIFY THE WEBHOOK ADDRESS
 			modifyWebhookAddress(
@@ -226,7 +226,7 @@ function deleteWebhook(topic, callback) {
 
 function createWebhook(address, topic, callback) {
 	request.post({ 
-		method: method,
+		// method: "POST",
 		uri: url,
 		auth: {
 			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
@@ -248,7 +248,7 @@ function createWebhook(address, topic, callback) {
 
 function modifyWebhookAddress(address, callback) {
 	request.put({ 
-		method: method,
+		// method: "PUT",
 		uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
 		auth: {
 			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
