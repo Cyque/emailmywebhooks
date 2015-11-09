@@ -16,12 +16,15 @@ exports.handleWebhook = function(req, res) {
 
 	// var emailContent = JSON.stringify(req.headers) + "\n\n\n" + JSON.stringify(req.body) + "\n\n\n" + JSON.stringify(req.query);
 	console.log("COMPILING JADE");
-	var emailContent = jade.renderFile("email_templates/" + webhookObject.info.topic + ".jade", {
+	var jadePath = "email_templates/" + webhookObject.info.topic + ".jade";
+	console.log(jadePath);
+	
+	var emailContent = jade.renderFile(jadePath, {
 		webhook:webhookObject
 	}); // Gets the JADE template file and compiles it
 	console.log(emailContent);
 
-	
+
 	console.log("SENDING EMAIL");
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply',
