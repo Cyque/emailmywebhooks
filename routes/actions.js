@@ -2,6 +2,7 @@ var request = require("request");
 // var cookie = require("./../public/javascripts/cookie.js");
 var fs = require('fs');
 var db = require('../modules/database.js');
+var _ = require('lodash');
 
 
 function read_cookie(k, cookies, r) {
@@ -26,8 +27,7 @@ exports.createWebhook = function(req, res) {
 	var body;
 
 
-	if( topic == "deleteall") {
-
+	if(topic == "deleteall") {
 		request.get(url + "admin/webhooks.json", 
 		{ 
 			auth: {
@@ -60,17 +60,17 @@ exports.createWebhook = function(req, res) {
 		});
 
 		return;
-	} //143357507
-	else if(topic == "customers_create") {
+	}
+	// TAKES var topic in format: "customers_create"
+	else if(topic.indexOf("_") != -1 ) {
 		method = "POST";
 		url += "admin/webhooks.json";
 		body = {
 			"webhook": {
-				"topic": "customers\/create",
+				// "topic": "customers\/create",
+				"topic": topic.replace("_", "\/"),
 				"address": hostBase + "handlewebhook",
-				"format": "json",
-				// "fields" : ["id"],
-				// "metafield_namespaces" : ["id"]
+				"format": "json"
 			}
 		}
 	}
@@ -80,68 +80,191 @@ exports.createWebhook = function(req, res) {
 
 
 	console.log("SENDING WEBHOOK REQUEST");
-	request.post({ 
-		method: method,
-		uri: url,
+
+	//todo: deleteWebhook
+
+	//CREATE THE WEBHOOK
+	createWebhook(body.address, body.topic, function (error, response, body) {
+		var body_create = JSON.parse(body);
+		if (!error && (typeof body_create["errors"] == "undefined")) {
+			//MODIFY THE WEBHOOK ADDRESS
+			modifyWebhookAddress(
+				body_create.webhook.address + "?id=" + body_create.webhook.id, 
+				function (error, response, body) {
+
+					var body_modify = JSON.parse(body);
+					if (!error && (typeof body_modify["errors"] == "undefined")) {
+
+						console.log("CREATED WEBHOOK " + body_create.webhook.id);
+						//CREATE WEBHOOK OBJECT
+						db.saveObject("webhooks/" + body_create.webhook.id, { 
+							info: body_modify.webhook,
+							shop: GLOB_SHOP
+						});
+						res.send('Success adding webhook. </br>' + body);
+					} else {
+						res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body) + "</br> " + error +"</br>" + JSON.stringify(response));
+					}
+				});
+		} else {
+			res.send("Failure adding webhook </br>" + body_create + "</br> " + error +"</br>" + JSON.stringify(response));
+		}
+	});
+};
+
+	// request.post({ 
+	// 	method: method,
+	// 	uri: url,
+	// 	auth: {
+	// 		user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+	// 		pass: "1604e972c082a4a3bb6384c1460f3458"				
+	// 	},
+	// 	headers: {
+	// 		'X-Shopify-Access-Token': shopObject.accessToken,
+	// 		"content-type": "application/json",
+	// 	},
+	// 	body: JSON.stringify(body), //uses json encoding
+	// 	// form:body, //this uses form-url encoding
+	// 	// json:true
+	// },	
+	// function (error, response, body) {
+	// 	var bodyP = JSON.parse(body);
+	// 	if (!error && (typeof bodyP["errors"] == "undefined")) {
+	// 		console.log('Success adding webhook:');
+	// 		console.log(body);
+
+	// 		//ONCE THE WEBHOOK IS ADDED AND AN ID IS ASSIGNED, THE WEBHOOK ADDRESS MUST BE MODIFIED TO INCLUDE THE WEBHOOK ID.
+	// 		request.put({ 
+	// 			method: method,
+	// 			uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
+	// 			auth: {
+	// 				user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+	// 				pass: "1604e972c082a4a3bb6384c1460f3458"
+	// 			},
+	// 			headers: {
+	// 				'X-Shopify-Access-Token': shopObject.accessToken,
+	// 				"content-type": "application/json",
+	// 			},
+	// 			body: JSON.stringify({
+	// 				"webhook": {
+	// 					"address": bodyP.webhook.address + "?id=" + bodyP.webhook.id
+	// 				}
+	// 			})
+	// 		}, function (error, response, body2) {
+	// 			var bodyP2 = JSON.parse(body2);
+	// 			if (!error && (typeof bodyP2["errors"] == "undefined")) {
+
+	// 				console.log("CREATED WEBHOOK " + bodyP.webhook.id);
+	// 				db.saveObject("webhooks/" + bodyP.webhook.id, { 
+	// 					info: bodyP2.webhook,
+	// 					shop: GLOB_SHOP
+	// 				});
+
+	// 				res.send('Success adding webhook. </br>' + body2);
+	// 			} else {
+	// 				res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body2) + "</br> " + error +"</br>" + JSON.stringify(response));
+	// 			}
+	// 		});
+	// 	}
+	// 	else {
+	// 		res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error +"</br>" + JSON.stringify(response));
+	// 	}
+	// });	
+
+
+/*
+Deletes all webhooks with the given topic.
+callback format: function (error, response, body) {}
+is called at the end of all the delete calls. The callback function's paramaters will be that off the last delete call.
+*/
+function deleteWebhook(topic, callback) {
+	topic = topic.replace("_", "\/");
+
+	//Gets a list of all webhooks with the type of the given topic
+	request.get(url + "admin/webhooks.json?topic=" + topic, 
+	{ 
 		auth: {
 			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
 			pass: "1604e972c082a4a3bb6384c1460f3458"				
 		},
 		headers: {
+			'X-Shopify-Access-Token': shopObject.accessToken
+		} 
+	},
+	function (error, response, body) {
+		//response with list of mathing webhooks
+
+		if(error) {
+			callback(error, response, body);
+			return;
+		}
+		var webhooks = JSON.parse(body).webhooks;
+
+		var finished = _.after(webhooks.length, function (error, response, body) {
+			callback(error, response, body);
+		});
+
+		for(var i = 0; i < webhooks.length; i++) {
+			request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json",
+			{ 
+				auth: {
+					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+					pass: "1604e972c082a4a3bb6384c1460f3458"				
+				},
+				headers: {
+					'X-Shopify-Access-Token': shopObject.accessToken
+				}
+			},	
+			function (error, response, body) {
+				//response from deleted webhook
+				finished(error, response, body);
+			});
+		}
+	});
+}
+
+
+function createWebhook(address, topic, callback) {
+	request.post({ 
+		method: method,
+		uri: url,
+		auth: {
+			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+			pass: "1604e972c082a4a3bb6384c1460f3458"
+		},
+		headers: {
 			'X-Shopify-Access-Token': shopObject.accessToken,
 			"content-type": "application/json",
 		},
-		body: JSON.stringify(body), //uses json encoding
-		// form:body, //this uses form-url encoding
-		// json:true
+		body: JSON.stringify({
+			"topic": topic,
+			"address": address,
+			"format": "json"
+		})
 	},	
-	function (error, response, body) {
-		var bodyP = JSON.parse(body);
-		if (!error && (typeof bodyP["errors"] == "undefined")) {
-			console.log('Success adding webhook:');
-			console.log(body);
-
-			//ONCE THE WEBHOOK IS ADDED AND AN ID IS ASSIGNED, THE WEBHOOK ADDRESS MUST BE MODIFIED TO INCLUDE THE WEBHOOK ID.
-			request.put({ 
-				method: method,
-				uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
-				auth: {
-					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-					pass: "1604e972c082a4a3bb6384c1460f3458"
-				},
-				headers: {
-					'X-Shopify-Access-Token': shopObject.accessToken,
-					"content-type": "application/json",
-				},
-				body: JSON.stringify({
-					"webhook": {
-						"address": bodyP.webhook.address + "?id=" + bodyP.webhook.id
-					}
-				})
-			}, function (error, response, body2) {
-				var bodyP2 = JSON.parse(body2);
-				if (!error && (typeof bodyP2["errors"] == "undefined")) {
-
-					console.log("CREATED WEBHOOK " + bodyP.webhook.id);
-					db.saveObject("webhooks/" + bodyP.webhook.id, { 
-						info: bodyP2.webhook,
-						shop: GLOB_SHOP
-					});
-
-					res.send('Success adding webhook. </br>' + body2);
-				} else {
-					res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body2) + "</br> " + error +"</br>" + JSON.stringify(response));
-				}
-			});
-		}
-		else {
-			res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error +"</br>" + JSON.stringify(response));
-		}
-	});	
-};
+	callback);
+}
 
 
-
+function modifyWebhookAddress(address, callback) {
+	request.put({ 
+		method: method,
+		uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
+		auth: {
+			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+			pass: "1604e972c082a4a3bb6384c1460f3458"
+		},
+		headers: {
+			'X-Shopify-Access-Token': shopObject.accessToken,
+			"content-type": "application/json",
+		},
+		body: JSON.stringify({
+			"webhook": {
+				"address": address
+			}
+		})
+	}, callback);
+}
 
 function getShop(shop) {
 	var filePath = "users/" + shop;
