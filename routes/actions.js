@@ -84,12 +84,11 @@ exports.createWebhook = function(req, res) {
 	//todo: deleteWebhook
 
 	//CREATE THE WEBHOOK
-	createWebhook(body.address, body.topic, function (error, response, body) {
+	createWebhook(baseURL, body.address, body.topic, function (error, response, body) {
 		var body2_create = JSON.parse(body);
 		if (!error && (typeof body_create["errors"] == "undefined")) {
 			//MODIFY THE WEBHOOK ADDRESS
-			modifyWebhookAddress(
-				body_create.webhook.address + "?id=" + body_create.webhook.id, 
+			modifyWebhookAddress(baseURL, body_create.webhook.address + "?id=" + body_create.webhook.id, 
 				function (error, response, body) {
 
 					var body_modify = JSON.parse(body);
@@ -177,11 +176,11 @@ Deletes all webhooks with the given topic.
 callback format: function (error, response, body) {}
 is called at the end of all the delete calls. The callback function's paramaters will be that off the last delete call.
 */
-function deleteWebhook(topic, callback) {
+function deleteWebhook(baseURL, topic, callback) {
 	topic = topic.replace("_", "\/");
 
 	//Gets a list of all webhooks with the type of the given topic
-	request.get(url + "admin/webhooks.json?topic=" + topic, 
+	request.get(baseURL + "admin/webhooks.json?topic=" + topic, 
 	{ 
 		auth: {
 			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
@@ -224,10 +223,9 @@ function deleteWebhook(topic, callback) {
 }
 
 
-function createWebhook(address, topic, callback) {
-	request.post({ 
-		// method: "POST",
-		uri: url,
+function createWebhook(baseURL, address, topic, callback) {
+	request.post({
+		uri: baseURL + "admin/webhooks.json",
 		auth: {
 			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
 			pass: "1604e972c082a4a3bb6384c1460f3458"
@@ -246,7 +244,7 @@ function createWebhook(address, topic, callback) {
 }
 
 
-function modifyWebhookAddress(address, callback) {
+function modifyWebhookAddress(baseUrl, address, callback) {
 	request.put({ 
 		// method: "PUT",
 		uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
