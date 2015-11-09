@@ -12,8 +12,8 @@ exports.handleWebhook = function(req, res) {
 	var webhookObject = db.getObject("webhooks/" + req.query.id);
 	var shopObject = db.getObject("users/" + webhookObject.shop);
 
-	console.log("webhookObject: " + webhookObject);
-	console.log("shopObject: " + shopObject);
+	console.log(webhookObject);
+	console.log(shopObject);
 
 
 
