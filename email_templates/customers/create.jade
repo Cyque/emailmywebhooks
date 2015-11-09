@@ -10,9 +10,10 @@ body
 	br
 	div 
 		| A new customer has been created for your shop. Check out your new customer 
-		a(href='https://#{shop.shop}/admin/customers/#{body.id}') #{body.first_name}
-		if body.last_name
-			| #{body.last_name}
+		a(href='https://#{shop.shop}/admin/customers/#{body.id}') 
+			|#{body.first_name}
+			if body.last_name
+				| #{body.last_name}
 		|.
 	br
 	div 
