@@ -16,9 +16,9 @@ exports.getObject = function(filename){
 
 		console.log('Connected to postgres! Getting schemas...');
 
-		client.query("CREATE TABLE COMPANY(filename STRING PRIMARY KEY NOT NULL, DATA STRING NOT NULL);");
+		client.query("CREATE TABLE objects(filename char(100) PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL);");
 
-		
+
 		// client.query('SELECT table_schema,table_name FROM information_schema.tables;').on('row', function(row) {
 		// 	console.log(JSON.stringify(row));
 		// });
