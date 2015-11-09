@@ -1,9 +1,7 @@
 
 var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport({
-
-});
+var transporter = nodemailer.createTransport();
 var db = require('../modules/database.js');
 var jade = require('jade');
 
@@ -12,7 +10,7 @@ exports.handleWebhook = function(req, res) {
 
 	// var webhookInfo = db.getObject("webhooks/" + req.body.id);
 	var webhookObject = db.getObject("webhooks/" + req.query.id);
-	
+
 	console.log(webhookObject.shop);
 	console.log(webhookObject.info);
 
