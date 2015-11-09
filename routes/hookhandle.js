@@ -12,7 +12,7 @@ exports.handleWebhook = function(req, res) {
 
 	// var webhookInfo = db.getObject("webhooks/" + req.body.id);
 	var webhookObject = db.getObject("webhooks/" + req.query.id);
-
+	
 	console.log(webhookObject.shop);
 	console.log(webhookObject.info);
 

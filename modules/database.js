@@ -8,7 +8,10 @@ exports.getObject = function(filename){
 	if(fs.existsSync(exports.dbpath + filename)) {
 		return JSON.parse(fs.readFileSync(exports.dbpath + filename));
 	}
-	else return undefined;	
+	else {
+		console.log("ERROR: FILE " + filename + " NOT FOUND.")
+		return undefined;	
+	}
 }
 
 exports.saveObject = function(filename, object){
