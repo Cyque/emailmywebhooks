@@ -1,7 +1,5 @@
 doctype html
 html
-head
-	div Title here
 body
 	if shop.shopInfo.name
 		div Hello #{shop.shopInfo.name},
@@ -13,7 +11,7 @@ body
 		a(href='https://#{shop.shop}/admin/customers/#{body.id}') 
 			|#{body.first_name}
 			if body.last_name
-				| #{body.last_name}
+				|  #{body.last_name}
 		|.
 	br
 	div 
