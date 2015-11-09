@@ -114,11 +114,11 @@ exports.createWebhook = function(req, res) {
 						});
 						res.send('Success adding webhook. </br>' + body);
 					} else {
-						res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body) + "</br> " + error +"</br>" + JSON.stringify(response));
+						res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
 					}
 				});
 		} else {
-			res.send("Failure adding webhook </br>" + body_create + "</br> " + error +"</br>" + JSON.stringify(response));
+			res.send("Failure adding webhook </br>" +  JSON.stringify(body_create) + "</br> " + error +"</br>" + JSON.stringify(response));
 		}
 	});
 };
