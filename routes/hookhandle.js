@@ -8,12 +8,10 @@ exports.handleWebhook = function(req, res) {
 	console.log("RECIEVED A WEBHOOK CALL!!");
 
 	// var webhookInfo = db.getObject("webhooks/" + req.body.id);
-	var webhook = db.getObject("webhooks/" + req.query.id);
-	
-	console.log(req.body.id);
-	console.log(webhookInfo);
+	var webhookObject = db.getObject("webhooks/" + req.query.id);
 
-
+	console.log(webhookObject.shop);
+	console.log(webhookObject.info);
 
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply',

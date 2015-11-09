@@ -102,7 +102,6 @@ exports.createWebhook = function(req, res) {
 			console.log(body);
 
 			//ONCE THE WEBHOOK IS ADDED AND AN ID IS ASSIGNED, THE WEBHOOK ADDRESS MUST BE MODIFIED TO INCLUDE THE WEBHOOK ID.
-
 			request.put({ 
 				method: method,
 				uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
@@ -123,7 +122,10 @@ exports.createWebhook = function(req, res) {
 				var bodyP2 = JSON.parse(body2);
 				if (!error && (typeof bodyP2["errors"] == "undefined")) {
 
-					db.saveObject("webhooks/" + bodyP2.id, bodyP2.webhook);
+					db.saveObject("webhooks/" + bodyP2.id, { 
+						info: bodyP2.webhook,
+						shop: GLOB_SHOP
+					});
 
 					res.send('Success adding webhook. </br>' + body2);
 				} else {
