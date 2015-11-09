@@ -97,7 +97,7 @@ exports.createWebhook = function(req, res) {
 
 	//CREATE THE WEBHOOK
 	createWebhook(callprops, body.address, body.topic, function (error, response, body) {
-		var body2_create = JSON.parse(body);
+		var body_create = JSON.parse(body);
 		if (!error && (typeof body_create["errors"] == "undefined")) {
 			//MODIFY THE WEBHOOK ADDRESS
 			modifyWebhookAddress(callprops, body_create.webhook.address + "?id=" + body_create.webhook.id, 
