@@ -27,12 +27,14 @@ exports.handleWebhook = function(req, res) {
 		body:req.body
 	}); // Gets the JADE template file and compiles it
 
+	var emailTo = 'damian.polan@gmail.com';
+
 
 	console.log("SENDING EMAIL");
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply',
-		to: 'damian.polan@gmail.com',
-		subject: 'WEBHOOK',
+		to: emailTo,
+		// subject: 'WEBHOOK',
 		// text: emailContent
 		html:emailContent
 	},  
@@ -46,6 +48,9 @@ exports.handleWebhook = function(req, res) {
 }
 
 /*
+
+OUTPUT FOR:
+req.body:
 {  
    "id":1875641155,
    "email":null,

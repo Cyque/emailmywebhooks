@@ -1,5 +1,7 @@
 doctype html
 html
+head
+	div Title here
 body
 	if shop.shopInfo.name
 		div Hello #{shop.shopInfo.name},
@@ -7,8 +9,9 @@ body
 		div Hello Shop Manager,
 	br
 	div 
-		| A new customer has been created for your shop. Check out your new customer 
-		| a(href='https://#{shop.shop}/admin/customers/#{body.id}' here
+		| A new customer, #{body.first_name} #{body.last_name}, 
+		| has been created for your shop. Check out your new customer 
+		a(href='https://#{shop.shop}/admin/customers/#{body.id}' here
 		| .
 	br
 	div 
