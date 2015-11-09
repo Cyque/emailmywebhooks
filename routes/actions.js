@@ -26,7 +26,7 @@ exports.createWebhook = function(req, res) {
 	// console.log("GLOB_SHOP:  " + GLOB_SHOP);
 	var body;
 
-	var callProperties = {
+	var callprops = {
 		auth: {
 			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
 			pass: "1604e972c082a4a3bb6384c1460f3458"
@@ -96,11 +96,11 @@ exports.createWebhook = function(req, res) {
 	//todo: deleteWebhook
 
 	//CREATE THE WEBHOOK
-	createWebhook(callProperties, body.address, body.topic, function (error, response, body) {
+	createWebhook(callprops, body.address, body.topic, function (error, response, body) {
 		var body2_create = JSON.parse(body);
 		if (!error && (typeof body_create["errors"] == "undefined")) {
 			//MODIFY THE WEBHOOK ADDRESS
-			modifyWebhookAddress(callProperties, body_create.webhook.address + "?id=" + body_create.webhook.id, 
+			modifyWebhookAddress(callprops, body_create.webhook.address + "?id=" + body_create.webhook.id, 
 				function (error, response, body) {
 
 					var body_modify = JSON.parse(body);
@@ -192,7 +192,7 @@ function deleteWebhook(callprops, topic, callback) {
 	topic = topic.replace("_", "\/");
 
 	//Gets a list of all webhooks with the type of the given topic
-	request.get(callprops.baseURL + "admin/webhooks.json?topic=" + topic, 
+	request.get(callprops.baseUrl + "admin/webhooks.json?topic=" + topic, 
 	{ 
 		auth: callprops.auth,
 		headers: callprops.headers
@@ -227,7 +227,7 @@ function deleteWebhook(callprops, topic, callback) {
 
 function createWebhook(callprops, address, topic, callback) {
 	request.post({
-		uri: callprops.baseURL + "admin/webhooks.json",
+		uri: callprops.baseUrl + "admin/webhooks.json",
 		auth: callprops.auth,
 		headers: callprops.headers,
 		body: JSON.stringify({
