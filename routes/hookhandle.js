@@ -14,16 +14,19 @@ exports.handleWebhook = function(req, res) {
 	console.log(webhookObject.shop);
 	console.log(webhookObject.info);
 
+	// var emailContent = JSON.stringify(req.headers) + "\n\n\n" + JSON.stringify(req.body) + "\n\n\n" + JSON.stringify(req.query);
+	console.log("COMPILING JADE");
+	var emailContent = jade.renderFile("email_templates/" + webhookObject.info.topic + ".jade", {
+		webhook:webhookObject
+	}); // Gets the JADE template file and compiles it
 
-
-
-
-
+	console.log("SENDING EMAIL");
 	transporter.sendMail({
 		from: 'emailmywebhooks@noreply',
 		to: 'damian.polan@gmail.com',
 		subject: 'WEBHOOK',
-		text: JSON.stringify(req.headers) + "\n\n\n" + JSON.stringify(req.body) + "\n\n\n" + JSON.stringify(req.query)
+		// text: emailContent
+		html:emailContent
 	},  
 	function(error, info) {
 		if(error){
