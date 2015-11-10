@@ -218,7 +218,7 @@ function deleteWebhook(callprops, topic, callback) {
 		});
 
 		for(var i = 0; i < webhooks.length; i++) {
-			request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json",
+			request.del(callprops.baseUrl + "/admin/webhooks/" + webhooks[i].id + ".json",
 			{ 
 				auth: callprops.auth,
 				headers: callprops.headers
