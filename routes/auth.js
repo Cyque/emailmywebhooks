@@ -18,7 +18,7 @@ exports.permission = function(req, res) {
 
 	var host = req.headers.host;
 	console.log(host);
-	if(host == undefined) {
+	if(host == undefined) { 
 		host = "emailmywebhooks.herokuapp.com"
 	}
 
