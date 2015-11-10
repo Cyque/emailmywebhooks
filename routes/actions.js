@@ -84,39 +84,50 @@ exports.createWebhook = function(req, res) {
 	}
 	else {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
+		return;
 	} 
 
 
 	console.log("SENDING WEBHOOK REQUEST");
 
-	//todo: deleteWebhook
+	//DELETE WEBHOOK
+	deleteWebhook(callprops, body.topic, function (error, response, body) {
+		var body_delete= JSON.parse(body);
+		if (!error && (typeof body_delete["errors"] == "undefined")) {
+			//CREATE THE WEBHOOK
+			createWebhook(callprops, body.address, body.topic, function (error, response, body) {
+				var body_create = JSON.parse(body);
+				if (!error && (typeof body_create["errors"] == "undefined")) {
+					//MODIFY THE WEBHOOK ADDRESS
+					modifyWebhookAddress(callprops, body_create.webhook.id, body_create.webhook.address + "?id=" + body_create.webhook.id, 
+						function (error, response, body) {
 
-	//CREATE THE WEBHOOK
-	createWebhook(callprops, body.address, body.topic, function (error, response, body) {
-		var body_create = JSON.parse(body);
-		if (!error && (typeof body_create["errors"] == "undefined")) {
-			//MODIFY THE WEBHOOK ADDRESS
-			modifyWebhookAddress(callprops, body_create.webhook.id, body_create.webhook.address + "?id=" + body_create.webhook.id, 
-				function (error, response, body) {
+							var body_modify = JSON.parse(body);
+							if (!error && (typeof body_modify["errors"] == "undefined")) {
 
-					var body_modify = JSON.parse(body);
-					if (!error && (typeof body_modify["errors"] == "undefined")) {
-
-						console.log("CREATED WEBHOOK " + body_create.webhook.id);
-						//CREATE WEBHOOK OBJECT
-						db.saveObject("webhooks/" + body_create.webhook.id, { 
-							info: body_modify.webhook,
-							shop: GLOB_SHOP
+								console.log("CREATED WEBHOOK " + body_create.webhook.id);
+								//CREATE WEBHOOK OBJECT
+								db.saveObject("webhooks/" + body_create.webhook.id, { 
+									info: body_modify.webhook,
+									shop: GLOB_SHOP
+								});
+								res.send('Success adding webhook. </br>' + body);
+							} else {
+								res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
+							}
 						});
-						res.send('Success adding webhook. </br>' + body);
-					} else {
-						res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
-					}
-				});
-		} else {
-			res.send("Failure adding webhook </br>" +  JSON.stringify(body_create) + "</br> " + error +"</br>" + JSON.stringify(response));
-		}
-	});
+				} else {
+					res.send("Failure adding webhook </br>" +  JSON.stringify(body_create) + "</br> " + error +"</br>" + JSON.stringify(response));
+				}
+			});
+}
+else {
+	res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
+}
+});
+
+
+
 };
 
 	// request.post({ 
@@ -237,7 +248,7 @@ function createWebhook(callprops, address, topic, callback) {
 			}
 		})
 	},	
-	callback);
+	callback); 
 }
 
 
