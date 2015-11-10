@@ -140,7 +140,7 @@ function deleteWebhook(callprops, topic, callback) {
 	console.log("TOPIC: " + topic);
 
 	//Gets a list of all webhooks with the type of the given topic
-	request.get(callprops.baseUrl + "admin/webhooks.json?topic=" + topic, 
+	request.get(callprops.baseUrl + "admin/webhooks.json?topic=" + encodeURIComponent(topic), 
 	{ 
 		auth: callprops.auth,
 		headers: callprops.headers
