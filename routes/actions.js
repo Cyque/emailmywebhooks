@@ -93,6 +93,10 @@ exports.createWebhook = function(req, res) {
 	//DELETE WEBHOOK
 	deleteWebhook(callprops, body.topic, function (error, response, body) {
 		var body_delete= JSON.parse(body);
+
+
+		res.send(JSON.stringify(body_delete) + "</br> " + error +"</br>" + JSON.stringify(response));
+		return;
 		if (!error && (typeof body_delete["errors"] == "undefined")) {
 			//CREATE THE WEBHOOK
 			createWebhook(callprops, body.address, body.topic, function (error, response, body) {
@@ -121,7 +125,7 @@ exports.createWebhook = function(req, res) {
 			});
 			//
 		} else {
-			res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
+			res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_delete) + "</br> " + error +"</br>" + JSON.stringify(response));
 		}
 	});
 };
