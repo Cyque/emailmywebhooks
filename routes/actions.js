@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 
 function read_cookie(k, cookies, r) {
-	return ( r = RegExp('(^|; )' + encodeURIComponent(k) + '=([^;]*)').exec(cookies))?r[2]:null;
+	return (r = RegExp('(^|; )' + encodeURIComponent(k) + '=([^;]*)').exec(cookies)) ? r[2] : null;
 }
 
 exports.createWebhook = function(req, res) {
@@ -39,91 +39,90 @@ exports.createWebhook = function(req, res) {
 	}
 
 
-	if(topic == "deleteall") {
-		request.get(url + "admin/webhooks.json", 
-		{ 
-			auth: {
-				user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-				pass: "1604e972c082a4a3bb6384c1460f3458"				
+	if (topic == "deleteall") {
+		request.get(url + "admin/webhooks.json", {
+				auth: {
+					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+					pass: "1604e972c082a4a3bb6384c1460f3458"
+				},
+				headers: {
+					'X-Shopify-Access-Token': shopObject.accessToken
+				}
 			},
-			headers: {
-				'X-Shopify-Access-Token': shopObject.accessToken
-			} 
-		},
-		function(error, response, body) {
-			var webhooks = JSON.parse(body).webhooks;
-			var sdasd = "";
-			for(var i = 0; i < webhooks.length; i++) {
-				
-				request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json",
-				{ 
-					auth: {
-						user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-						pass: "1604e972c082a4a3bb6384c1460f3458"				
-					},
-					headers: {
-						'X-Shopify-Access-Token': shopObject.accessToken
-					}
-				},	
-				function (error, response, body) {			
-				});
-			}
-			res.send(body);	
-		});
+			function(error, response, body) {
+				var webhooks = JSON.parse(body).webhooks;
+				var sdasd = "";
+				for (var i = 0; i < webhooks.length; i++) {
+
+					request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json", {
+							auth: {
+								user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
+								pass: "1604e972c082a4a3bb6384c1460f3458"
+							},
+							headers: {
+								'X-Shopify-Access-Token': shopObject.accessToken
+							}
+						},
+						function(error, response, body) {});
+				}
+				res.send(body);
+			});
 
 		return;
 	}
 	// TAKES var topic in format: "customers_create"
-	else if(topic.indexOf("_") != -1 ) {
+	else if (topic.indexOf("_") != -1) {
+
 		method = "POST";
 		url += "admin/webhooks.json";
-		body = {
-			"topic": topic.replace("_", "\/"),
-			"address": hostBase + "handlewebhook"
-		}
-	}
-	else {
+		var topic = topic.replace("_", "\/");
+		var hookAddress = hostBase + "handlewebhook";
+
+		console.log("SENDING WEBHOOK REQUEST");
+		//DELETE WEBHOOK
+		deleteWebhook(callprops, topic, function(error, response, body) {
+			var body_delete = JSON.parse(body);
+			if (!error && (typeof body_delete["errors"] == "undefined")) {
+
+				//CREATE THE WEBHOOK
+				createWebhook(callprops, hookAddress, topic, function(error, response, body) {
+					var body_create = JSON.parse(body);
+					if (!error && (typeof body_create["errors"] == "undefined")) {
+
+						//MODIFY THE WEBHOOK ADDRESS
+						modifyWebhookAddress(callprops, body_create.webhook.id, body_create.webhook.address + "?id=" + body_create.webhook.id,
+							function(error, response, body) {
+
+								var body_modify = JSON.parse(body);
+								if (!error && (typeof body_modify["errors"] == "undefined")) {
+									console.log("CREATED WEBHOOK " + body_create.webhook.id);
+
+									//CREATE WEBHOOK OBJECT
+									db.saveObject("webhooks/" + body_create.webhook.id, {
+										info: body_modify.webhook,
+										shop: GLOB_SHOP
+									});
+
+									res.send('Success adding webhook. </br>' + body);
+								} else {
+									res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error + "</br>" + JSON.stringify(response));
+								}
+							});
+					} else {
+						res.send("Failure adding webhook </br>" + JSON.stringify(body_create) + "</br> " + error + "</br>" + JSON.stringify(response));
+					}
+				});
+			} else {
+				res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_delete) + "</br> " + error + "</br>" + JSON.stringify(response));
+			}
+		});
+	} else {
 		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
 		return;
-	} 
+	}
 
 
-	console.log("SENDING WEBHOOK REQUEST");
 
-	//DELETE WEBHOOK
-	deleteWebhook(callprops, body.topic, function (error, response, body) {
-		var body_delete= JSON.parse(body);
-		if (!error && (typeof body_delete["errors"] == "undefined")) {
-			//CREATE THE WEBHOOK
-			createWebhook(callprops, body.address, body.topic, function (error, response, body) {
-				var body_create = JSON.parse(body);
-				if (!error && (typeof body_create["errors"] == "undefined")) {
-					//MODIFY THE WEBHOOK ADDRESS
-					modifyWebhookAddress(callprops, body_create.webhook.id, body_create.webhook.address + "?id=" + body_create.webhook.id, 
-						function (error, response, body) {
-
-							var body_modify = JSON.parse(body);
-							if (!error && (typeof body_modify["errors"] == "undefined")) {
-								console.log("CREATED WEBHOOK " + body_create.webhook.id);
-								//CREATE WEBHOOK OBJECT
-								db.saveObject("webhooks/" + body_create.webhook.id, { 
-									info: body_modify.webhook,
-									shop: GLOB_SHOP
-								});
-								res.send('Success adding webhook. </br>' + body);
-							} else {
-								res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
-							}
-						});
-				} else {
-					res.send("Failure adding webhook </br>" +  JSON.stringify(body_create) + "</br> " + error +"</br>" + JSON.stringify(response));
-				}
-			});
-			//
-		} else {
-			res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_delete) + "</br> " + error +"</br>" + JSON.stringify(response));
-		}
-	});
 };
 
 /*
@@ -136,64 +135,61 @@ function deleteWebhook(callprops, topic, callback) {
 	console.log("TOPIC: " + topic);
 
 	//Gets a list of all webhooks with the type of the given topic
-	request.get(callprops.baseUrl + "admin/webhooks.json?topic=" + encodeURIComponent(topic), 
-	{
-		auth: callprops.auth,
-		headers: callprops.headers
-	},
-	function (error, response, body) {
-		//response with list of mathing webhooks
-		if(error) {
-			console.log(error);
-			console.log(body);
-			callback(error, response, body);
-			return;
-		}
-		var webhooks = JSON.parse(body).webhooks;
-
-		if(webhooks.length  > 0) {
-			var finished = _.after(webhooks.length, function (error, response, body) {
+	request.get(callprops.baseUrl + "admin/webhooks.json?topic=" + encodeURIComponent(topic), {
+			auth: callprops.auth,
+			headers: callprops.headers
+		},
+		function(error, response, body) {
+			//response with list of mathing webhooks
+			if (error) {
+				console.log(error);
+				console.log(body);
 				callback(error, response, body);
-			});
-
-			for(var i = 0; i < webhooks.length; i++) {
-				request.del(callprops.baseUrl + "/admin/webhooks/" + webhooks[i].id + ".json",
-				{ 
-					auth: callprops.auth,
-					headers: callprops.headers
-				},	
-				function (error, response, body) {
-				//response from deleted webhook
-				finished(error, response, body);
-			});
+				return;
 			}
-		}
-		else {
-			callback(error, response, body);
-		}
-	});
+			var webhooks = JSON.parse(body).webhooks;
+
+			if (webhooks.length > 0) {
+				var finished = _.after(webhooks.length, function(error, response, body) {
+					callback(error, response, body);
+				});
+
+				for (var i = 0; i < webhooks.length; i++) {
+					request.del(callprops.baseUrl + "/admin/webhooks/" + webhooks[i].id + ".json", {
+							auth: callprops.auth,
+							headers: callprops.headers
+						},
+						function(error, response, body) {
+							//response from deleted webhook
+							finished(error, response, body);
+						});
+				}
+			} else {
+				callback(error, response, body);
+			}
+		});
 }
 
 
 function createWebhook(callprops, address, topic, callback) {
 	request.post({
-		uri: callprops.baseUrl + "admin/webhooks.json",
-		auth: callprops.auth,
-		headers: callprops.headers,
-		body: JSON.stringify({
-			"webhook": {
-				"topic": topic,
-				"address": address,
-				"format": "json" 
-			}
-		})
-	},	
-	callback); 
+			uri: callprops.baseUrl + "admin/webhooks.json",
+			auth: callprops.auth,
+			headers: callprops.headers,
+			body: JSON.stringify({
+				"webhook": {
+					"topic": topic,
+					"address": address,
+					"format": "json"
+				}
+			})
+		},
+		callback);
 }
 
 
 function modifyWebhookAddress(callprops, webhook_id, address, callback) {
-	request.put({ 
+	request.put({
 		// method: "PUT",
 		uri: callprops.baseUrl + "admin/webhooks/" + webhook_id + ".json",
 		auth: callprops.auth,
