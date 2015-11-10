@@ -161,6 +161,7 @@ function deleteWebhook(callprops, topic, callback) {
 
 
 		for(var i = 0; i < webhooks.length; i++) {
+			console.log(webhooks[i]);
 			request.del(callprops.baseUrl + "/admin/webhooks/" + webhooks[i].id + ".json",
 			{ 
 				auth: callprops.auth,
