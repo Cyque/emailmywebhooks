@@ -147,7 +147,6 @@ function deleteWebhook(callprops, topic, callback) {
 	},
 	function (error, response, body) {
 		//response with list of mathing webhooks
-		console.log("DELETE RESPONSE");
 		if(error) {
 			console.log(error);
 			console.log(body);
@@ -156,25 +155,25 @@ function deleteWebhook(callprops, topic, callback) {
 		}
 		var webhooks = JSON.parse(body).webhooks;
 
-		var finished = _.after(webhooks.length, function (error, response, body) {
-			console.log("FINSIHED callback");
-			callback(error, response, body);
-		});
+		if(webhooks.length  > 0) {
+			var finished = _.after(webhooks.length, function (error, response, body) {
+				callback(error, response, body);
+			});
 
-
-		for(var i = 0; i < webhooks.length; i++) {
-			console.log(webhooks[i]);
-			request.del(callprops.baseUrl + "/admin/webhooks/" + webhooks[i].id + ".json",
-			{ 
-				auth: callprops.auth,
-				headers: callprops.headers
-			},	
-			function (error, response, body) {
+			for(var i = 0; i < webhooks.length; i++) {
+				request.del(callprops.baseUrl + "/admin/webhooks/" + webhooks[i].id + ".json",
+				{ 
+					auth: callprops.auth,
+					headers: callprops.headers
+				},	
+				function (error, response, body) {
 				//response from deleted webhook
-				console.log(error);
-				console.log(body);
 				finished(error, response, body);
 			});
+			}
+		}
+		else {
+			callback(error, response, body);
 		}
 	});
 }
