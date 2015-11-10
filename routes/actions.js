@@ -149,6 +149,7 @@ function deleteWebhook(callprops, topic, callback) {
 		//response with list of mathing webhooks
 		console.log("DELETE RESPONSE");
 		if(error) {
+			console.log(error);
 			callback(error, response, body);
 			return;
 		}
