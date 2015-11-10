@@ -8,6 +8,7 @@ exports.confirm = function(req, res) {
 
 	var preprocString = "shop=" + shop + "&timestamp=" + timestamp;
 
+	console.log(req.query);
 	console.log("Access Token: " + accessToken);
 	console.log("timestamp: " + accessToken);
 	var calcedHmac = crypto.createHmac("sha256", accessToken).digest("hex");
