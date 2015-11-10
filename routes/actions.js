@@ -9,6 +9,13 @@ function read_cookie(k, cookies, r) {
 	return (r = RegExp('(^|; )' + encodeURIComponent(k) + '=([^;]*)').exec(cookies)) ? r[2] : null;
 }
 
+
+exports.setEmail = function(req, res) {
+	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
+	var shopObject = getShop(GLOB_SHOP);
+	
+}
+
 exports.createWebhook = function(req, res) {
 
 	// COOKIES
@@ -16,6 +23,12 @@ exports.createWebhook = function(req, res) {
 	// req.headers.cookie.GLOB_SHOP
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
 	var shopObject = getShop(GLOB_SHOP);
+
+	if(shopObject == undefined) {
+		//COOKIE was not set so redirect to authorize
+		res.redirect(req.get('referer'));
+		return;
+	}
 
 	var hostBase = "https://emailmywebhooks.herokuapp.com/";
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
@@ -41,13 +54,8 @@ exports.createWebhook = function(req, res) {
 
 	if (topic == "deleteall") {
 		request.get(url + "admin/webhooks.json", {
-				auth: {
-					user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-					pass: "1604e972c082a4a3bb6384c1460f3458"
-				},
-				headers: {
-					'X-Shopify-Access-Token': shopObject.accessToken
-				}
+				auth: callprops.auth,
+				headers: callprops.headers
 			},
 			function(error, response, body) {
 				var webhooks = JSON.parse(body).webhooks;

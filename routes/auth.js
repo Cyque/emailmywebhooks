@@ -17,7 +17,7 @@ exports.permission = function(req, res) {
 	// http://localhost:3000/auth/permission?shop=damianpolan.myshopify.com
 
 	var host = req.headers.host;
-	console.log(host);
+	// console.log(host);
 	if(host == undefined) { 
 		host = "emailmywebhooks.herokuapp.com"
 	}
@@ -27,7 +27,6 @@ exports.permission = function(req, res) {
 	var redirect_uri = encodeURIComponent("https://" + host + "/auth/confirm");
 	var scope = "read_customers,read_products,read_orders,read_content,read_themes,read_script_tags,read_fulfillments";
 	var state = encodeURIComponent(registerTokenFor(shop));
-
 	var getPermissionURL = "https://" + shop + "/admin/oauth/authorize?client_id=" +  api_key + "&scope=" + scope + "&redirect_uri=" + redirect_uri + "&state=" + state;
 
 	res.redirect(getPermissionURL);

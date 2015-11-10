@@ -9,14 +9,23 @@
 
 </head>
 <body>
+	<form method="POST" action="action/setemail">
+		<input type="text" name="topic" value="damian.polan@gmail.com" /> 
+		<input type="submit" value="Change Target Email">
+	</form>
+
 	<form method="GET" action="action/createhook">
 		<input type="hidden" name="topic" value="customers_create" /> 
-		 <input type="submit" value="customers_create">
+		<input type="submit" value="customers_create">
 	</form>
 
 	<form method="GET" action="action/createhook">
 		<input type="hidden" name="topic" value="carts_create" /> 
-		 <input type="submit" value="carts_create">
+		<input type="submit" value="carts_create">
+	</form>
+	<form method="GET" action="action/createhook">
+		<input type="hidden" name="topic" value="order_create" /> 
+		<input type="submit" value="order_create">
 	</form>
 
 
