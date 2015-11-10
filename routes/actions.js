@@ -104,7 +104,6 @@ exports.createWebhook = function(req, res) {
 
 							var body_modify = JSON.parse(body);
 							if (!error && (typeof body_modify["errors"] == "undefined")) {
-
 								console.log("CREATED WEBHOOK " + body_create.webhook.id);
 								//CREATE WEBHOOK OBJECT
 								db.saveObject("webhooks/" + body_create.webhook.id, { 
@@ -120,75 +119,12 @@ exports.createWebhook = function(req, res) {
 					res.send("Failure adding webhook </br>" +  JSON.stringify(body_create) + "</br> " + error +"</br>" + JSON.stringify(response));
 				}
 			});
-}
-else {
-	res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
-}
-});
-
-
-
+			//
+		} else {
+			res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error +"</br>" + JSON.stringify(response));
+		}
+	});
 };
-
-	// request.post({ 
-	// 	method: method,
-	// 	uri: url,
-	// 	auth: {
-	// 		user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-	// 		pass: "1604e972c082a4a3bb6384c1460f3458"				
-	// 	},
-	// 	headers: {
-	// 		'X-Shopify-Access-Token': shopObject.accessToken,
-	// 		"content-type": "application/json",
-	// 	},
-	// 	body: JSON.stringify(body), //uses json encoding
-	// 	// form:body, //this uses form-url encoding
-	// 	// json:true
-	// },	
-	// function (error, response, body) {
-	// 	var bodyP = JSON.parse(body);
-	// 	if (!error && (typeof bodyP["errors"] == "undefined")) {
-	// 		console.log('Success adding webhook:');
-	// 		console.log(body);
-
-	// 		//ONCE THE WEBHOOK IS ADDED AND AN ID IS ASSIGNED, THE WEBHOOK ADDRESS MUST BE MODIFIED TO INCLUDE THE WEBHOOK ID.
-	// 		request.put({ 
-	// 			method: method,
-	// 			uri: baseUrl + "admin/webhooks/" + bodyP.webhook.id + ".json",
-	// 			auth: {
-	// 				user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-	// 				pass: "1604e972c082a4a3bb6384c1460f3458"
-	// 			},
-	// 			headers: {
-	// 				'X-Shopify-Access-Token': shopObject.accessToken,
-	// 				"content-type": "application/json",
-	// 			},
-	// 			body: JSON.stringify({
-	// 				"webhook": {
-	// 					"address": bodyP.webhook.address + "?id=" + bodyP.webhook.id
-	// 				}
-	// 			})
-	// 		}, function (error, response, body2) {
-	// 			var bodyP2 = JSON.parse(body2);
-	// 			if (!error && (typeof bodyP2["errors"] == "undefined")) {
-
-	// 				console.log("CREATED WEBHOOK " + bodyP.webhook.id);
-	// 				db.saveObject("webhooks/" + bodyP.webhook.id, { 
-	// 					info: bodyP2.webhook,
-	// 					shop: GLOB_SHOP
-	// 				});
-
-	// 				res.send('Success adding webhook. </br>' + body2);
-	// 			} else {
-	// 				res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body2) + "</br> " + error +"</br>" + JSON.stringify(response));
-	// 			}
-	// 		});
-	// 	}
-	// 	else {
-	// 		res.send("Failure adding webhook </br>" + JSON.stringify(body) + "</br> " + error +"</br>" + JSON.stringify(response));
-	// 	}
-	// });	
-
 
 /*
 Deletes all webhooks with the given topic.
@@ -197,6 +133,7 @@ is called at the end of all the delete calls. The callback function's paramaters
 */
 function deleteWebhook(callprops, topic, callback) {
 	topic = topic.replace("_", "\/");
+	console.log("TOPIC: " + topic);
 
 	//Gets a list of all webhooks with the type of the given topic
 	request.get(callprops.baseUrl + "admin/webhooks.json?topic=" + topic, 
@@ -233,9 +170,6 @@ function deleteWebhook(callprops, topic, callback) {
 
 
 function createWebhook(callprops, address, topic, callback) {
-	console.log(callprops)
-	console.log(address)
-	console.log(topic)
 	request.post({
 		uri: callprops.baseUrl + "admin/webhooks.json",
 		auth: callprops.auth,
