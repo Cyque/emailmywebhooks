@@ -36,7 +36,6 @@ exports.createWebhook = function(req, res) {
 	var method;
 	var baseUrl = "https://" + GLOB_SHOP + "/"
 	var url = baseUrl;
-	// console.log("GLOB_SHOP:  " + GLOB_SHOP);
 	var body;
 
 	var callprops = {

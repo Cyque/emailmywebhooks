@@ -7,6 +7,7 @@ var fs = require('fs');
 var crypto = require('crypto');
 var request = require('request');
 var db = require('../modules/database.js')
+var oauth = require('../modules/oauth.js')
 
 exports.permission = function(req, res) {
 
@@ -56,7 +57,7 @@ exports.confirm = function(req, res) {
 
 	//CHECK AUTH CONFIRMS HERE
 	//check shop, state, and confirm OAUTH hmac
-
+	oauth.confirm(req, res);
 
 	var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
