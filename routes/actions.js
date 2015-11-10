@@ -150,6 +150,7 @@ function deleteWebhook(callprops, topic, callback) {
 		console.log("DELETE RESPONSE");
 		if(error) {
 			console.log(error);
+			console.log(body);
 			callback(error, response, body);
 			return;
 		}
