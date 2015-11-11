@@ -29,7 +29,7 @@ exports.confirm = function(query) {
 
 	// var calcedHmac = crypto.createHash("sha256").update(new Buffer(secret)).digest("hex");
 
-	var calcedHmac = crypto.createHmac("SHA256", secret).update(new Buffer(query, 'utf8')).digest('base64');
+	var calcedHmac = crypto.createHmac("SHA256", secret).update(new Buffer(preprocString, 'utf8')).digest('base64');
 	var givenHmac = query.hmac;
 
 	console.log("Given HMAC      " + givenHmac);
