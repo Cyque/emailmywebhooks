@@ -10,12 +10,12 @@ function read_cookie(k, cookies, r) {
 }
 
 
-exports.setEmail = function(req, res) {
+exports.setDefaultEmail = function(req, res) {
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
 	var shopObject = getShop(GLOB_SHOP);
 	if(shopObject != undefined){
 		shopObject.defaultEmail = req.body.email;
-		res.send("Email changed to " _ shopObject.defaultEmail);
+		res.send("Email changed to " + shopObject.defaultEmail);
 	}
 	else {
 		res.status(503).send('Email not set. Could not find shop.');
@@ -112,8 +112,8 @@ exports.createWebhook = function(req, res) {
 									db.saveObject("webhooks/" + body_create.webhook.id, {
 										info: body_modify.webhook,
 										shop: GLOB_SHOP,
-										email: specificEmail
-									});
+										email: specificEmail //CAN be undefined (defaultEmail will be used instead in the hookhandler)
+									}); 
 
 									res.send('Success adding webhook. </br>' + body);
 								} else {

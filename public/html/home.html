@@ -9,13 +9,14 @@
 
 </head>
 <body>
-	<form method="POST" action="action/setemail">
+	<form method="POST" action="action/setdefaultemail">
 		<input type="text" name="email" value="damian.polan@gmail.com" /> 
 		<input type="submit" value="Change Target Email">
 	</form>
 
 	<form method="GET" action="action/createhook">
 		<input type="hidden" name="topic" value="customers_create" /> 
+		<input type="hidden" name="specificemail" value="damianpolan@gmail.com" /> 
 		<input type="submit" value="customers_create">
 	</form>
 
