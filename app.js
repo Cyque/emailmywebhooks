@@ -27,8 +27,7 @@ app.get('/auth/permission', routes.auth.permission);
 app.get('/auth/confirm', routes.auth.confirm);
 app.get('/home', routes.pages.home);
 app.get('/action/createhook', routes.actions.createWebhook);
-app.get('/action/setemail', routes.actions.setEmail);
-
+app.post('/action/setemail', routes.actions.setEmail);
 app.post('/handlewebhook', routes.hookhandle.handleWebhook);
 
 

@@ -14,7 +14,8 @@ exports.setEmail = function(req, res) {
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
 	var shopObject = getShop(GLOB_SHOP);
 	
-
+	console.log(req.query);
+	console.log(req.body);
 
 	res.send("Email not changed.");
 }
