@@ -45,6 +45,7 @@ exports.confirm = function(query) {
 
 
 function encodeParamsForSignature(object) {
+	// var list = ["protocol=https://"];
 	var list = ["protocol=https://"];
 	for (var property in object) {
 		if (object.hasOwnProperty(property)) {
