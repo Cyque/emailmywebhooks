@@ -13,7 +13,7 @@ function isValidShop(query) {
 
 	//validate shop name. Must end with myshopify.com and must not contain characters other than letters (a-z), numbers (0-9), dots, and hyphens. 
 	var suffix = "myshopify.com";
-	if (shop.indexOf(suffix, str.length - suffix.length) != -1 && shop.indexOf("([^0-9a-z\.\-])+") == -1) {
+	if (shop.indexOf(suffix, shop.length - suffix.length) != -1 && shop.indexOf("([^0-9a-z\.\-])+") == -1) {
 
 		var shopObject = db.getObject("users/" + shop);
 		if (shopObject == undefined)
