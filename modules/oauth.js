@@ -27,9 +27,10 @@ exports.confirm = function(req, res) {
 
 	if (givenHmac != calcedHmac) {
 		console.log("FAILED Authentication");
-		console.log("Given HMAC" + givenHmac);
-		console.log("Calculated HMAC" + givenHmac);
+		console.log("Given HMAC      " + givenHmac);
+		console.log("Calculated HMAC " + givenHmac);
 		res.send("Failed Authentication.");
+		return false;
 	}
-
+	return true;
 }
