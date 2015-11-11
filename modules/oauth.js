@@ -13,9 +13,9 @@ exports.confirm = function(req, res) {
 		accessToken = db.getObject("users/" + shop).accessToken;
 	
 
-	var preprocString = "shop=" + shop+ "&state=" + req.query.state + "&timestamp=" + timestamp;
-	if(req.query.code != undefined) 
-		preprocString = "code=" + req.query.code + "&" + preprocString;
+	var preprocString = "shop=" + shop + "&timestamp=" + timestamp;
+	// if(req.query.code != undefined) 
+		// preprocString = "code=" + req.query.code + "&" + preprocString;
 
 	// preprocString = preprocString.replace("&", "%26");
 	// preprocString = preprocString.replace("%", "%25");
