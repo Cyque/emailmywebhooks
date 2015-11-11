@@ -9,7 +9,7 @@ exports.confirm = function(query) {
 
 function isValidShop(query) {
 	var shop = query.shop;
-	var nonce = state;
+	var nonce = query.state;
 
 	//validate shop name. Must end with myshopify.com and must not contain characters other than letters (a-z), numbers (0-9), dots, and hyphens. 
 	var suffix = "myshopify.com";
