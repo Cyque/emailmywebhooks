@@ -112,7 +112,7 @@ exports.createWebhook = function(req, res) {
 									db.saveObject("webhooks/" + body_create.webhook.id, {
 										info: body_modify.webhook,
 										shop: GLOB_SHOP,
-										email: shopObject.defaultEmail;
+										email: specificEmail
 									});
 
 									res.send('Success adding webhook. </br>' + body);
