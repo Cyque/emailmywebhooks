@@ -13,7 +13,7 @@ exports.confirm = function(query) {
 	console.log("timestamp: " + timestamp);
 	console.log("preprocString " + preprocString);
 
-	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString, 'hex')).digest('hex');
+	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString)).digest('hex');
 
 	var givenHmac = query.hmac;
 
@@ -30,8 +30,8 @@ exports.confirm = function(query) {
 
 
 function encodeParamsForSignature(object) {
-	var list = ["protocol=https://"];
-	//var list = [];
+	// var list = ["protocol=https://"];
+	var list = [];
 	for (var property in object) {
 		if (object.hasOwnProperty(property)) {
 			// if(property == "shop" || property == "timestamp")
@@ -41,5 +41,5 @@ function encodeParamsForSignature(object) {
 				list.push(property + "=" + object[property]);
 		}
 	}
-	return list.join('&');
+	return list.sort().join('&');
 }
