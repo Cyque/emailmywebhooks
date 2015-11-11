@@ -13,9 +13,12 @@ function isValidShop(query) {
 
 	//validate shop name. Must end with myshopify.com and must not contain characters other than letters (a-z), numbers (0-9), dots, and hyphens. 
 	var suffix = "myshopify.com";
+	console.log(shop);
+	console.log(nonce);
 	if (shop.indexOf(suffix, shop.length - suffix.length) != -1 && shop.indexOf("([^0-9a-z\.\-])+") == -1) {
 
 		var shopObject = db.getObject("users/" + shop);
+		console.log(shopObject);
 		if (shopObject == undefined)
 			if (shopObject.nonce == nonce)
 				return true; //VALID
@@ -45,6 +48,7 @@ function isValidHmac(query) {
 		console.log("FAILED Authentication");
 		return false;
 	}
+
 	return true;
 }
 
