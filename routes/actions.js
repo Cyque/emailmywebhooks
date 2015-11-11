@@ -15,12 +15,11 @@ exports.setDefaultEmail = function(req, res) {
 	var shopObject = getShop(GLOB_SHOP);
 	if(shopObject != undefined){
 		shopObject.defaultEmail = req.body.email;
-		res.send("Email changed to " + shopObject.defaultEmail);
+		res.send("Default email changed to " + shopObject.defaultEmail);
 	}
 	else {
-		res.status(503).send('Email not set. Could not find shop.');
+		res.status(503).send('Default email not set. Could not find shop.');
 	}
-
 
 }
 

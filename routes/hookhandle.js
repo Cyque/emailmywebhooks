@@ -33,7 +33,7 @@ exports.handleWebhook = function(req, res) {
    transporter.sendMail({
          from: 'emailmywebhooks@noreply',
          to: emailTo,
-         // subject: 'WEBHOOK',
+         subject: subjectFromTopic(webhookObject.info.topic),
          // text: emailContent
          html: emailContent
       },
@@ -44,6 +44,16 @@ exports.handleWebhook = function(req, res) {
          res.status(200).send();
       });
 
+}
+
+function subjectFromTopic(topic) {
+   if (topic == "customers\/create") {
+      return "A new customer was created.";
+   } else if (topic == "orders\/create") {
+      return "A new order was created.";
+   } else if (topic == "carts\/create") {
+      return "A new cart was created.";
+   }
 }
 
 /*
