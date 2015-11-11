@@ -19,7 +19,7 @@ exports.permission = function(req, res) {
 
 	var host = req.headers.host;
 	// console.log(host);
-	if(host == undefined) { 
+	if (host == undefined) {
 		host = "emailmywebhooks.herokuapp.com"
 	}
 
@@ -28,7 +28,7 @@ exports.permission = function(req, res) {
 	var redirect_uri = encodeURIComponent("https://" + host + "/auth/confirm");
 	var scope = "read_customers,read_products,read_orders,read_content,read_themes,read_script_tags,read_fulfillments";
 	var state = encodeURIComponent(registerTokenFor(shop));
-	var getPermissionURL = "https://" + shop + "/admin/oauth/authorize?client_id=" +  api_key + "&scope=" + scope + "&redirect_uri=" + redirect_uri + "&state=" + state;
+	var getPermissionURL = "https://" + shop + "/admin/oauth/authorize?client_id=" + api_key + "&scope=" + scope + "&redirect_uri=" + redirect_uri + "&state=" + state;
 
 	res.redirect(getPermissionURL);
 
@@ -58,42 +58,42 @@ exports.confirm = function(req, res) {
 	//CHECK AUTH CONFIRMS HERE
 	//check shop, state, and confirm OAUTH hmac
 
-	if(!oauth.confirm(req.query))
+	if (!oauth.confirm(req.query)) {
 		res.send("Failed Authentication.")
 		return;
+	}
 
 	var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
 	request.post(
-		accessURL,
-		{ 
-			form: { 
+		accessURL, {
+			form: {
 				client_id: api_key,
 				client_secret: secret,
 				code: code,
 			}
 		},
-		function (error, response, body) {
+		function(error, response, body) {
 			if (!error && response.statusCode == 200) {
 				//body format: {"access_token":"xxxxx ... xxxx"}
 
 				var accTok = JSON.parse(body).access_token;
 				addAccessTokenFor(shop, accTok);
-				
+
 				//get shop information
 
 				request.get(
-					"https://" + shop + "/admin/shop.json",
-					{ 
+					"https://" + shop + "/admin/shop.json", {
 						auth: {
 							user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
 							pass: "1604e972c082a4a3bb6384c1460f3458"
 						},
 						headers: {
 							'X-Shopify-Access-Token': accTok
-						} 
-					},	function (error, response, body) {
-						if(!error && response.statusCode == 200) {
+						}
+					},
+					function(error, response, body) {
+						if (!error && response.statusCode == 200) {
 							addShopInfoFor(shop, JSON.parse(body).shop);
 							res.cookie('GLOB_API_KEY', api_key);
 							res.cookie('GLOB_SHOP', shop);
@@ -107,7 +107,7 @@ exports.confirm = function(req, res) {
 
 
 			}
-		});	
+		});
 };
 
 
@@ -119,15 +119,14 @@ function registerTokenFor(shop) {
 	filePath = "users/" + shop;
 	var object = db.getObject(filePath);
 
-	if(object != undefined) {
+	if (object != undefined) {
 		token = crypto.randomBytes(16).toString('hex');
-		object.tokens.push(token); 
-	}
-	else {
+		object.tokens.push(token);
+	} else {
 		token = crypto.randomBytes(16).toString('hex');
 		object = {
 			shop: shop,
-			tokens: [ token ]
+			tokens: [token]
 		}
 	}
 
@@ -139,7 +138,7 @@ function addShopInfoFor(shop, info) {
 	var filePath = "users/" + shop;
 
 	var object = db.getObject(filePath);
-	object.shopInfo = info; 
+	object.shopInfo = info;
 	console.log(object);
 
 	db.saveObject(filePath, object);
@@ -149,7 +148,7 @@ function addAccessTokenFor(shop, accessToken) {
 	var filePath = "users/" + shop;
 
 	var object = db.getObject(filePath);
-	object.accessToken = accessToken; 
+	object.accessToken = accessToken;
 
 	db.saveObject(filePath, object);
 }
