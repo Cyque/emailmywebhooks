@@ -48,11 +48,11 @@ exports.handleWebhook = function(req, res) {
 
 function subjectFromTopic(topic) {
    if (topic == "customers\/create") {
-      return "A new customer was created.";
+      return "A new customer has been created.";
    } else if (topic == "orders\/create") {
-      return "A new order was created.";
+      return "A new order has been created.";
    } else if (topic == "carts\/create") {
-      return "A new cart was created.";
+      return "A new cart has been created.";
    }
 }
 
