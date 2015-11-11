@@ -13,7 +13,7 @@ exports.confirm = function(query) {
 	console.log("timestamp: " + timestamp);
 	console.log("preprocString " + preprocString);
 
-	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString, 'hex').digest('hex');
+	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString, 'hex')).digest('hex');
 
 	var givenHmac = query.hmac;
 
