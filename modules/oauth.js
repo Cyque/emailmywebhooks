@@ -6,22 +6,9 @@ exports.confirm = function(query) {
 	var timestamp = query.timestamp;
 	var secret = "1604e972c082a4a3bb6384c1460f3458";
 
-	//check if first time code is present
-	// if (req.query.code != undefined) 
-	// 	accessToken = "1604e972c082a4a3bb6384c1460f3458"; //use secret
-	// else //if its not present we use the locally saved access token
-	// accessToken = db.getObject("users/" + shop).accessToken;
-
-
 	var preprocString = encodeParamsForSignature(query);
-	// if(req.query.code != undefined) 
-	// preprocString = "shop=" + shop + "&timestamp=" + timestamp;
 
-	// preprocString = preprocString.replace("&", "%26");
-	// preprocString = preprocString.replace("%", "%25");
-	// preprocString = preprocString.replace("=", "%3D");
-
-	console.log(query);
+	// console.log(query);
 	console.log("Secret: " + secret);
 	console.log("timestamp: " + timestamp);
 	console.log("preprocString " + preprocString);
@@ -29,7 +16,8 @@ exports.confirm = function(query) {
 
 	// var calcedHmac = crypto.createHash("sha256").update(new Buffer(secret)).digest("hex");
 
-	var calcedHmac = crypto.createHmac("SHA256", secret).update(new Buffer(preprocString)).digest('hex');
+	var calcedHmac = crypto.createHmac("SHA256", preprocString).update(new Buffer(secret)).digest('hex');
+
 	var givenHmac = query.hmac;
 
 	console.log("Given HMAC      " + givenHmac);
