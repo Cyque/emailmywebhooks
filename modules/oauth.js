@@ -11,11 +11,11 @@ exports.confirm = function(req, res) {
 	// 	accessToken = "1604e972c082a4a3bb6384c1460f3458"; //use secret
 	// else //if its not present we use the locally saved access token
 	// accessToken = db.getObject("users/" + shop).accessToken;
-	
 
-	var preprocString = "shop=" + shop + "&timestamp=" + timestamp;
+
+	var preprocString = encodeParamsForSignature(req.query);
 	// if(req.query.code != undefined) 
-		// preprocString = "code=" + req.query.code + "&" + preprocString;
+	// preprocString = "code=" + req.query.code + "&" + preprocString;
 
 	// preprocString = preprocString.replace("&", "%26");
 	// preprocString = preprocString.replace("%", "%25");
@@ -25,7 +25,7 @@ exports.confirm = function(req, res) {
 	console.log("Access Token: " + accessToken);
 	console.log("timestamp: " + timestamp);
 	console.log("preprocString " + preprocString);
-	var calcedHmac = crypto.createHash("sha256").update(new Buffer(accessToken,'binary')).digest("hex");
+	var calcedHmac = crypto.createHash("sha256").update(new Buffer(accessToken, 'binary')).digest("hex");
 	var givenHmac = req.query.hmac;
 
 
@@ -37,4 +37,17 @@ exports.confirm = function(req, res) {
 		return false;
 	}
 	return true;
+}
+
+
+
+function encodeParamsForSignature(object) {
+	var list = [];
+	for (var property in object) {
+		if (object.hasOwnProperty(property)) {
+			list.push(property + "=" + object.property);
+		}
+	}
+
+	return list.join('&');
 }
