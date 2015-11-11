@@ -17,8 +17,7 @@ function isValidShop(query) {
 
 		var shopObject = db.getObject("users/" + shop);
 		console.log(shopObject);
-		if (shopObject == undefined)
-			console.log(shopObject.nonce == nonce);
+		if (shopObject != undefined)
 			return (shopObject.nonce == nonce);
 	}
 
@@ -30,17 +29,9 @@ function isValidHmac(query) {
 
 	var preprocString = encodeParamsForSignature(query);
 
-	// console.log(query);
-	console.log("shared_secret: " + shared_secret);
-	console.log("timestamp: " + query.timestamp);
-	console.log("preprocString " + preprocString);
-
 	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString)).digest('hex');
 
 	var givenHmac = query.hmac;
-
-	console.log("Given HMAC      " + givenHmac);
-	console.log("Calculated HMAC " + calcedHmac);
 
 	if (givenHmac != calcedHmac) {
 		console.log("FAILED Authentication");
