@@ -58,6 +58,8 @@ exports.confirm = function(req, res) {
 	//CHECK AUTH CONFIRMS HERE
 	//check shop, state, and confirm OAUTH hmac
 
+
+
 	if (!oauth.confirm(req.query)) {
 		res.send("Failed Authentication.")
 		return;
@@ -114,24 +116,24 @@ exports.confirm = function(req, res) {
 
 /*	Creates a unique token 	*/
 function registerTokenFor(shop) {
-	// FORMAT: 
-	var token;
+	
+	var nonce;
 	filePath = "users/" + shop;
 	var object = db.getObject(filePath);
 
 	if (object != undefined) {
-		token = crypto.randomBytes(16).toString('hex');
-		object.tokens.push(token);
+		nonce = crypto.randomBytes(16).toString('hex');
+		object.nonce = nonce;
 	} else {
-		token = crypto.randomBytes(16).toString('hex');
+		nonce = crypto.randomBytes(16).toString('hex');
 		object = {
 			shop: shop,
-			tokens: [token]
+			nonce: nonce
 		}
 	}
 
 	db.saveObject(filePath, object);
-	return token;
+	return nonce;
 }
 
 function addShopInfoFor(shop, info) {
