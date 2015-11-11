@@ -1,4 +1,3 @@
-
 var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport();
@@ -6,44 +5,44 @@ var db = require('../modules/database.js');
 var jade = require('jade');
 
 exports.handleWebhook = function(req, res) {
-	console.log("RECIEVED A WEBHOOK CALL!!");
+   console.log("RECIEVED A WEBHOOK CALL!!");
 
-	var webhookObject = db.getObject("webhooks/" + req.query.id);
-	var shopObject = db.getObject("users/" + webhookObject.shop);
+   var webhookObject = db.getObject("webhooks/" + req.query.id);
+   var shopObject = db.getObject("users/" + webhookObject.shop);
 
-	console.log(webhookObject);
-	console.log(shopObject);
-	console.log(req.body);
-
-
-
-	console.log("COMPILING JADE");
-	var jadePath = "email_templates/" + webhookObject.info.topic + ".jade";
-	console.log(jadePath);
-
-	var emailContent = jade.renderFile(jadePath, {
-		webhook:webhookObject,
-		shop:shopObject,
-		body:req.body
-	}); // Gets the JADE template file and compiles it
-
-	var emailTo = 'damian.polan@gmail.com';
+   console.log(webhookObject);
+   console.log(shopObject);
+   console.log(req.body);
 
 
-	console.log("SENDING EMAIL");
-	transporter.sendMail({
-		from: 'emailmywebhooks@noreply',
-		to: emailTo,
-		// subject: 'WEBHOOK',
-		// text: emailContent
-		html:emailContent
-	},  
-	function(error, info) {
-		if(error){
-			return console.log(error);
-		}
-		res.status(200).send();
-	});
+
+   console.log("COMPILING JADE");
+   var jadePath = "email_templates/" + webhookObject.info.topic + ".jade";
+   console.log(jadePath);
+
+   var emailContent = jade.renderFile(jadePath, {
+      webhook: webhookObject,
+      shop: shopObject,
+      body: req.body
+   }); // Gets the JADE template file and compiles it
+
+   var emailTo = shopObject.defaultEmail;
+
+
+   console.log("SENDING EMAIL");
+   transporter.sendMail({
+         from: 'emailmywebhooks@noreply',
+         to: emailTo,
+         // subject: 'WEBHOOK',
+         // text: emailContent
+         html: emailContent
+      },
+      function(error, info) {
+         if (error) {
+            return console.log(error);
+         }
+         res.status(200).send();
+      });
 
 }
 

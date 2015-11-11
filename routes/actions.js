@@ -13,11 +13,15 @@ function read_cookie(k, cookies, r) {
 exports.setEmail = function(req, res) {
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
 	var shopObject = getShop(GLOB_SHOP);
-	
-	console.log(req.query);
-	console.log(req.body);
+	if(shopObject != undefined){
+		shopObject.defaultEmail = req.body.email;
+		res.send("Email changed to " _ shopObject.defaultEmail);
+	}
+	else {
+		res.status(503).send('Email not set. Could not find shop.');
+	}
 
-	res.send("Email not changed.");
+
 }
 
 exports.createWebhook = function(req, res) {
@@ -28,14 +32,10 @@ exports.createWebhook = function(req, res) {
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
 	var shopObject = getShop(GLOB_SHOP);
 
-	if(shopObject == undefined) {
-		//COOKIE was not set so redirect to authorize
-		res.redirect(req.get('referer'));
-		return;
-	}
-
-	var hostBase = "https://emailmywebhooks.herokuapp.com/";
+	var hostBase = process.env['host']; //i.e https://emailmywebhooks.herokuapp.com/
 	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
+	var specificEmail = decodeURIComponent(req.query.specificemail);
+	//TODO: ADD SPECIFIC EMAIL
 
 	var method;
 	var baseUrl = "https://" + GLOB_SHOP + "/"
@@ -62,7 +62,7 @@ exports.createWebhook = function(req, res) {
 			},
 			function(error, response, body) {
 				var webhooks = JSON.parse(body).webhooks;
-				var sdasd = "";
+
 				for (var i = 0; i < webhooks.length; i++) {
 
 					request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json", {
@@ -111,7 +111,8 @@ exports.createWebhook = function(req, res) {
 									//CREATE WEBHOOK OBJECT
 									db.saveObject("webhooks/" + body_create.webhook.id, {
 										info: body_modify.webhook,
-										shop: GLOB_SHOP
+										shop: GLOB_SHOP,
+										email: shopObject.defaultEmail;
 									});
 
 									res.send('Success adding webhook. </br>' + body);
@@ -201,7 +202,6 @@ function createWebhook(callprops, address, topic, callback) {
 
 function modifyWebhookAddress(callprops, webhook_id, address, callback) {
 	request.put({
-		// method: "PUT",
 		uri: callprops.baseUrl + "admin/webhooks/" + webhook_id + ".json",
 		auth: callprops.auth,
 		headers: callprops.headers,

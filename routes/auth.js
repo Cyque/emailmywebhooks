@@ -14,6 +14,7 @@ var oauth = require('../modules/oauth.js')
 // SET PROCESS ENVIRONMENT VARS: (TO BE REMOVED AT LAUNCH)
 process.env['api_key'] = '4bf79cc58eecd7f509f94ce7cd61c6b0';
 process.env['shared_secret'] = '1604e972c082a4a3bb6384c1460f3458';
+process.env['host'] = 'https://emailmywebhooks.herokuapp.com/';
 
 
 exports.permission = function(req, res) {
@@ -104,7 +105,6 @@ exports.confirm = function(req, res) {
 						if (!error && response.statusCode == 200) {
 							addShopInfoFor(shop, JSON.parse(body).shop);
 
-							
 							res.cookie('GLOB_API_KEY', api_key);
 							res.cookie('GLOB_SHOP', shop);
 							//FULLY AUTHENTICATED HERE
@@ -149,7 +149,7 @@ function addShopInfoFor(shop, info) {
 
 	var object = db.getObject(filePath);
 	object.shopInfo = info;
-	console.log(object);
+	object.defaultEmail = info.email;
 
 	db.saveObject(filePath, object);
 }
