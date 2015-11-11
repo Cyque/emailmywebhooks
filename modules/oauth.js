@@ -15,7 +15,7 @@ exports.confirm = function(query) {
 
 	var preprocString = encodeParamsForSignature(query);
 	// if(req.query.code != undefined) 
-	// preprocString = "code=" + req.query.code + "&" + preprocString;
+	// preprocString = "shop=" + shop + "&timestamp=" + timestamp;
 
 	// preprocString = preprocString.replace("&", "%26");
 	// preprocString = preprocString.replace("%", "%25");
@@ -45,13 +45,12 @@ exports.confirm = function(query) {
 
 
 function encodeParamsForSignature(object) {
-	var list = [];
+	var list = ["protocol=https://"];
 	for (var property in object) {
 		if (object.hasOwnProperty(property)) {
-			if(property != "hmac" && property != "signature")
+			if (property != "hmac" && property != "signature")
 				list.push(property + "=" + object[property]);
 		}
 	}
-
 	return list.join('&');
 }
