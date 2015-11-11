@@ -4,13 +4,13 @@ var db = require('../modules/database.js')
 exports.confirm = function(req, res) {
 	var shop = req.query.shop;
 	var timestamp = req.query.timestamp;
-	var accessToken;
+	var accessToken = "1604e972c082a4a3bb6384c1460f3458";
 
 	//check if first time code is present
-	if (req.query.code != undefined) 
-		accessToken = "1604e972c082a4a3bb6384c1460f3458"; //use secret
-	else //if its not present we use the locally saved access token
-		accessToken = db.getObject("users/" + shop).accessToken;
+	// if (req.query.code != undefined) 
+	// 	accessToken = "1604e972c082a4a3bb6384c1460f3458"; //use secret
+	// else //if its not present we use the locally saved access token
+	// accessToken = db.getObject("users/" + shop).accessToken;
 	
 
 	var preprocString = "shop=" + shop + "&timestamp=" + timestamp;
@@ -23,9 +23,9 @@ exports.confirm = function(req, res) {
 
 	console.log(req.query);
 	console.log("Access Token: " + accessToken);
-	console.log("timestamp: " + accessToken);
-	console.log("preprocString " + preprocString)
-	var calcedHmac = crypto.createHmac("sha256", new Buffer(accessToken)).digest("hex");
+	console.log("timestamp: " + timestamp);
+	console.log("preprocString " + preprocString);
+	var calcedHmac = crypto.createHmac("sha256").update(accessToken).digest("hex");
 	var givenHmac = req.query.hmac;
 
 
