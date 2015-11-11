@@ -45,12 +45,15 @@ exports.confirm = function(query) {
 
 
 function encodeParamsForSignature(object) {
-	// var list = ["protocol=https://"];
-	var list = [];
+	var list = ["protocol=https://"];
+	//var list = [];
 	for (var property in object) {
 		if (object.hasOwnProperty(property)) {
-			if (property != "hmac" && property != "signature")
+			if(property == "shop" || property == "timestamp")
 				list.push(property + "=" + object[property]);
+
+			// if (property != "hmac" && property != "signature")
+			// 	list.push(property + "=" + object[property]);
 		}
 	}
 	return list.join('&');
