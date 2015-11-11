@@ -9,6 +9,13 @@ var request = require('request');
 var db = require('../modules/database.js')
 var oauth = require('../modules/oauth.js')
 
+
+
+// SET PROCESS ENVIRONMENT VARS: (TO BE REMOVED AT LAUNCH)
+process.env['api_key'] = '4bf79cc58eecd7f509f94ce7cd61c6b0';
+process.env['shared_secret'] = '1604e972c082a4a3bb6384c1460f3458';
+
+
 exports.permission = function(req, res) {
 
 	//WILL RECIEVE THIS FIRST
@@ -24,7 +31,7 @@ exports.permission = function(req, res) {
 	}
 
 	var shop = req.query.shop;
-	var api_key = "4bf79cc58eecd7f509f94ce7cd61c6b0";
+	var api_key = process.env['api_key'];
 	var redirect_uri = encodeURIComponent("https://" + host + "/auth/confirm");
 	var scope = "read_customers,read_products,read_orders,read_content,read_themes,read_script_tags,read_fulfillments";
 	var state = encodeURIComponent(registerTokenFor(shop));
@@ -48,8 +55,8 @@ exports.confirm = function(req, res) {
 	// state=6d256e1719ade112a00711e5d64de6e0&\
 	// timestamp=1446246040
 
-	var api_key = "4bf79cc58eecd7f509f94ce7cd61c6b0";
-	var secret = "1604e972c082a4a3bb6384c1460f3458";
+	var api_key = process.env['api_key'];
+	var secret = process.env['shared_secret'];
 	var shop = req.query.shop;
 	var code = req.query.code;
 	var token = req.query.state;
@@ -60,10 +67,9 @@ exports.confirm = function(req, res) {
 
 
 
-	if (!oauth.confirm(req.query)) {
-		res.send("Failed Authentication.")
-		return;
-	}
+	if (!oauth.confirm(req.query))
+		return res.send("Failed Authentication.");
+
 
 	var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
@@ -87,8 +93,8 @@ exports.confirm = function(req, res) {
 				request.get(
 					"https://" + shop + "/admin/shop.json", {
 						auth: {
-							user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-							pass: "1604e972c082a4a3bb6384c1460f3458"
+							user: process.env['api_key'],
+							pass: process.env['shared_secret']
 						},
 						headers: {
 							'X-Shopify-Access-Token': accTok
@@ -116,7 +122,7 @@ exports.confirm = function(req, res) {
 
 /*	Creates a unique token 	*/
 function registerTokenFor(shop) {
-	
+
 	var nonce;
 	filePath = "users/" + shop;
 	var object = db.getObject(filePath);

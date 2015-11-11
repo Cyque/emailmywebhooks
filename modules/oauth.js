@@ -11,12 +11,10 @@ function isValidShop(query) {
 
 	//validate shop name. Must end with myshopify.com and must not contain characters other than letters (a-z), numbers (0-9), dots, and hyphens. 
 	var suffix = "myshopify.com";
-	console.log(shop);
-	console.log(nonce);
 	if (shop.indexOf(suffix, shop.length - suffix.length) != -1 && shop.indexOf("([^0-9a-z\.\-])+") == -1) {
 
+		//validate shopObject exists and nonce is valid
 		var shopObject = db.getObject("users/" + shop);
-		console.log(shopObject);
 		if (shopObject != undefined)
 			return (shopObject.nonce == nonce);
 	}
@@ -25,7 +23,7 @@ function isValidShop(query) {
 }
 
 function isValidHmac(query) {
-	var shared_secret = "1604e972c082a4a3bb6384c1460f3458";
+	var shared_secret = process.env['shared_secret'];
 
 	var preprocString = encodeParamsForSignature(query);
 

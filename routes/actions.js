@@ -40,8 +40,8 @@ exports.createWebhook = function(req, res) {
 
 	var callprops = {
 		auth: {
-			user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-			pass: "1604e972c082a4a3bb6384c1460f3458"
+			user: process.env['api_key'],
+			pass: process.env['shared_secret']
 		},
 		headers: {
 			'X-Shopify-Access-Token': shopObject.accessToken,
@@ -63,8 +63,8 @@ exports.createWebhook = function(req, res) {
 
 					request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json", {
 							auth: {
-								user: "4bf79cc58eecd7f509f94ce7cd61c6b0",
-								pass: "1604e972c082a4a3bb6384c1460f3458"
+								user: process.env['api_key'],
+								pass: process.env['shared_secret']
 							},
 							headers: {
 								'X-Shopify-Access-Token': shopObject.accessToken
