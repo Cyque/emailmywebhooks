@@ -57,8 +57,9 @@ exports.confirm = function(req, res) {
 
 	//CHECK AUTH CONFIRMS HERE
 	//check shop, state, and confirm OAUTH hmac
-	
+
 	if(!oauth.confirm(req.query))
+		res.send("Failed Authentication.")
 		return;
 
 	var accessURL = "https://" + shop + "/admin/oauth/access_token";

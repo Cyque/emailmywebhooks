@@ -26,8 +26,8 @@ exports.confirm = function(query) {
 	console.log("timestamp: " + timestamp);
 	console.log("preprocString " + preprocString);
 
-	
-	var calcedHmac = crypto.createHash("sha256").update(new Buffer(secret, 'binary')).digest("hex");
+
+	var calcedHmac = crypto.createHash("sha256").update(new Buffer(secret)).digest("hex");
 	var givenHmac = query.hmac;
 
 	console.log("Given HMAC      " + givenHmac);
@@ -35,7 +35,6 @@ exports.confirm = function(query) {
 
 	if (givenHmac != calcedHmac) {
 		console.log("FAILED Authentication");
-		res.send("Failed Authentication.");
 		return false;
 	}
 	return true;
