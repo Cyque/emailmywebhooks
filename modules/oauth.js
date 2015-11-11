@@ -8,7 +8,7 @@ exports.confirm = function(req, res) {
 
 	//check if first time code is present
 	if (req.query.code != undefined) 
-		accessToken = req.query.code;
+		accessToken = "1604e972c082a4a3bb6384c1460f3458"; //use secret
 	else //if its not present we use the locally saved access token
 		accessToken = db.getObject("users/" + shop).accessToken;
 	
