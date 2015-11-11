@@ -57,7 +57,9 @@ exports.confirm = function(req, res) {
 
 	//CHECK AUTH CONFIRMS HERE
 	//check shop, state, and confirm OAUTH hmac
-
+	
+	if(!oauth.confirm(req.query))
+		return;
 
 	var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
@@ -77,8 +79,6 @@ exports.confirm = function(req, res) {
 				var accTok = JSON.parse(body).access_token;
 				addAccessTokenFor(shop, accTok);
 				
-				if(!oauth.confirm(req, res))
-					return;
 				//get shop information
 
 				request.get(
