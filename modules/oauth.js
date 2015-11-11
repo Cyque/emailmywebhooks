@@ -13,7 +13,7 @@ exports.confirm = function(req, res) {
 		accessToken = db.getObject("users/" + shop).accessToken;
 	
 
-	var preprocString = "shop=" + shop + "&timestamp=" + timestamp + "&state=" + req.query.state;
+	var preprocString = "shop=" + shop+ "&state=" + req.query.state + "&timestamp=" + timestamp;
 	if(req.query.code != undefined) 
 		preprocString = "code=" + req.query.code + "&" + preprocString;
 
