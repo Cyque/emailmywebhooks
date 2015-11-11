@@ -17,6 +17,9 @@ exports.confirm = function(req, res) {
 	if(req.query.code != undefined) 
 		preprocString = "code=" + req.query.code + "&" + preprocString;
 
+	preprocString = preprocString.replace("&", "%26");
+	preprocString = preprocString.replace("%", "%25");
+	preprocString = preprocString.replace("=", "%3D");
 
 	console.log(req.query);
 	console.log("Access Token: " + accessToken);
