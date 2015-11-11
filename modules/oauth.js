@@ -27,7 +27,7 @@ exports.confirm = function(query) {
 	console.log("preprocString " + preprocString);
 
 	
-	var calcedHmac = crypto.createHash("sha256").update(new Buffer(accessToken, 'binary')).digest("hex");
+	var calcedHmac = crypto.createHash("sha256").update(new Buffer(secret, 'binary')).digest("hex");
 	var givenHmac = query.hmac;
 
 	console.log("Given HMAC      " + givenHmac);
