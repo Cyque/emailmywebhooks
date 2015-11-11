@@ -25,7 +25,7 @@ exports.confirm = function(req, res) {
 	console.log("Access Token: " + accessToken);
 	console.log("timestamp: " + timestamp);
 	console.log("preprocString " + preprocString);
-	var calcedHmac = crypto.createHmac("sha256").update(new Buffer(accessToken,'binary')).digest("hex");
+	var calcedHmac = crypto.createHash("sha256").update(new Buffer(accessToken,'binary')).digest("hex");
 	var givenHmac = req.query.hmac;
 
 
