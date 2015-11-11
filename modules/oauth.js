@@ -18,7 +18,7 @@ exports.confirm = function(req, res) {
 	console.log(req.query);
 	console.log("Access Token: " + accessToken);
 	console.log("timestamp: " + accessToken);
-	var calcedHmac = crypto.createHmac("sha256", new Buffer(authCode)).digest("hex");
+	var calcedHmac = crypto.createHmac("sha256", new Buffer(accessToken)).digest("hex");
 	var givenHmac = req.query.hmac;
 
 
