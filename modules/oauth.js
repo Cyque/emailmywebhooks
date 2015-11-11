@@ -2,8 +2,6 @@ var crypto = require('crypto');
 var db = require('../modules/database.js')
 
 exports.confirm = function(query) {
-
-
 	return isValidHmac(query) && isValidShop(query);
 }
 
@@ -20,8 +18,8 @@ function isValidShop(query) {
 		var shopObject = db.getObject("users/" + shop);
 		console.log(shopObject);
 		if (shopObject == undefined)
-			if (shopObject.nonce == nonce)
-				return true; //VALID
+			console.log(shopObject.nonce == nonce);
+			return (shopObject.nonce == nonce);
 	}
 
 	return false;
