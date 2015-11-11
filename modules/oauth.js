@@ -31,7 +31,7 @@ function isValidHmac(query) {
 
 	// console.log(query);
 	console.log("shared_secret: " + shared_secret);
-	console.log("timestamp: " + query.query.timestamp);
+	console.log("timestamp: " + query.timestamp);
 	console.log("preprocString " + preprocString);
 
 	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString)).digest('hex');
