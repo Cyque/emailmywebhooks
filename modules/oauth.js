@@ -28,9 +28,12 @@ exports.confirm = function(req, res) {
 	if (givenHmac != calcedHmac) {
 		console.log("FAILED Authentication");
 		console.log("Given HMAC      " + givenHmac);
-		console.log("Calculated HMAC " + givenHmac);
+		console.log("Calculated HMAC " + calcedHmac);
 		res.send("Failed Authentication.");
 		return false;
 	}
 	return true;
 }
+
+93087798a68d44109e1751a4fbeda0578fdfda962eecc1703602481bd5cd42ca
+93087798a68d44109e1751a4fbeda0578fdfda962eecc1703602481bd5cd42ca
