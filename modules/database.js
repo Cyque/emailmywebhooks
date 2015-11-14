@@ -81,11 +81,7 @@ var pg = require('pg');
 // process.env['DATABASE_URL'] = 'postgres://rrgnptrdfrxley:OPtMCtDlA1uoqyZ6-rrJyLihi6@ec2-107-21-223-147.compute-1.amazonaws.com:5432/d1frkvg5roavqs';
 exports.dbpath = "db/"
 
-exports.getObject = function(filename) {
-	// var split = filename.split('/');
-	// var table = split[0];
-	// var key = split[1];
-
+function intialize() {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
 
@@ -98,7 +94,14 @@ exports.getObject = function(filename) {
 		// 	console.log(JSON.stringify(row));
 		// });
 	});
+}
 
+intialize();
+
+exports.getObject = function(filename) {
+	// var split = filename.split('/');
+	// var table = split[0];
+	// var key = split[1];
 
 	if (fs.existsSync(exports.dbpath + filename)) {
 		return JSON.parse(fs.readFileSync(exports.dbpath + filename));
