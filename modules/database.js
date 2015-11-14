@@ -100,7 +100,7 @@ function intialize() {
 			}
 		});
 
-		client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)", function(err, result) {
+		client.query("CREATE asdsaTABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)", function(err, result) {
 			if(err) {
 				console.log("POSTGRES ERROR:")
 				console.log(err);
