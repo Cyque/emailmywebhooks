@@ -87,7 +87,12 @@ function intialize() {
 
 		console.log('Connected to postgres!');
 
-		// client.query("CREATE TABLE objects(filename char(100) PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL);");
+		console.log('Postgres: deleting tables')
+		client.query("DROP TABLE IF EXISTS users");
+		client.query("DROP TABLE IF EXISTS webhooks");
+
+		console.log('Postgres: creating table')
+		client.query("CREATE TABLE IF NOT EXISTS users(shop char(100) PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)");
 
 
 		// client.query('SELECT table_schema,table_name FROM information_schema.tables;').on('row', function(row) {
@@ -99,9 +104,8 @@ function intialize() {
 intialize();
 
 exports.getObject = function(filename) {
-	// var split = filename.split('/');
-	// var table = split[0];
-	// var key = split[1];
+	// if(filename.contai)
+
 
 	if (fs.existsSync(exports.dbpath + filename)) {
 		return JSON.parse(fs.readFileSync(exports.dbpath + filename));
