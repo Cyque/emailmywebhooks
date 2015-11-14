@@ -93,7 +93,7 @@ function intialize() {
 
 		console.log('Postgres: creating tables')
 		client.query("CREATE TABLE IF NOT EXISTS users(shop text PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)");
-		client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)");
+		client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text asd PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)");
 
 	});
 }
