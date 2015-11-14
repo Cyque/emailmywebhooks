@@ -108,10 +108,6 @@ function intialize() {
 			}
 		});
 
-
-
-		query
-		client.end();
 	});
 }
 
