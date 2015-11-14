@@ -91,13 +91,10 @@ function intialize() {
 		client.query("DROP TABLE IF EXISTS users");
 		client.query("DROP TABLE IF EXISTS webhooks");
 
-		console.log('Postgres: creating table')
+		console.log('Postgres: creating tables')
 		client.query("CREATE TABLE IF NOT EXISTS users(shop char(100) PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)");
+		client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id char(100) PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)");
 
-
-		// client.query('SELECT table_schema,table_name FROM information_schema.tables;').on('row', function(row) {
-		// 	console.log(JSON.stringify(row));
-		// });
 	});
 }
 
