@@ -1,11 +1,13 @@
 var crypto = require('crypto');
 var db = require('../modules/database.js')
 
-exports.confirm = function(query) {
-	return isValidHmac(query) && isValidShop(query);
+exports.confirm = function(query, callback) {
+	isValidShop(query, function(isValid) {
+		callback(isValid && isValidHmac(query));
+	});
 }
 
-function isValidShop(query) {
+function isValidShop(query, callback) {
 	var shop = query.shop;
 	var nonce = query.state;
 
@@ -14,12 +16,15 @@ function isValidShop(query) {
 	if (shop.indexOf(suffix, shop.length - suffix.length) != -1 && shop.indexOf("([^0-9a-z\.\-])+") == -1) {
 
 		//validate shopObject exists and nonce is valid
-		var shopObject = db.getObject("users/" + shop);
-		if (shopObject != undefined)
-			return (shopObject.nonce == nonce);
+		// var shopObject = db.getObject("users/" + shop);
+
+		db.getShop(shop, function(shopObject) {
+			if (shopObject != undefined)
+				callback(shopObject.nonce == nonce);
+		});
 	}
 
-	return false;
+	callback(false);
 }
 
 function isValidHmac(query) {

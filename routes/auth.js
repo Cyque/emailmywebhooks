@@ -35,10 +35,13 @@ exports.permission = function(req, res) {
 	var api_key = process.env['api_key'];
 	var redirect_uri = encodeURIComponent("https://" + host + "/auth/confirm");
 	var scope = "read_customers,read_products,read_orders,read_content,read_themes,read_script_tags,read_fulfillments";
-	var state = encodeURIComponent(registerTokenFor(shop));
-	var getPermissionURL = "https://" + shop + "/admin/oauth/authorize?client_id=" + api_key + "&scope=" + scope + "&redirect_uri=" + redirect_uri + "&state=" + state;
+	// var state = encodeURIComponent(registerTokenFor(shop));
 
-	res.redirect(getPermissionURL);
+	registerTokenFor(shop, function(state) {
+		var getPermissionURL = "https://" + shop + "/admin/oauth/authorize?client_id=" + api_key + "&scope=" + scope + "&redirect_uri=" + redirect_uri + "&state=" + encodeURIComponent(state);
+
+		res.redirect(getPermissionURL);
+	});
 
 	//REDIRECT TO THIS AFTER
 	// https://{shop}.myshopify.com/admin/oauth/authorize?client_id={api_key}&scope={scopes}&redirect_uri={redirect_uri}&state={nonce}
@@ -68,8 +71,9 @@ exports.confirm = function(req, res) {
 
 
 
-	if (!oauth.confirm(req.query))
-		return res.send("Failed Authentication.");
+	oauth.confirm(req.query, function(isValid) {
+		if (!isValid) res.send("Failed Authentication.");
+	});
 
 
 	var accessURL = "https://" + shop + "/admin/oauth/access_token";
@@ -123,42 +127,47 @@ exports.confirm = function(req, res) {
 
 
 /*	Creates a unique token 	*/
-function registerTokenFor(shop) {
+function registerTokenFor(shop, callback) {
 
-	var nonce;
-	filePath = "users/" + shop;
-	var object = db.getObject(filePath);
-
-	if (object != undefined) {
-		nonce = crypto.randomBytes(16).toString('hex');
-		object.nonce = nonce;
-	} else {
-		nonce = crypto.randomBytes(16).toString('hex');
-		object = {
-			shop: shop,
-			nonce: nonce
+	// filePath = "users/" + shop;
+	// var object = db.getObject(filePath);
+	db.getShop(shop, function(shopObject) {
+		var nonce;
+		if (shopObject != undefined) {
+			nonce = crypto.randomBytes(16).toString('hex');
+			shopObject.nonce = nonce;
+		} else {
+			nonce = crypto.randomBytes(16).toString('hex');
+			shopObject = {
+				shop: shop,
+				nonce: nonce
+			}
 		}
-	}
 
-	db.saveObject(filePath, object);
-	return nonce;
+		db.saveShop(shop, shopObject);
+		callback(nonce);
+	});
 }
 
 function addShopInfoFor(shop, info) {
-	var filePath = "users/" + shop;
+	// var filePath = "users/" + shop;
+	// var object = db.getObject(filePath);
 
-	var object = db.getObject(filePath);
-	object.shopInfo = info;
-	object.defaultEmail = info.email;
+	db.getShop(shop, function(shopObject) {
+		shopObject.shopInfo = info;
+		shopObject.defaultEmail = info.email;
 
-	db.saveObject(filePath, object);
+		db.saveShop(shop, shopObject);
+	});
 }
 
 function addAccessTokenFor(shop, accessToken) {
-	var filePath = "users/" + shop;
+	// var filePath = "users/" + shop;
+	// var object = db.getObject(filePath);
 
-	var object = db.getObject(filePath);
-	object.accessToken = accessToken;
+	db.getShop(shop, function(shopObject) {
+		shopObject.accessToken = accessToken;
 
-	db.saveObject(filePath, object);
+		db.saveObject(shop, shopObject);
+	});
 }

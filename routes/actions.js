@@ -9,18 +9,17 @@ function read_cookie(k, cookies, r) {
 	return (r = RegExp('(^|; )' + encodeURIComponent(k) + '=([^;]*)').exec(cookies)) ? r[2] : null;
 }
 
-
 exports.setDefaultEmail = function(req, res) {
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
-	var shopObject = getShop(GLOB_SHOP);
-	if(shopObject != undefined){
-		shopObject.defaultEmail = req.body.email;
-		res.send("Default email changed to " + shopObject.defaultEmail);
-	}
-	else {
-		res.status(503).send('Default email not set. Could not find shop.');
-	}
-
+	// var shopObject = getShop(GLOB_SHOP);
+	db.getShop(GLOB_SHOP, function(shopObject) {
+		if (shopObject != undefined) {
+			shopObject.defaultEmail = req.body.email;
+			res.send("Default email changed to " + shopObject.defaultEmail);
+		} else {
+			res.status(503).send('Default email not set. Could not find shop.');
+		}
+	});
 }
 
 exports.createWebhook = function(req, res) {
@@ -29,111 +28,117 @@ exports.createWebhook = function(req, res) {
 	// req.headers.cookie.GLOB_API_KEY
 	// req.headers.cookie.GLOB_SHOP
 	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
-	var shopObject = getShop(GLOB_SHOP);
 
-	var hostBase = process.env['host']; //i.e https://emailmywebhooks.herokuapp.com/
-	var topic = decodeURIComponent(req.query.topic); //i.e customers/create
-	var specificEmail = decodeURIComponent(req.query.specificemail);
-	//TODO: ADD SPECIFIC EMAIL
+	// var shopObject = getShop(GLOB_SHOP);
+	db.getShop(GLOB_SHOP, function(shopObject) {
+		var hostBase = process.env['host']; //i.e https://emailmywebhooks.herokuapp.com/
+		var topic = decodeURIComponent(req.query.topic); //i.e customers/create
+		var specificEmail = decodeURIComponent(req.query.specificemail);
+		//TODO: ADD SPECIFIC EMAIL
 
-	var method;
-	var baseUrl = "https://" + GLOB_SHOP + "/"
-	var url = baseUrl;
-	var body;
+		var method;
+		var baseUrl = "https://" + GLOB_SHOP + "/"
+		var url = baseUrl;
+		var body;
 
-	var callprops = {
-		auth: {
-			user: process.env['api_key'],
-			pass: process.env['shared_secret']
-		},
-		headers: {
-			'X-Shopify-Access-Token': shopObject.accessToken,
-			"content-type": "application/json",
-		},
-		baseUrl: baseUrl
-	}
-
-
-	if (topic == "deleteall") {
-		request.get(url + "admin/webhooks.json", {
-				auth: callprops.auth,
-				headers: callprops.headers
+		var callprops = {
+			auth: {
+				user: process.env['api_key'],
+				pass: process.env['shared_secret']
 			},
-			function(error, response, body) {
-				var webhooks = JSON.parse(body).webhooks;
+			headers: {
+				'X-Shopify-Access-Token': shopObject.accessToken,
+				"content-type": "application/json",
+			},
+			baseUrl: baseUrl
+		}
 
-				for (var i = 0; i < webhooks.length; i++) {
 
-					request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json", {
-							auth: {
-								user: process.env['api_key'],
-								pass: process.env['shared_secret']
-							},
-							headers: {
-								'X-Shopify-Access-Token': shopObject.accessToken
-							}
-						},
-						function(error, response, body) {});
-				}
-				res.send(body);
-			});
+		if (topic == "deleteall") {
+			request.get(url + "admin/webhooks.json", {
+					auth: callprops.auth,
+					headers: callprops.headers
+				},
+				function(error, response, body) {
+					var webhooks = JSON.parse(body).webhooks;
 
-		return;
-	}
-	// TAKES var topic in format: "customers_create"
-	else if (topic.indexOf("_") != -1) {
+					for (var i = 0; i < webhooks.length; i++) {
 
-		method = "POST";
-		url += "admin/webhooks.json";
-		var topic = topic.replace("_", "\/");
-		var hookAddress = hostBase + "handlewebhook";
-
-		console.log("SENDING WEBHOOK REQUEST");
-		//DELETE WEBHOOK
-		deleteWebhook(callprops, topic, function(error, response, body) {
-			var body_delete = JSON.parse(body);
-			if (!error && (typeof body_delete["errors"] == "undefined")) {
-
-				//CREATE THE WEBHOOK
-				createWebhook(callprops, hookAddress, topic, function(error, response, body) {
-					var body_create = JSON.parse(body);
-					if (!error && (typeof body_create["errors"] == "undefined")) {
-
-						//MODIFY THE WEBHOOK ADDRESS
-						modifyWebhookAddress(callprops, body_create.webhook.id, body_create.webhook.address + "?id=" + body_create.webhook.id,
-							function(error, response, body) {
-
-								var body_modify = JSON.parse(body);
-								if (!error && (typeof body_modify["errors"] == "undefined")) {
-									console.log("CREATED WEBHOOK " + body_create.webhook.id);
-
-									//CREATE WEBHOOK OBJECT
-									db.saveObject("webhooks/" + body_create.webhook.id, {
-										info: body_modify.webhook,
-										shop: GLOB_SHOP,
-										email: specificEmail //CAN be undefined (defaultEmail will be used instead in the hookhandler)
-									}); 
-
-									res.send('Success adding webhook. </br>' + body);
-								} else {
-									res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error + "</br>" + JSON.stringify(response));
+						request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json", {
+								auth: {
+									user: process.env['api_key'],
+									pass: process.env['shared_secret']
+								},
+								headers: {
+									'X-Shopify-Access-Token': shopObject.accessToken
 								}
-							});
-					} else {
-						res.send("Failure adding webhook </br>" + JSON.stringify(body_create) + "</br> " + error + "</br>" + JSON.stringify(response));
+							},
+							function(error, response, body) {});
 					}
+					res.send(body);
 				});
-			} else {
-				res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_delete) + "</br> " + error + "</br>" + JSON.stringify(response));
-			}
-		});
-	} else {
-		res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
-		return;
-	}
 
+			return;
+		}
+		// TAKES var topic in format: "customers_create"
+		else if (topic.indexOf("_") != -1) {
 
+			method = "POST";
+			url += "admin/webhooks.json";
+			var topic = topic.replace("_", "\/");
+			var hookAddress = hostBase + "handlewebhook";
 
+			console.log("SENDING WEBHOOK REQUEST");
+			//DELETE WEBHOOK
+			deleteWebhook(callprops, topic, function(error, response, body) {
+				var body_delete = JSON.parse(body);
+				if (!error && (typeof body_delete["errors"] == "undefined")) {
+
+					//CREATE THE WEBHOOK
+					createWebhook(callprops, hookAddress, topic, function(error, response, body) {
+						var body_create = JSON.parse(body);
+						if (!error && (typeof body_create["errors"] == "undefined")) {
+
+							//MODIFY THE WEBHOOK ADDRESS
+							modifyWebhookAddress(callprops, body_create.webhook.id, body_create.webhook.address + "?id=" + body_create.webhook.id,
+								function(error, response, body) {
+
+									var body_modify = JSON.parse(body);
+									if (!error && (typeof body_modify["errors"] == "undefined")) {
+										console.log("CREATED WEBHOOK " + body_create.webhook.id);
+
+										//CREATE WEBHOOK OBJECT
+										db.saveWebhook(body_create.webhook.id, {
+											info: body_modify.webhook,
+											shop: GLOB_SHOP,
+											email: specificEmail //CAN be undefined (defaultEmail will be used instead in the hookhandler)
+										});
+
+										// db.saveObject("webhooks/" + body_create.webhook.id, {
+										// 	info: body_modify.webhook,
+										// 	shop: GLOB_SHOP,
+										// 	email: specificEmail //CAN be undefined (defaultEmail will be used instead in the hookhandler)
+										// });
+
+										res.send('Success adding webhook. </br>' + body);
+									} else {
+										res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error + "</br>" + JSON.stringify(response));
+									}
+								});
+						} else {
+							res.send("Failure adding webhook </br>" + JSON.stringify(body_create) + "</br> " + error + "</br>" + JSON.stringify(response));
+						}
+					});
+				} else {
+					res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_delete) + "</br> " + error + "</br>" + JSON.stringify(response));
+				}
+			});
+		} else {
+			res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
+			return;
+		}
+
+	});
 };
 
 /*
@@ -210,9 +215,4 @@ function modifyWebhookAddress(callprops, webhook_id, address, callback) {
 			}
 		})
 	}, callback);
-}
-
-function getShop(shop) {
-	var filePath = "users/" + shop;
-	return db.getObject(filePath);
 }

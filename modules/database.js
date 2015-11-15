@@ -89,34 +89,95 @@ function intialize() {
 
 		console.log('Postgres: deleting tables')
 		client.query("DROP TABLE IF EXISTS users");
+		client.query("DROP TABLE IF EXISTS shops");
 		client.query("DROP TABLE IF EXISTS webhooks");
 
 		console.log('Postgres: creating tables');
-		client.query("CREATE TABLE IF NOT EXISTS users(shop text PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)", function(err, result) {
-			if(err) {
-				console.log("POSTGRES ERROR:")
-				console.log(err);
-				console.log(result);
-			}
-		});
 
-		client.query("CREATE asdsaTABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, DATA  CHAR(5000) NOT NULL)", function(err, result) {
-			if(err) {
-				console.log("POSTGRES ERROR:")
-				console.log(err);
-				console.log(result);
-			}
-		});
+		var manageError = function(err, result) {
+			if (err)
+				throw err;
+		}
 
+		client.query("CREATE TABLE IF NOT EXISTS shops(shop text PRIMARY KEY NOT NULL, data CHAR(5000) NOT NULL)", manageError);
+
+		var lastQuery = client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, data CHAR(5000) NOT NULL)", manageError);
+
+		//
+		lastQuery.on("end", function() {
+			client.end();
+		})
 	});
 }
 
 intialize();
 
-exports.getObject = function(filename) {
-	// if(filename.contai)
+exports.getShop = function(shop, callback) {
+	pg.connect(process.env.DATABASE_URL, function(err, client) {
+		if (err) throw err;
+
+		client.query("SELECT data FROM shops WHERE shop=" + shop, function(err, result) {
+			if (err)
+				throw err;
+
+			if (result.rows.length > 0) {
+				callback(JSON.parse(result.rows[0].data));
+			} else {
+				console.log("ERROR: FILE " + filename + " NOT FOUND.")
+				callback(undefined);
+			}
+		});
+	});
+};
+
+exports.getWebhook = function(hook_id, callback) {
+	pg.connect(process.env.DATABASE_URL, function(err, client) {
+		if (err) throw err;
+
+		client.query("SELECT data FROM webhooks WHERE webhook_id=" + hook_id, function(err, result) {
+			if (err) throw err;
+
+			if (result.rows.length > 0) {
+				callback(JSON.parse(result.rows[0].data));
+			} else {
+				console.log("ERROR: FILE " + filename + " NOT FOUND.")
+				callback(undefined);
+			}
+		});
+	});
+};
 
 
+exports.saveShop = function(shop, object) {
+	pg.connect(process.env.DATABASE_URL, function(err, client) {
+		if (err) throw err;
+
+		client.query("DELETE FROM shops WHERE shop=$1", [shop], function(err, result) {
+			if (err) throw err;
+		});
+
+		client.query("INSERT INTO shops (shop, data) VALUES ($1, $2)", [shop, JSON.stringify(object)], function(err, result) {
+			if (err) throw err;
+		});
+	});
+}
+exports.saveWebhook = function(webhook_id, object) {
+	pg.connect(process.env.DATABASE_URL, function(err, client) {
+		if (err) throw err;
+
+		client.query("DELETE FROM webhooks WHERE webhook_id=$1", [webhook_id], function(err, result) {
+			if (err) throw err;
+		});
+
+		client.query("INSERT INTO webhooks (webhook_id, data) VALUES ($1, $2)", [webhook_id, JSON.stringify(object)], function(err, result) {
+			if (err) throw err;
+		});
+	});
+}
+
+//depricated
+exports.getObjectold = function(filename) {
+	console.log("db.getObject() is depricated");
 	if (fs.existsSync(exports.dbpath + filename)) {
 		return JSON.parse(fs.readFileSync(exports.dbpath + filename));
 	} else {
@@ -125,7 +186,9 @@ exports.getObject = function(filename) {
 	}
 }
 
-exports.saveObject = function(filename, object) {
+//depricated
+exports.saveObjectold = function(filename, object) {
+	console.log("db.saveObject() is depricated");
 	fs.writeFileSync(exports.dbpath + filename, JSON.stringify(object));
 }
 
