@@ -78,7 +78,7 @@ filename = damiansstoree.myshopify.com (shop name)
 var fs = require('fs');
 var pg = require('pg');
 
-// process.env['DATABASE_URL'] = 'postgres://rrgnptrdfrxley:OPtMCtDlA1uoqyZ6-rrJyLihi6@ec2-107-21-223-147.compute-1.amazonaws.com:5432/d1frkvg5roavqs';
+process.env['DATABASE_URL'] = 'postgres://rrgnptrdfrxley:OPtMCtDlA1uoqyZ6-rrJyLihi6@ec2-107-21-223-147.compute-1.amazonaws.com:5432/d1frkvg5roavqs';
 exports.dbpath = "db/"
 
 function intialize() {
@@ -99,9 +99,9 @@ function intialize() {
 				throw err;
 		}
 
-		client.query("CREATE TABLE IF NOT EXISTS shops(shop text PRIMARY KEY NOT NULL, data CHAR(5000) NOT NULL)", manageError);
+		client.query("CREATE TABLE IF NOT EXISTS shops(shop text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError);
 
-		var lastQuery = client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, data CHAR(5000) NOT NULL)", manageError);
+		var lastQuery = client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError);
 
 		//
 		lastQuery.on("end", function() {
