@@ -7,55 +7,47 @@ var _ = require('lodash');
 
 exports.handleWebhook = function(req, res) {
    console.log("RECIEVED A WEBHOOK CALL!!");
-   var finished = _.after(2, function() {
-      console.log(webhookObject);
-      console.log(shopObject);
-      console.log(req.body);
 
-      console.log("COMPILING JADE");
-      var jadePath = "email_templates/" + webhookObject.info.topic + ".jade";
-      console.log(jadePath);
-
-      var emailContent = jade.renderFile(jadePath, {
-         webhook: webhookObject,
-         shop: shopObject,
-         body: req.body
-      }); // Gets the JADE template file and compiles it
-
-      var emailTo = webhookObject.email || shopObject.defaultEmail;
-
-
-      console.log("SENDING EMAIL");
-      transporter.sendMail({
-            from: 'emailmywebhooks@noreply',
-            to: emailTo,
-            subject: subjectFromTopic(webhookObject.info.topic),
-            // text: emailContent
-            html: emailContent
-         },
-         function(error, info) {
-            if (error) {
-               return console.log(error);
-            }
-            res.status(200).send();
-         });
-   });
-
-   var webhookObject;
-   db.getWebhook(req.query.id, function(object) {
-      webhookObject = object;
+   db.getWebhook(req.query.id, function(webhookObject) {
       console.log("got the webhook")
-      finished();
+
+      db.getShop(shop, function(shopObject) {
+         console.log("got the shop")
+
+         console.log(webhookObject);
+         console.log(shopObject);
+         console.log(req.body);
+
+         console.log("COMPILING JADE");
+         var jadePath = "email_templates/" + webhookObject.info.topic + ".jade";
+         console.log(jadePath);
+
+         var emailContent = jade.renderFile(jadePath, {
+            webhook: webhookObject,
+            shop: shopObject,
+            body: req.body
+         }); // Gets the JADE template file and compiles it
+
+         var emailTo = webhookObject.email || shopObject.defaultEmail;
+
+
+         console.log("SENDING EMAIL");
+         transporter.sendMail({
+               from: 'emailmywebhooks@noreply',
+               to: emailTo,
+               subject: subjectFromTopic(webhookObject.info.topic),
+               // text: emailContent
+               html: emailContent
+            },
+            function(error, info) {
+               if (error) {
+                  return console.log(error);
+               }
+               res.status(200).send();
+            });
+
+      }); //db.getObject("users/" + webhookObject.shop);
    }); //db.getObject("webhooks/" + req.query.id);
-
-   var shopObject;
-   db.getShop(req.query.id, function(object) {
-      shopObject = object;
-      console.log("got the shop")
-      finished();
-   }); //db.getObject("users/" + webhookObject.shop);
-
-
 
 }
 
