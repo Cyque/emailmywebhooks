@@ -11,7 +11,7 @@ exports.handleWebhook = function(req, res) {
    db.getWebhook(req.query.id, function(webhookObject) {
       console.log("got the webhook")
 
-      db.getShop(shop, function(shopObject) {
+      db.getShop(webhookObject.shop, function(shopObject) {
          console.log("got the shop")
 
          console.log(webhookObject);
