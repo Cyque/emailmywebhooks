@@ -44,12 +44,14 @@ exports.handleWebhook = function(req, res) {
    var webhookObject;
    db.getWebhook(req.query.id, function(object) {
       webhookObject = object;
+      console.log("got the webhook")
       finished();
    }); //db.getObject("webhooks/" + req.query.id);
 
    var shopObject;
    db.getShop(req.query.id, function(object) {
       shopObject = object;
+      console.log("got the shop")
       finished();
    }); //db.getObject("users/" + webhookObject.shop);
 
