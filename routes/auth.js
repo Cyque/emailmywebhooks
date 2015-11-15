@@ -168,6 +168,6 @@ function addAccessTokenFor(shop, accessToken) {
 	db.getShop(shop, function(shopObject) {
 		shopObject.accessToken = accessToken;
 
-		db.saveObject(shop, shopObject);
+		db.saveShop(shop, shopObject);
 	});
 }
