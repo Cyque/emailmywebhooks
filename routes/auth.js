@@ -66,62 +66,57 @@ exports.confirm = function(req, res) {
 	var token = req.query.state;
 
 
-	//CHECK AUTH CONFIRMS HERE
-	//check shop, state, and confirm OAUTH hmac
-
-
-
+	//CHECK AUTH CONFIRMS
 	oauth.confirm(req.query, function(isValid) {
-		if (!isValid) res.send("Failed Authentication.");
-	});
+		if (!isValid) return res.send("Failed Authentication.");
+		var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
+		//GET access_token
+		request.post(
+			accessURL, {
+				form: {
+					client_id: api_key,
+					client_secret: secret,
+					code: code,
+				}
+			},
+			function(error, response, body) {
+				if (!error && response.statusCode == 200) {
+					//body format: {"access_token":"xxxxx ... xxxx"}
 
-	var accessURL = "https://" + shop + "/admin/oauth/access_token";
+					var accTok = JSON.parse(body).access_token;
+					addAccessTokenFor(shop, accTok);
 
-	request.post(
-		accessURL, {
-			form: {
-				client_id: api_key,
-				client_secret: secret,
-				code: code,
-			}
-		},
-		function(error, response, body) {
-			if (!error && response.statusCode == 200) {
-				//body format: {"access_token":"xxxxx ... xxxx"}
+					//get shop information
 
-				var accTok = JSON.parse(body).access_token;
-				addAccessTokenFor(shop, accTok);
-
-				//get shop information
-
-				request.get(
-					"https://" + shop + "/admin/shop.json", {
-						auth: {
-							user: process.env['api_key'],
-							pass: process.env['shared_secret']
+					request.get(
+						"https://" + shop + "/admin/shop.json", {
+							auth: {
+								user: process.env['api_key'],
+								pass: process.env['shared_secret']
+							},
+							headers: {
+								'X-Shopify-Access-Token': accTok
+							}
 						},
-						headers: {
-							'X-Shopify-Access-Token': accTok
-						}
-					},
-					function(error, response, body) {
-						if (!error && response.statusCode == 200) {
-							addShopInfoFor(shop, JSON.parse(body).shop);
+						function(error, response, body) {
+							if (!error && response.statusCode == 200) {
+								addShopInfoFor(shop, JSON.parse(body).shop);
 
-							res.cookie('GLOB_API_KEY', api_key);
-							res.cookie('GLOB_SHOP', shop);
-							//FULLY AUTHENTICATED HERE
-							res.redirect('home');
-						} else {
-							console.log("ERROR WITH FETCHING SHOP INFO")
-							res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
-						}
-					});
+								res.cookie('GLOB_API_KEY', api_key);
+								res.cookie('GLOB_SHOP', shop);
+								//FULLY AUTHENTICATED HERE
+								res.redirect('home');
+							} else {
+								console.log("ERROR WITH FETCHING SHOP INFO")
+								res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
+							}
+						});
 
 
-			}
-		});
+				}
+			});
+	});
 };
 
 
