@@ -121,6 +121,7 @@ exports.getShop = function(shop, callback) {
 				throw err;
 
 			if (result.rows.length > 0) {
+				console.log("Recieved shop " + shop);
 				callback(JSON.parse(result.rows[0].data));
 			} else {
 				console.log(shop + " NOT FOUND IN DB.")
@@ -176,7 +177,7 @@ exports.saveWebhook = function(webhook_id, object) {
 }
 
 //depricated
-exports.getObjectold = function(filename) {
+exports.getObject_old = function(filename) {
 	console.log("db.getObject() is depricated");
 	if (fs.existsSync(exports.dbpath + filename)) {
 		return JSON.parse(fs.readFileSync(exports.dbpath + filename));
@@ -187,7 +188,7 @@ exports.getObjectold = function(filename) {
 }
 
 //depricated
-exports.saveObjectold = function(filename, object) {
+exports.saveObject_old = function(filename, object) {
 	console.log("db.saveObject() is depricated");
 	fs.writeFileSync(exports.dbpath + filename, JSON.stringify(object));
 }
