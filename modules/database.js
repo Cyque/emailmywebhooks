@@ -123,7 +123,7 @@ exports.getShop = function(shop, callback) {
 			if (result.rows.length > 0) {
 				callback(JSON.parse(result.rows[0].data));
 			} else {
-				console.log("ERROR: " + shop + " NOT FOUND.")
+				console.log(shop + " NOT FOUND IN DB.")
 				callback(undefined);
 			}
 		});
@@ -134,13 +134,13 @@ exports.getWebhook = function(hook_id, callback) {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
 
-		client.query("SELECT data FROM webhooks WHERE webhook_id=" + hook_id, function(err, result) {
+		client.query("SELECT data FROM webhooks WHERE webhook_id=($1)", [hook_id], function(err, result) {
 			if (err) throw err;
 
 			if (result.rows.length > 0) {
 				callback(JSON.parse(result.rows[0].data));
 			} else {
-				console.log("ERROR: FILE " + filename + " NOT FOUND.")
+				console.log(hook_id + " NOT FOUND IN DB.")
 				callback(undefined);
 			}
 		});
@@ -152,7 +152,7 @@ exports.saveShop = function(shop, object) {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
 
-		client.query("DELETE FROM shops WHERE shop=$1", [shop], function(err, result) {
+		client.query("DELETE FROM shops WHERE shop=($1)", [shop], function(err, result) {
 			if (err) throw err;
 		});
 
@@ -165,7 +165,7 @@ exports.saveWebhook = function(webhook_id, object) {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
 
-		client.query("DELETE FROM webhooks WHERE webhook_id=$1", [webhook_id], function(err, result) {
+		client.query("DELETE FROM webhooks WHERE webhook_id=($1)", [webhook_id], function(err, result) {
 			if (err) throw err;
 		});
 
