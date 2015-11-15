@@ -7,7 +7,8 @@ var _ = require('lodash');
 
 exports.handleWebhook = function(req, res) {
    console.log("RECIEVED A WEBHOOK CALL!!");
-
+   var finished;
+   
    var webhookObject;
    db.getWebhook(req.query.id, function(object) {
       webhookObject = object;
