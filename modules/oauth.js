@@ -21,10 +21,10 @@ function isValidShop(query, callback) {
 		db.getShop(shop, function(shopObject) {
 			if (shopObject != undefined)
 				callback(shopObject.nonce == nonce);
+			else
+				callback(false);
 		});
-	}
-
-	callback(false);
+	} else callback(false);
 }
 
 function isValidHmac(query) {
