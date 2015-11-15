@@ -68,7 +68,12 @@ exports.confirm = function(req, res) {
 
 	//CHECK AUTH CONFIRMS
 	oauth.confirm(req.query, function(isValid) {
-		if (!isValid) return res.send("Failed Authentication.");
+		if (!isValid) {
+			console.log("Failed verification")
+			return res.send("Failed Authentication."); //oauth verification failed
+		}
+		console.log("Passed verification")
+
 		var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
 		//GET access_token
