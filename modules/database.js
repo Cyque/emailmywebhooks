@@ -123,7 +123,7 @@ exports.getShop = function(shop, callback) {
 			if (result.rows.length > 0) {
 				callback(JSON.parse(result.rows[0].data));
 			} else {
-				console.log("ERROR: FILE " + filename + " NOT FOUND.")
+				console.log("ERROR: " + shop + " NOT FOUND.")
 				callback(undefined);
 			}
 		});
