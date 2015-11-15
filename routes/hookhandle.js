@@ -7,21 +7,6 @@ var _ = require('lodash');
 
 exports.handleWebhook = function(req, res) {
    console.log("RECIEVED A WEBHOOK CALL!!");
-   var finished;
-   
-   var webhookObject;
-   db.getWebhook(req.query.id, function(object) {
-      webhookObject = object;
-      finished();
-   }); //db.getObject("webhooks/" + req.query.id);
-
-   var shopObject;
-   db.getShop(req.query.id, function(object) {
-      shopObject = object;
-      finished();
-   }); //db.getObject("users/" + webhookObject.shop);
-
-
    var finished = _.after(2, function() {
       console.log(webhookObject);
       console.log(shopObject);
@@ -55,6 +40,21 @@ exports.handleWebhook = function(req, res) {
             res.status(200).send();
          });
    });
+
+   var webhookObject;
+   db.getWebhook(req.query.id, function(object) {
+      webhookObject = object;
+      finished();
+   }); //db.getObject("webhooks/" + req.query.id);
+
+   var shopObject;
+   db.getShop(req.query.id, function(object) {
+      shopObject = object;
+      finished();
+   }); //db.getObject("users/" + webhookObject.shop);
+
+
+
 }
 
 
