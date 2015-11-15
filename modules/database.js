@@ -116,7 +116,7 @@ exports.getShop = function(shop, callback) {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
 
-		client.query("SELECT data FROM shops WHERE shop=" + shop, function(err, result) {
+		client.query("SELECT data FROM shops WHERE shop=($1)", [shop], function(err, result) {
 			if (err)
 				throw err;
 
