@@ -91,7 +91,7 @@ function intialize() {
 		// client.query("DROP TABLE IF EXISTS users");
 		// client.query("DROP TABLE IF EXISTS shops");
 		// client.query("DROP TABLE IF EXISTS webhooks");
-
+ 
 		console.log('Postgres: creating tables');
 
 		var manageError = function(err, result) {
