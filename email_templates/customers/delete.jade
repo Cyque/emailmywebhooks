@@ -1,0 +1,19 @@
+doctype html
+html
+body
+	if shop.shopInfo.name
+		div Hello #{shop.shopInfo.name},
+	else 
+		div Hello Shop Manager,
+	br
+	div 
+		| Your customer,
+		|#{body.first_name}
+			if body.last_name
+				|  #{body.last_name}
+		| , has been deleted.
+	br
+	div 
+		| Regards,
+	div
+		| EmailMyWebhooks
