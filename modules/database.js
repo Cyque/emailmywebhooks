@@ -87,10 +87,10 @@ function intialize() {
 
 		console.log('Connected to postgres!');
 
-		console.log('Postgres: deleting tables')
-		client.query("DROP TABLE IF EXISTS users");
-		client.query("DROP TABLE IF EXISTS shops");
-		client.query("DROP TABLE IF EXISTS webhooks");
+		// console.log('Postgres: deleting tables')
+		// client.query("DROP TABLE IF EXISTS users");
+		// client.query("DROP TABLE IF EXISTS shops");
+		// client.query("DROP TABLE IF EXISTS webhooks");
 
 		console.log('Postgres: creating tables');
 
