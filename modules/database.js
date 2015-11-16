@@ -101,7 +101,7 @@ function intialize() {
 		client.query("CREATE TABLE IF NOT EXISTS shops(shop text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError);
 
 		client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError);
-
+ 
 		client.query("SELECT * FROM webhooks", function(err, result) { 
 			if(err) throw err;
 			console.log(result.rows);
