@@ -120,7 +120,9 @@ exports.getShop = function(shop, callback) {
 		client.query("SELECT data FROM shops WHERE shop=($1)", [shop], function(err, result) {
 			if (err)
 				throw err;
+			client.end();
 
+			
 			if (result.rows.length > 0) {
 				console.log("Recieved shop " + shop);
 				callback(JSON.parse(result.rows[0].data));
@@ -135,9 +137,10 @@ exports.getShop = function(shop, callback) {
 exports.getWebhook = function(hook_id, callback) {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
-
+		
 		client.query("SELECT data FROM webhooks WHERE webhook_id=($1)", [hook_id], function(err, result) {
 			if (err) throw err;
+			client.end();
 
 			if (result.rows.length > 0) {
 				callback(JSON.parse(result.rows[0].data));
@@ -160,6 +163,7 @@ exports.saveShop = function(shop, object) {
 
 		client.query("INSERT INTO shops (shop, data) VALUES ($1, $2)", [shop, JSON.stringify(object)], function(err, result) {
 			if (err) throw err;
+			client.end();
 		});
 	});
 }
@@ -173,6 +177,7 @@ exports.saveWebhook = function(webhook_id, object) {
 
 		client.query("INSERT INTO webhooks (webhook_id, data) VALUES ($1, $2)", [webhook_id, JSON.stringify(object)], function(err, result) {
 			if (err) throw err;
+			client.end();
 		});
 	});
 }
