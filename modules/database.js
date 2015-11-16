@@ -88,10 +88,9 @@ function intialize() {
 		console.log('Connected to postgres!');
 
 		// console.log('Postgres: deleting tables')
-		// client.query("DROP TABLE IF EXISTS users");
-		// client.query("DROP TABLE IF EXISTS shops");
-		// client.query("DROP TABLE IF EXISTS webhooks");
- 
+		client.query("DROP TABLE IF EXISTS shops");
+		client.query("DROP TABLE IF EXISTS webhooks");
+
 		console.log('Postgres: creating tables');
 
 		var manageError = function(err, result) {
@@ -99,9 +98,19 @@ function intialize() {
 				throw err;
 		}
 
-		client.query("CREATE TABLE IF NOT EXISTS shops(shop text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError); 
+		client.query("CREATE TABLE IF NOT EXISTS shops(shop text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError);
 
-		var lastQuery = client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError);
+		client.query("CREATE TABLE IF NOT EXISTS webhooks(webhook_id text PRIMARY KEY NOT NULL, data text NOT NULL)", manageError);
+
+		client.query("SELECT * FROM webhooks", function(err, result) {
+			if(err) throw err;
+			console.log(result.rows);
+		});
+
+		var lastQuery = client.query("SELECT * FROM shops", function(err, result) {
+			if(err) throw err;
+			console.log(result.rows);
+		});
 
 		//
 		lastQuery.on("end", function() {
@@ -180,6 +189,30 @@ exports.saveWebhook = function(webhook_id, object) {
 		});
 	});
 }
+
+
+
+exports.deleteShop = function(shop) {
+	pg.connect(process.env.DATABASE_URL, function(err, client) {
+		if (err) throw err;
+
+		client.query("DELETE FROM shops WHERE shop=($1)", [shop], function(err, result) {
+			client.end();
+			if (err) throw err;
+		});
+	});
+};
+
+exports.deleteWebhook = function(webhook_id) {
+	pg.connect(process.env.DATABASE_URL, function(err, client) {
+		if (err) throw err;
+
+		client.query("DELETE FROM webhooks WHERE webhook_id=($1)", [webhook_id], function(err, result) {
+			client.end();
+			if (err) throw err;
+		});
+	});
+};
 
 //depricated
 exports.getObject_old = function(filename) {

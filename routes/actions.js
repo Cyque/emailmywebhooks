@@ -63,7 +63,10 @@ exports.createWebhook = function(req, res) {
 					var webhooks = JSON.parse(body).webhooks;
 
 					for (var i = 0; i < webhooks.length; i++) {
+						//delete db webhook
+						db.deleteWebhook(webhooks[i].id);
 
+						//delete webhook on shopify
 						request.del(url + "/admin/webhooks/" + webhooks[i].id + ".json", {
 								auth: {
 									user: process.env['api_key'],
@@ -171,6 +174,10 @@ function deleteWebhook(callprops, topic, callback) {
 				});
 
 				for (var i = 0; i < webhooks.length; i++) {
+					//delete the webhook in the DB
+					db.deleteWebhook(webhooks[i].id);
+
+					//send delete request to shopify
 					request.del(callprops.baseUrl + "/admin/webhooks/" + webhooks[i].id + ".json", {
 							auth: callprops.auth,
 							headers: callprops.headers
