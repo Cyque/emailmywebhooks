@@ -108,8 +108,9 @@ exports.confirm = function(req, res) {
 								if (!error && response.statusCode == 200) {
 									addShopInfoFor(shop, JSON.parse(body).shop);
 
-									res.cookie('GLOB_API_KEY', api_key, { httpOnly: true });
-									res.cookie('GLOB_SHOP', shop, { httpOnly: true });
+									res.cookie('GLOB_API_KEY', api_key, { secure: true });
+									res.cookie('GLOB_SHOP', shop, { secure: true });
+									// res.cookie('shopName', shop, { httpOnly: true });
 									//FULLY AUTHENTICATED HERE
 									res.redirect('home');
 								} else {
