@@ -1,0 +1,12 @@
+doctype html
+html
+head
+	script(src="home.js")
+body
+	form(method="POST", action="action/setdefaultemail")
+		input(type="email", name="email", value="#{defaultEmail}")
+		input(type="submit", value="Change target email")
+
+	div
+		input(type="checkbox", onchange="toggleWebhook(this.checked, 'customer_create')" checked="#{hasWebhook.customer_create}")
+		| notify me when a customer is created.

@@ -106,13 +106,22 @@ exports.confirm = function(req, res) {
 							},
 							function(error, response, body) {
 								if (!error && response.statusCode == 200) {
-									addShopInfoFor(shop, JSON.parse(body).shop);
+									var bodyP = JSON.parse(body);
+									addShopInfoFor(shop, bodyP.shop);
 
 									res.cookie('GLOB_API_KEY', api_key);
 									res.cookie('GLOB_SHOP', shop);
-									// res.cookie('shopName', shop, { httpOnly: true });
+
+
 									//FULLY AUTHENTICATED HERE
-									res.redirect('home');
+
+									// res.redirect('home');
+									res.render('home', {
+										defaultEmail: bodyP.shop.email,
+										hasWebhook: {
+											customer_create:true
+										} 
+									});
 								} else {
 									console.log("ERROR WITH FETCHING SHOP INFO")
 									res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
