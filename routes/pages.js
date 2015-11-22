@@ -19,7 +19,8 @@ exports.home = function(req, res) {
 			res.send("Hmac validation failed");
 		}
 	};
-
+	
+	
 	oauth.verifyRequest(req, hmacVerified);
 
 	//res.sendfile('public/html/home.html');
