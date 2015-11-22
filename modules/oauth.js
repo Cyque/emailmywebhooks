@@ -21,7 +21,7 @@ function isValidShop(query, callback) {
 
 		db.getShop(shop, function(shopObject) {
 			if (shopObject != undefined)
-				if(shopObject.nonce == nonce)
+				if(shopObject.nonce == nonce || nonce == undefined)
 					callback(true, null);
 				else
 					callback(false, "nonce not matched: " + shopObject.nonce + " " + nonce);
