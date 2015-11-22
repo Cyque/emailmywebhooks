@@ -10,6 +10,7 @@ exports.confirm = function(query, callback) {
 function isValidShop(query, callback) {
 	var shop = query.shop;
 	var nonce = query.state;
+	console.log(query);
 
 	//validate shop name. Must end with myshopify.com and must not contain characters other than letters (a-z), numbers (0-9), dots, and hyphens. 
 	var suffix = "myshopify.com";
@@ -20,7 +21,6 @@ function isValidShop(query, callback) {
 
 		db.getShop(shop, function(shopObject) {
 			if (shopObject != undefined)
-
 				if(shopObject.nonce == nonce)
 					callback(true, null);
 				else
