@@ -175,6 +175,7 @@ exports.saveShop = function(shop, object) {
 		});
 	});
 }
+
 exports.saveWebhook = function(webhook_id, object) {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
