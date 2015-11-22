@@ -2,8 +2,8 @@ var crypto = require('crypto');
 var db = require('../modules/database.js')
 
 exports.confirm = function(query, callback) {
-	isValidShop(query, function(isValid) {
-		callback(isValid && isValidHmac(query));
+	isValidShop(query, function(isValid, message) {
+		callback(isValid && isValidHmac(query), message);
 	});
 }
 
@@ -17,14 +17,14 @@ function isValidShop(query, callback) {
 
 		//validate shopObject exists and nonce is valid
 		// var shopObject = db.getObject("users/" + shop);
-		
+
 		db.getShop(shop, function(shopObject) {
 			if (shopObject != undefined)
-				callback(shopObject.nonce == nonce);
+				callback(shopObject.nonce == nonce, null);
 			else
-				callback(false);
+				callback(false, "shopObject not found");
 		});
-	} else callback(false);
+	} else callback(false, "improper shop suffix");
 }
 
 function isValidHmac(query) {
@@ -37,7 +37,7 @@ function isValidHmac(query) {
 	var givenHmac = query.hmac;
 
 	if (givenHmac != calcedHmac) {
-		console.log("FAILED Authentication");
+		console.log("FAILED HMAC");
 		return false;
 	}
 

@@ -61,10 +61,10 @@ exports.confirm = function(req, res) {
 
 
 	//CHECK AUTH CONFIRMS
-	oauth.confirm(req.query, function(isValid) {
+	oauth.confirm(req.query, function(isValid, message) {
 		if (!isValid) {
-			console.log("Failed verification");
-			res.send("Failed Authentication."); //oauth verification failed
+			console.log("Failed verification: " + message);
+			res.send("Failed Authentication." + message); //oauth verification failed
 		} else {
 			console.log("Passed verification")
 
