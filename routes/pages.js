@@ -19,5 +19,5 @@ exports.home = function(req, res) {
 
 	oauth.verifyRequest(req, hmacVerified);
 
-	res.sendfile('public/html/home.html');
+	//res.sendfile('public/html/home.html');
 };
