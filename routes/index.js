@@ -4,6 +4,6 @@
 // };
 
 exports.auth = require("./auth.js");
-exports.directs = require("./directs.js");
+exports.pages = require("./pages.js");
 exports.actions = require("./actions.js");
 exports.hookhandle = require("./hookhandle.js");
