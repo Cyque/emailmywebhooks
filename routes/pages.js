@@ -9,6 +9,8 @@ var oauth = require('../modules/oauth.js');
 exports.home = function(req, res) {
 
 	console.log("FULL CONFIRM URL:" + req.originalUrl);
+	console.log(req.query);
+	
 	function hmacVerified(isValid) {
 		if(isValid) {
 			res.cookie('GLOB_API_KEY', process.env.api_key);
