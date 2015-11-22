@@ -163,6 +163,7 @@ function registerTokenFor(shop, callback) {
 			shopObject.nonce = nonce;
 		} else {
 			nonce = crypto.randomBytes(16).toString('hex');
+			console.log("registerTokenFor generated nonce=" + nonce);
 			shopObject = {
 				shop: shop,
 				nonce: nonce
