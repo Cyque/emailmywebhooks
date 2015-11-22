@@ -5,10 +5,19 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var routes = require('./routes/');
+var session = require('express-session')
 
 var app = express();
+
+
+
+// SET PROCESS ENVIRONMENT VARS: (TO BE REMOVED AT LAUNCH)
+process.env['api_key'] = '4bf79cc58eecd7f509f94ce7cd61c6b0';
+process.env['shared_secret'] = '1604e972c082a4a3bb6384c1460f3458';
+process.env['host'] = 'https://emailmywebhooks.herokuapp.com/';
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +38,15 @@ app.get('/home', routes.pages.home);
 app.get('/action/createhook', routes.actions.createWebhook);
 app.post('/action/setdefaultemail', routes.actions.setDefaultEmail);
 app.post('/handlewebhook', routes.hookhandle.handleWebhook);
+
+
+//configure the session manager
+app.use(session({
+  secret: process.env['shared_secret'],
+  resave: false,
+  saveUninitialized: true
+}));
+
 
 
 /// catch 404 and forwarding to error handler
