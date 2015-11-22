@@ -53,11 +53,13 @@ exports.confirm = function(req, res) {
 	// state=6d256e1719ade112a00711e5d64de6e0&\
 	// timestamp=1446246040
 
+	console.log(req.query);
 	var api_key = process.env['api_key'];
 	var secret = process.env['shared_secret'];
 	var shop = req.query.shop;
 	var code = req.query.code;
 	var token = req.query.state;
+	console.log(req.query);
 
 
 	//CHECK AUTH CONFIRMS
