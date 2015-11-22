@@ -72,6 +72,8 @@ exports.confirm = function(req, res) {
 
 			var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
+			
+			
 			//GET access_token
 			request.post(
 				accessURL, {
