@@ -87,7 +87,7 @@ exports.confirm = function(req, res) {
 
 						var accTok = JSON.parse(body).access_token;
 						addAccessTokenFor(shop, accTok);
-
+						console.log("Got access_token");
 						//get shop information
 
 						request.get(
@@ -105,9 +105,12 @@ exports.confirm = function(req, res) {
 									var bodyP = JSON.parse(body);
 									addShopInfoFor(shop, bodyP.shop);
 
+									console.log("Got shop iinfo");
+
 									//FULLY AUTHENTICATED HERE
 
 									db.getShop(shop, function(shopObject) {
+										console.log("Got shopobject");
 
 										res.cookie('GLOB_API_KEY', api_key);
 										res.cookie('GLOB_SHOP', shop);
@@ -121,7 +124,7 @@ exports.confirm = function(req, res) {
 												},
 												headers: {
 													'X-Shopify-Access-Token': accTok
-												}
+												}	
 											},
 											function(error, response, body) {
 												var webhooks = JSON.parse(body).webhooks;
