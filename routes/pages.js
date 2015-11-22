@@ -17,7 +17,7 @@ exports.home = function(req, res) {
 		}
 	};
 
-	oauth.verifyRequest(req, hmacValidated);
+	oauth.verifyRequest(req, hmacVerified);
 
 	res.sendfile('public/html/home.html');
 };
