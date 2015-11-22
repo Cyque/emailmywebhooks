@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-var db = require('../modules/database.js')
+var db = require('../modules/database.js');
 
 exports.confirm = function(query, callback) {
 	isValidShop(query, function(isValid, message) {
@@ -30,6 +30,18 @@ function isValidShop(query, callback) {
 		});
 	} else callback(false, "improper shop suffix");
 }
+
+exports.verifyRequest = function (req, callback) {
+	// callback(isValid:bool])
+	callback(isValidHmac(req.query) && isValidShopName(query.shop));
+}
+
+
+function isValidShopName(shop) {
+	var suffix = "myshopify.com";
+	return (shop.indexOf(suffix, shop.length - suffix.length) != -1 && shop.indexOf("([^0-9a-z\.\-])+") == -1);
+}
+
 
 function isValidHmac(query) {
 	var shared_secret = process.env['shared_secret'];
