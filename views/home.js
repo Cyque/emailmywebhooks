@@ -1,5 +1,5 @@
 
-
+console.log("loaded home.js");
 function toggleWebhook(checked, webhookName) {
 
 	if (checked) {
