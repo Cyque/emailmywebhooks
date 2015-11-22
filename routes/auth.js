@@ -54,6 +54,7 @@ exports.confirm = function(req, res) {
 	// timestamp=1446246040
 
 	console.log("FULL CONFIRM URL:" + req.originalUrl);
+	console.log(req.query);
 	var api_key = process.env['api_key'];
 	var secret = process.env['shared_secret'];
 	var shop = req.query.shop;
