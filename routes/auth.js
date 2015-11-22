@@ -116,7 +116,7 @@ function sendShop(res, shop) {
 					pass: process.env['shared_secret']
 				},
 				headers: {
-					'X-Shopify-Access-Token': shopObject.accessToken;
+					'X-Shopify-Access-Token': shopObject.accessToken
 				}
 			},
 			function(error, response, body) {
