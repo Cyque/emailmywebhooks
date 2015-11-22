@@ -1,6 +1,5 @@
 
 
-
 function toggleWebhook(checked, webhookName) {
 
 	if (checked) {
