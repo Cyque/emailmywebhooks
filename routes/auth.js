@@ -11,7 +11,6 @@ var oauth = require('../modules/oauth.js')
 
 
 
-
 exports.permission = function(req, res) {
 
 	//WILL RECIEVE THIS FIRST
@@ -64,7 +63,7 @@ exports.confirm = function(req, res) {
 	//CHECK AUTH CONFIRMS
 	oauth.confirm(req.query, function(isValid) {
 		if (!isValid) {
-			console.log("Failed verification")
+			console.log("Failed verification");
 			res.send("Failed Authentication."); //oauth verification failed
 		} else {
 			console.log("Passed verification")
@@ -104,19 +103,9 @@ exports.confirm = function(req, res) {
 									var bodyP = JSON.parse(body);
 									addShopInfoFor(shop, bodyP.shop);
 
-									res.cookie('GLOB_API_KEY', api_key);
-									res.cookie('GLOB_SHOP', shop);
-
-
+									req.session.validated = true;
 									//FULLY AUTHENTICATED HERE
-
-									// res.redirect('home');
-									res.render('home', {
-										defaultEmail: bodyP.shop.email,
-										hasWebhook: {
-											customer_create:true
-										} 
-									});
+									sendHome();
 								} else {
 									console.log("ERROR WITH FETCHING SHOP INFO")
 									res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
@@ -130,6 +119,20 @@ exports.confirm = function(req, res) {
 	});
 };
 
+
+function sendHome() {
+	res.cookie('GLOB_API_KEY', api_key);
+	res.cookie('GLOB_SHOP', shop);
+
+
+	// res.redirect('home');
+	res.render('home', {
+		defaultEmail: bodyP.shop.email,
+		hasWebhook: {
+			customer_create: true
+		}
+	});
+}
 
 
 /*	Creates a unique token 	*/

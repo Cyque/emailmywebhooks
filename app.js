@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./routes/');
-var session = require('express-session')
+// var session = require('express-session')
 
 var app = express();
 
@@ -40,12 +40,12 @@ app.post('/action/setdefaultemail', routes.actions.setDefaultEmail);
 app.post('/handlewebhook', routes.hookhandle.handleWebhook);
 
 
-//configure the session manager
-app.use(session({
-  secret: process.env['shared_secret'],
-  resave: false,
-  saveUninitialized: true
-}));
+//**Removed**configure the session manager
+// app.use(session({
+//   secret: process.env['shared_secret'],
+//   resave: false,
+//   saveUninitialized: true
+// }));
 
 
 
