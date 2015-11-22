@@ -17,7 +17,7 @@ function isValidShop(query, callback) {
 
 		//validate shopObject exists and nonce is valid
 		// var shopObject = db.getObject("users/" + shop);
-
+		
 		db.getShop(shop, function(shopObject) {
 			if (shopObject != undefined)
 				callback(shopObject.nonce == nonce);
