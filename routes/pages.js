@@ -1,8 +1,11 @@
 
 
-
+//imports
 var oauth = require('../modules/oauth.js');
 
+
+
+//home page
 exports.home = function(req, res) {
 
 

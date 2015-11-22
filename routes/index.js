@@ -5,5 +5,6 @@
 
 exports.auth = require("./auth.js");
 exports.pages = require("./pages.js");
+console.log("added" + exports.pages);
 exports.actions = require("./actions.js");
 exports.hookhandle = require("./hookhandle.js");
