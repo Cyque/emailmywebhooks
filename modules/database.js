@@ -187,6 +187,16 @@ exports.saveWebhook = function(webhook_id, object) {
 			client.end();
 			if (err) throw err;
 		});
+
+		// //add the webhook to the shop objects webhooks list
+		// exports.getShop(object.shop, function(shopObject) {
+		// 	if(shopObject.webhooks == undefined)
+		// 		shopObject.webhooks = [];
+		// 	if(shopObject.webhooks.indexOf(webhook_id) == -1)
+		// 		shopObject.webhooks.push(webhook_id);
+
+		// 	exports.saveObject(object.shop, shopObject);
+		// });
 	});
 }
 
@@ -203,7 +213,7 @@ exports.deleteShop = function(shop) {
 	});
 };
 
-exports.deleteWebhook = function(webhook_id) {
+exports.deleteWebhook = function(webhook_id, shop) {
 	pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
 
@@ -211,6 +221,14 @@ exports.deleteWebhook = function(webhook_id) {
 			client.end();
 			if (err) throw err;
 		});
+
+		// //delete the webhook from the shop objects webhooks list
+		// exports.getShop(shop, function(shopObject) {
+
+		// 	shopObject.webhooks.push(webhook_id);
+
+		// 	exports.saveObject(object.shop, shopObject);
+		// });
 	});
 };
 

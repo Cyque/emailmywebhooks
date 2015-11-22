@@ -103,9 +103,41 @@ exports.confirm = function(req, res) {
 									var bodyP = JSON.parse(body);
 									addShopInfoFor(shop, bodyP.shop);
 
-									req.session.validated = true;
 									//FULLY AUTHENTICATED HERE
-									sendHome();
+
+									db.getShop(shop, function(shopObject) {
+
+										res.cookie('GLOB_API_KEY', api_key);
+										res.cookie('GLOB_SHOP', shop);
+
+
+										//get a list of all the webhooks already registered and push them to the homepage
+										request.get("https://" + shop + "/admin/webhooks.json", {
+												auth: {
+													user: process.env['api_key'],
+													pass: process.env['shared_secret']
+												},
+												headers: {
+													'X-Shopify-Access-Token': accTok
+												}
+											},
+											function(error, response, body) {
+												var webhooks = JSON.parse(body).webhooks;
+
+												var hasWebhook = {};
+												for (var i = 0; i < webhooks.length; i++) {
+													var thisTopic = webhooks[i].topic;
+													thisTopic = thisTopic.replace("\/", "_");
+													hasWebhook[thisTopic] = true;
+												}
+
+												res.render('home', {
+													defaultEmail: shopObject.defaultEmail,
+													hasWebhook: hasWebhook
+												});
+											});
+									});
+
 								} else {
 									console.log("ERROR WITH FETCHING SHOP INFO")
 									res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
@@ -118,23 +150,6 @@ exports.confirm = function(req, res) {
 		}
 	});
 };
-
-
-function sendHome() {
-	res.cookie('GLOB_API_KEY', api_key);
-	res.cookie('GLOB_SHOP', shop);
-
-
-	// res.redirect('home');
-	res.render('home', {
-		defaultEmail: bodyP.shop.email,
-		hasWebhook: {
-			customer_create: true
-		}
-	});
-}
-
-
 /*	Creates a unique token 	*/
 function registerTokenFor(shop, callback) {
 
@@ -164,7 +179,9 @@ function addShopInfoFor(shop, info) {
 
 	db.getShop(shop, function(shopObject) {
 		shopObject.shopInfo = info;
-		shopObject.defaultEmail = info.email;
+
+		if (shopObject.defaultEmail == undefined)
+			shopObject.defaultEmail = info.email;
 
 		db.saveShop(shop, shopObject);
 	});

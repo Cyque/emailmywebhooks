@@ -55,6 +55,7 @@ exports.createWebhook = function(req, res) {
 
 
 		if (topic == "deleteall") {
+			//**to be removed**
 			request.get(url + "admin/webhooks.json", {
 					auth: callprops.auth,
 					headers: callprops.headers
@@ -116,12 +117,6 @@ exports.createWebhook = function(req, res) {
 											shop: GLOB_SHOP,
 											email: specificEmail //CAN be undefined (defaultEmail will be used instead in the hookhandler)
 										});
-
-										// db.saveObject("webhooks/" + body_create.webhook.id, {
-										// 	info: body_modify.webhook,
-										// 	shop: GLOB_SHOP,
-										// 	email: specificEmail //CAN be undefined (defaultEmail will be used instead in the hookhandler)
-										// });
 
 										res.send('Success adding webhook. </br>' + body);
 									} else {
