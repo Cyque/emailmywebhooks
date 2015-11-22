@@ -8,7 +8,7 @@ var oauth = require('../modules/oauth.js');
 //home page
 exports.home = function(req, res) {
 
-
+	console.log("FULL CONFIRM URL:" + req.originalUrl);
 	function hmacVerified(isValid) {
 		if(isValid) {
 			res.cookie('GLOB_API_KEY', process.env.api_key);
@@ -19,8 +19,8 @@ exports.home = function(req, res) {
 			res.send("Hmac validation failed");
 		}
 	};
-	
-	
+
+
 	oauth.verifyRequest(req, hmacVerified);
 
 	//res.sendfile('public/html/home.html');
