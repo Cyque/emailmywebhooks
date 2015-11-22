@@ -72,91 +72,106 @@ exports.confirm = function(req, res) {
 
 			var accessURL = "https://" + shop + "/admin/oauth/access_token";
 
-			
-			
+			db.getShop(shop, function(shopObject) {
+				if (shopObject.accessToken == undefined) {
+					request.post(
+						accessURL, {
+							form: {
+								client_id: api_key,
+								client_secret: secret,
+								code: code,
+							}
+						},
+						function(error, response, body) {
+							if (!error && response.statusCode == 200) {
+								//body format: {"access_token":"xxxxx ... xxxx"}
+
+								var accTok = JSON.parse(body).access_token;
+								addAccessTokenFor(shop, accTok);
+								console.log("Got access_token");
+								//get shop information
+
+
+								sendShop(res, shop);
+							}
+						});
+
+				} else {
+					sendShop(res, shop);
+				}
+			});
 			//GET access_token
-			request.post(
-				accessURL, {
-					form: {
-						client_id: api_key,
-						client_secret: secret,
-						code: code,
-					}
+
+		}
+	});
+};
+
+
+function sendShop(res, shop) {
+	db.getShop(shop, function(shopObject) {
+		request.get(
+			"https://" + shop + "/admin/shop.json", {
+				auth: {
+					user: process.env['api_key'],
+					pass: process.env['shared_secret']
 				},
-				function(error, response, body) {
-					if (!error && response.statusCode == 200) {
-						//body format: {"access_token":"xxxxx ... xxxx"}
+				headers: {
+					'X-Shopify-Access-Token': shopObject.accessToken;
+				}
+			},
+			function(error, response, body) {
+				if (!error && response.statusCode == 200) {
+					var bodyP = JSON.parse(body);
+					addShopInfoFor(shop, bodyP.shop);
 
-						var accTok = JSON.parse(body).access_token;
-						addAccessTokenFor(shop, accTok);
-						console.log("Got access_token");
-						//get shop information
+					console.log("Got shop iinfo");
 
-						request.get(
-							"https://" + shop + "/admin/shop.json", {
+					//FULLY AUTHENTICATED HERE
+
+					db.getShop(shop, function(shopObject) {
+						console.log("Got shopobject");
+
+						res.cookie('GLOB_API_KEY', api_key);
+						res.cookie('GLOB_SHOP', shop);
+
+						//get a list of all the webhooks already registered and push them to the homepage
+						request.get("https://" + shop + "/admin/webhooks.json", {
 								auth: {
 									user: process.env['api_key'],
 									pass: process.env['shared_secret']
 								},
 								headers: {
-									'X-Shopify-Access-Token': accTok
+									'X-Shopify-Access-Token': shopObject.accessToken
 								}
 							},
 							function(error, response, body) {
-								if (!error && response.statusCode == 200) {
-									var bodyP = JSON.parse(body);
-									addShopInfoFor(shop, bodyP.shop);
+								var webhooks = JSON.parse(body).webhooks;
 
-									console.log("Got shop iinfo");
-
-									//FULLY AUTHENTICATED HERE
-
-									db.getShop(shop, function(shopObject) {
-										console.log("Got shopobject");
-
-										res.cookie('GLOB_API_KEY', api_key);
-										res.cookie('GLOB_SHOP', shop);
-
-
-										//get a list of all the webhooks already registered and push them to the homepage
-										request.get("https://" + shop + "/admin/webhooks.json", {
-												auth: {
-													user: process.env['api_key'],
-													pass: process.env['shared_secret']
-												},
-												headers: {
-													'X-Shopify-Access-Token': accTok
-												}	
-											},
-											function(error, response, body) {
-												var webhooks = JSON.parse(body).webhooks;
-
-												var hasWebhook = {};
-												for (var i = 0; i < webhooks.length; i++) {
-													var thisTopic = webhooks[i].topic;
-													thisTopic = thisTopic.replace("\/", "_");
-													hasWebhook[thisTopic] = true;
-												}
-
-												res.render('home', {
-													defaultEmail: shopObject.defaultEmail,
-													hasWebhook: hasWebhook
-												});
-											});
-									});
-
-								} else {
-									console.log("ERROR WITH FETCHING SHOP INFO")
-									res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
+								var hasWebhook = {};
+								for (var i = 0; i < webhooks.length; i++) {
+									var thisTopic = webhooks[i].topic;
+									thisTopic = thisTopic.replace("\/", "_");
+									hasWebhook[thisTopic] = true;
 								}
+
+								res.render('home', {
+									defaultEmail: shopObject.defaultEmail,
+									hasWebhook: hasWebhook
+								});
 							});
+					});
 
+				} else {
+					console.log("ERROR WITH FETCHING SHOP INFO")
+					res.send("ERROR WITH FETCHING SHOP INFO</br>" + body);
+				}
+			});
 
-					}
-				});
-		}
 	});
-};
+
+}
+
+
 /*	Creates a unique token 	*/
 function registerTokenFor(shop, callback) {
 
