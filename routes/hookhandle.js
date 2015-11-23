@@ -28,9 +28,14 @@ exports.handleWebhook = function(req, res) {
             body: req.body
          }); // Gets the JADE template file and compiles it
 
-         var emailTo = shopObject.defaultEmail;
-         if (webhookObject.email != null && webhookObject.email != undefined)
-            emailTo = webhookObject.email;
+         // var emailTo = webhookObject.email || shopObject.defaultEmail;
+         // if (webhookObject.email != null && webhookObject.email != undefined)
+             // emailTo = webhookObject.email;
+
+          var emailTo = shopObject.defaultEmail;
+
+          if(webhookObject.email === "undefined")
+            console.log("moo");
 
          console.log("SENDING EMAIL to " + emailTo + " " + webhookObject.email + " " + shopObject.defaultEmail);
 
