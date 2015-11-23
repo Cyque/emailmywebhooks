@@ -2,6 +2,13 @@
 var oauth = require('../modules/oauth.js');
 var permisson = require('./permission.js');
 
+var supportedWebhooks = [
+	"customers_create",
+	"customers_delete",
+	"orders_fulfilled",
+	"disputes_create",
+];
+
 
 //home page
 exports.home = function(req, res) {
@@ -9,17 +16,48 @@ exports.home = function(req, res) {
 	console.log("/HOME CALLED FULL CONFIRM URL:           " + req.originalUrl);
 
 
-	permisson.verifyPermission(req, res, function() {
-
-		//There are two possibilities here. 
-		// 1) This is the first time the SHOP has logged into the app and initialization must occur. (i.e get the access token)
-		// 2) The shop already has been initialized and has an access token.
-		res.render('home', {
-			defaultEmail: "some email",
-			hasWebhook: {}
-		});
+	permisson.verifyPermission(req, res, function(shopObject) {
+		renderHome(req, res, shopObject);
 		// res.send("worked");
 	});
 
 	//res.sendfile('public/html/home.html');
+};
+
+
+function renderHome(req, res, shopObject) {
+	console.log(shopObject);
+	request.get("https://" + shopObject.shop + "/admin/webhooks.json", {
+		auth: {
+			user: process.env.api_key,
+			pass: process.env.shared_secret
+		},
+		headers: {
+			'X-Shopify-Access-Token': shopObject.accessToken
+		}
+	}, function(error, response, body) {
+		if (!error && response.statusCode == 200) {
+			var webhooks = JSON.parse(body).webhooks;
+
+			var hasWebhook = {};
+			//populate hasWebhook with supported hooks:
+			for (var i = 0; i < supportedWebhooks; i++) {
+				hasWebhook[supportedWebhooks[i]] = false;
+			}
+
+			for (var i = 0; i < webhooks.length; i++) {
+				var thisTopic = webhooks[i].topic;
+				thisTopic = thisTopic.replace("\/", "_");
+				hasWebhook[thisTopic] = true;
+			}
+
+			res.render('home', {
+				defaultEmail: shopObject.defaultEmail,
+				hasWebhook: hasWebhook
+			});
+		} else {
+			res.status(response.statusCode)
+		}
+	});
+
 };

@@ -57,9 +57,11 @@ exports.confirm = function(req, res) {
 
 exports.verifyPermission = function(req, res, callback) {
 	var shop = req.query.shop;
+	//There are two possibilities here. 
+	// 1) This is the first time the SHOP has logged into the app and initialization must occur. (i.e get the access token)
+	// 2) The shop already has been initialized and has an access token.
 
 	// check if the shop object already exists and has a private access token
-
 	oauth.verifyRequest(req, res, function() {
 		db.getShop(shop, function(shopObject) {
 			if (shopObject == undefined || shopObject.accessToken == undefined) {
@@ -70,12 +72,13 @@ exports.verifyPermission = function(req, res, callback) {
 				// permission was already obtained!
 				res.cookie('GLOB_API_KEY', process.env.api_key);
 				res.cookie('GLOB_SHOP', req.query.shop);
-				callback();
+				callback(shopObject);
 			}
 		});
 	});
 
 };
+
 
 function getFirstTimePermission(req, res) {
 	var host = req.headers.host;
