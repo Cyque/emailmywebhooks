@@ -43,7 +43,7 @@ function renderHome(req, res, shopObject) {
 			var hasWebhook = {};
 			//populate hasWebhook with supported hooks:
 			for (var i = 0; i < supportedWebhooks.length; i++) {
-				hasWebhook[supportedWebhooks[i]] = true;
+				hasWebhook[supportedWebhooks[i]] = false;
 			}
 
 			for (var i = 0; i < webhooks.length; i++) {
