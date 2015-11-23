@@ -19,6 +19,7 @@ function toggleWebhook(checked, webhookName) {
 				} else {
 					console.log("Failed");
 				}
+				console.log(xhttp.responseText);
 			}
 		};
 		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
