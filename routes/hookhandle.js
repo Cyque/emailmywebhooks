@@ -32,7 +32,7 @@ exports.handleWebhook = function(req, res) {
          if (webhookObject.email != null && webhookObject.email != undefined)
             emailTo = webhookObject.email;
 
-         console.log("SENDING EMAIL to " + emailTo + " " + shopObject.defaultEmail);
+         console.log("SENDING EMAIL to " + emailTo + " " + webhookObject.email + " " + shopObject.defaultEmail);
 
          transporter.sendMail({
                from: 'emailmywebhooks@noreply',
