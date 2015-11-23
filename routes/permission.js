@@ -55,7 +55,7 @@ exports.verifyPermission = function(req, res, callback) {
 	var shop = req.query.shop;
 
 	// check if the shop object already exists and has a private access token
-
+	
 	oauth.verifyRequest(req, res, function() {
 		db.getShop(shop, function(shopObject) {
 			if (shopObject == undefined || shopObject.accessToken == undefined) {
