@@ -29,10 +29,11 @@ exports.handleWebhook = function(req, res) {
          }); // Gets the JADE template file and compiles it
 
          var emailTo = shopObject.defaultEmail;
-         if (webhookObject.email)
+         if (webhookObject.email != null && webhookObject.email != undefined)
             emailTo = webhookObject.email;
 
          console.log("SENDING EMAIL to " + emailTo + " " + shopObject.defaultEmail);
+
          transporter.sendMail({
                from: 'emailmywebhooks@noreply',
                to: emailTo,
