@@ -1,17 +1,15 @@
-
-
 ShopifyApp.init({
 	apiKey: read_cookie('GLOB_API_KEY'),
 	shopOrigin: 'https://' + read_cookie('GLOB_SHOP')
 });
 
-ShopifyApp.ready(function(){
-  	ShopifyApp.Bar.loadingOff()
+ShopifyApp.ready(function() {
+	ShopifyApp.Bar.loadingOff()
 });
 
 
 function toggleWebhook(checked, webhookName) {
-
+	console.log("toggled for " + webhookName);
 	if (checked) {
 		// var xhttp = new XMLHttpRequest();
 		// xhttp.onreadystatechange = function() {
