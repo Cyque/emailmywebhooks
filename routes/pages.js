@@ -16,7 +16,7 @@ exports.home = function(req, res) {
 		// 2) The shop already has been initialized and has an access token.
 		res.render('home', {
 			defaultEmail: "some email",
-			hasWebhook: {}}
+			hasWebhook: {}
 		});
 		// res.send("worked");
 	});
