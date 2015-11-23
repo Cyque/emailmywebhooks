@@ -14,9 +14,9 @@ exports.handleWebhook = function(req, res) {
       db.getShop(webhookObject.shop, function(shopObject) {
          console.log("got the shop")
 
-         console.log(webhookObject);
-         // console.log(shopObject);
-         console.log(req.body);
+         //console.log(webhookObject);
+         console.log(shopObject);
+         //console.log(req.body);
 
          console.log("COMPILING JADE");
          var jadePath = "email_templates/" + webhookObject.info.topic + ".jade";
