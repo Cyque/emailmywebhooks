@@ -39,6 +39,8 @@ exports.confirm = function(req, res) {
 
 					var accTok = JSON.parse(body).access_token;
 					addAccessTokenFor(shop, accTok);
+
+					//we encode the hmac here for the redirect back to the home page
 					res.redirect("/home?shop=" + encodeURIComponent(shop) + "&hmac=" + oauth.generateHmac({
 						shop: shop
 					}));

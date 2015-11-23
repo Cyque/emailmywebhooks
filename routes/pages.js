@@ -14,11 +14,11 @@ exports.home = function(req, res) {
 		//There are two possibilities here. 
 		// 1) This is the first time the SHOP has logged into the app and initialization must occur. (i.e get the access token)
 		// 2) The shop already has been initialized and has an access token.
-		// res.render('home', {
-		// 	defaultEmail: "some email",
-		// 	hasWebhook: {}}
-		// });
-		res.send("worked");
+		res.render('home', {
+			defaultEmail: "some email",
+			hasWebhook: {}}
+		});
+		// res.send("worked");
 	});
 
 	//res.sendfile('public/html/home.html');
