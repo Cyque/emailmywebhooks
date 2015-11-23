@@ -3,7 +3,7 @@
 //   res.render('index', { title: 'Express' });
 // };
 
-exports.auth = require("./auth.js");
+exports.permission = require("./permission.js");
 exports.pages = require("./pages.js");
 exports.actions = require("./actions.js");
 exports.hookhandle = require("./hookhandle.js");

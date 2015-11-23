@@ -37,7 +37,7 @@ exports.verifyRequest = function (req, res, callback) {
 	if(isValidHmac(req.query) && isValidShopName(req.query.shop))
 		callback();
 	else
-        res.status(401).send();
+        res.status(401).send("Could not verify the request.");
 }
 
 

@@ -91,7 +91,6 @@ exports.confirm = function(req, res) {
 								console.log("Got access_token");
 								//get shop information
 
-
 								sendShop(res, shop);
 							}
 						});
