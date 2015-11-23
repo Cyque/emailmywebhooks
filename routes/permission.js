@@ -17,6 +17,16 @@ exports.confirm = function(req, res) {
 	// state=6d256e1719ade112a00711e5d64de6e0&\
 	// timestamp=1446246040
 
+
+	/** SUMMARY OF confirm()
+		verifyRequest
+		confirm nonce
+		getAccessToken
+		get shop info
+		redirect to home with hmac
+
+	**/
+
 	function getAccessToken(req, res, shopObject, callback) {
 		var shop = req.query.shop;
 		var code = req.query.code;

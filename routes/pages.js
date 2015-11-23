@@ -27,7 +27,7 @@ exports.home = function(req, res) {
 
 
 function renderHome(req, res, shopObject) {
-	console.log(shopObject);
+	// console.log(shopObject);
 	request.get("https://" + shopObject.shop + "/admin/webhooks.json", {
 		auth: {
 			user: process.env.api_key,
@@ -42,7 +42,7 @@ function renderHome(req, res, shopObject) {
 
 			var hasWebhook = {};
 			//populate hasWebhook with supported hooks:
-			for (var i = 0; i < supportedWebhooks; i++) {
+			for (var i = 0; i < supportedWebhooks.length; i++) {
 				hasWebhook[supportedWebhooks[i]] = false;
 			}
 
@@ -51,6 +51,7 @@ function renderHome(req, res, shopObject) {
 				thisTopic = thisTopic.replace("\/", "_");
 				hasWebhook[thisTopic] = true;
 			}
+			console.log(hasWebhook)
 			console.log(hasWebhook);
 			res.render('home', {
 				defaultEmail: shopObject.defaultEmail,
