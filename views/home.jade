@@ -13,6 +13,7 @@ body
 	div
 		ul
 			each isActive, webhookName in hasWebhook
+				li=isActive
 				li
 					if isActive 
 						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked:true)
