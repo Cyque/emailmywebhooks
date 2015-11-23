@@ -51,7 +51,7 @@ function renderHome(req, res, shopObject) {
 				thisTopic = thisTopic.replace("\/", "_");
 				hasWebhook[thisTopic] = true;
 			}
-
+			console.log(hasWebhook);
 			res.render('home', {
 				defaultEmail: shopObject.defaultEmail,
 				hasWebhook: hasWebhook
