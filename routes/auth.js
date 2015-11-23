@@ -7,3 +7,10 @@ var oauth = require('../modules/oauth.js')
 
 
 
+
+
+exports.needsFirstTimeConfig = function (argument) {
+	
+
+
+};
