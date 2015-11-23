@@ -33,8 +33,7 @@ app.use(app.router);
 
 //ROUTES:
 //app.get('/auth/permission', routes.auth.permission);
-//app.get('/auth/confirm', routes.auth.confirm);
-
+app.get('/auth/confirm', routes.permission.confirm);
 app.get('/home', routes.pages.home);
 
 // app.get('/action/createhook', routes.actions.createWebhook);
