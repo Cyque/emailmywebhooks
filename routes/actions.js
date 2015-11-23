@@ -120,19 +120,19 @@ exports.createWebhook = function(req, res) {
 
 										res.status(200).send('Success adding webhook. </br>' + body);
 									} else {
-										res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error + "</br>" + JSON.stringify(response));
+										res.status(500).send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error + "</br>" + JSON.stringify(response));
 									}
 								});
 						} else {
-							res.send("Failure adding webhook </br>" + JSON.stringify(body_create) + "</br> " + error + "</br>" + JSON.stringify(response));
+							res.status(500).send("Failure adding webhook </br>" + JSON.stringify(body_create) + "</br> " + error + "</br>" + JSON.stringify(response));
 						}
 					});
 				} else {
-					res.send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_delete) + "</br> " + error + "</br>" + JSON.stringify(response));
+					res.status(500).send("Failure adding webhook at delete webhook phase </br>" + JSON.stringify(body_delete) + "</br> " + error + "</br>" + JSON.stringify(response));
 				}
 			});
 		} else {
-			res.end("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
+			res.status(500).send("Failed to create webhook. Unknown topic: " + topic + " in " + JSON.stringify(req.query));
 			return;
 		}
 
