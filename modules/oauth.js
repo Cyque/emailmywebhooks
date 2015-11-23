@@ -33,11 +33,16 @@ var db = require('../modules/database.js');
 
 exports.verifyRequest = function (req, res, callback) {
 	// callback(isValid:bool])
-
-	if(isValidHmac(req.query) && isValidShopName(req.query.shop))
+	var valHmac == isValidHmac(req.query);
+	var valShopName == isValidShopName(req.query.shop);
+	if(valHmac && valShopName)
 		callback();
 	else
+	{	
+		console.log(req.verifyRequest);
+		// console.log("Verification failed:     valHmac=" + valHmac + ", valShopName=" + valShopName);
         res.status(401).send("Could not verify the request.");
+	}
 }
 
 
@@ -58,6 +63,9 @@ function isValidHmac(query) {
 
 	if (givenHmac != calcedHmac) {
 		console.log("FAILED HMAC");
+		console.log("FAILED HMAC");
+		console.log(givenHmac);
+		console.log(calcedHmac);
 		return false;
 	}
 
