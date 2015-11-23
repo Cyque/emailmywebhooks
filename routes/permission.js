@@ -39,7 +39,9 @@ exports.confirm = function(req, res) {
 
 					var accTok = JSON.parse(body).access_token;
 					addAccessTokenFor(shop, accTok);
-					res.redirect("/home");
+					res.redirect("/home?shop=" + encodeURIComponent(shop) + "hmac=" + oauth.generateHmac({
+						shop: shop
+					}));
 				} else {
 					res.status(401).send("There was a problem getting the access token.");
 				}
@@ -55,7 +57,7 @@ exports.verifyPermission = function(req, res, callback) {
 	var shop = req.query.shop;
 
 	// check if the shop object already exists and has a private access token
-	
+
 	oauth.verifyRequest(req, res, function() {
 		db.getShop(shop, function(shopObject) {
 			if (shopObject == undefined || shopObject.accessToken == undefined) {

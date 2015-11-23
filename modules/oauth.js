@@ -31,17 +31,16 @@ var db = require('../modules/database.js');
 // 	} else callback(false, "improper shop suffix");
 // }
 
-exports.verifyRequest = function (req, res, callback) {
+exports.verifyRequest = function(req, res, callback) {
 	// callback(isValid:bool])
 	var valHmac = isValidHmac(req.query);
 	var valShopName = isValidShopName(req.query.shop);
-	if(valHmac && valShopName)
+	if (valHmac && valShopName)
 		callback();
-	else
-	{	
+	else {
 		console.log(req.verifyRequest);
 		// console.log("Verification failed:     valHmac=" + valHmac + ", valShopName=" + valShopName);
-        res.status(401).send("Could not verify the request.");
+		res.status(401).send("Could not verify the request.");
 	}
 }
 
@@ -54,15 +53,12 @@ function isValidShopName(shop) {
 
 function isValidHmac(query) {
 	var shared_secret = process.env['shared_secret'];
-
 	var preprocString = encodeParamsForSignature(query);
-
 	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString)).digest('hex');
 
 	var givenHmac = query.hmac;
 
 	if (givenHmac != calcedHmac) {
-		console.log("FAILED HMAC");
 		console.log("FAILED HMAC");
 		console.log(givenHmac);
 		console.log(calcedHmac);
@@ -72,6 +68,14 @@ function isValidHmac(query) {
 	return true;
 }
 
+
+function generateHmac(query) {
+	var shared_secret = process.env.shared_secret;
+	var preprocString = encodeParamsForSignature(query);
+	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString)).digest('hex');
+	return calcedHmac;
+}
+exports.generateHmac = generateHmac;
 
 function encodeParamsForSignature(object) {
 	var list = [];
