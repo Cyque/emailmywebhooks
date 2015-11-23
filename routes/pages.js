@@ -39,7 +39,7 @@ function renderHome(req, res, shopObject) {
 	}, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			var webhooks = JSON.parse(body).webhooks;
-
+			console.log(webhooks);
 			var hasWebhook = {};
 			//populate hasWebhook with supported hooks:
 			for (var i = 0; i < supportedWebhooks.length; i++) {

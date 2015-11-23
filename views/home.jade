@@ -17,5 +17,5 @@ body
 					if isActive 
 						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked)
 					else
-						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked:false)
+						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')")
 					| notify me when #{webhookName}.
