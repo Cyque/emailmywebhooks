@@ -33,8 +33,8 @@ var db = require('../modules/database.js');
 
 exports.verifyRequest = function (req, res, callback) {
 	// callback(isValid:bool])
-	var valHmac == isValidHmac(req.query);
-	var valShopName == isValidShopName(req.query.shop);
+	var valHmac = isValidHmac(req.query);
+	var valShopName = isValidShopName(req.query.shop);
 	if(valHmac && valShopName)
 		callback();
 	else
