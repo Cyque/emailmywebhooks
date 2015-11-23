@@ -11,14 +11,18 @@ ShopifyApp.ready(function() {
 function toggleWebhook(checked, webhookName) {
 	console.log("toggled for " + webhookName);
 	if (checked) {
-		// var xhttp = new XMLHttpRequest();
-		// xhttp.onreadystatechange = function() {
-		// 	if (xhttp.readyState == 4 && xhttp.status == 200) {
-		// 		console.log("Success");
-		// 	}
-		// };
-		// xhttp.open("GET", "action/createhook", true);
-		// xhttp.send();
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4) {
+				if (xhttp.status == 200) {
+					console.log("Success Adding Webhook");
+				} else {
+					console.log("Failed");
+				}
+			}
+		};
+		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
+		xhttp.send();
 	} else {
 
 

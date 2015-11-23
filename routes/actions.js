@@ -118,7 +118,7 @@ exports.createWebhook = function(req, res) {
 											email: specificEmail //CAN be undefined (defaultEmail will be used instead in the hookhandler)
 										});
 
-										res.send('Success adding webhook. </br>' + body);
+										res.status(200).send('Success adding webhook. </br>' + body);
 									} else {
 										res.send("Failure adding webhook at modify webhook phase </br>" + JSON.stringify(body_modify) + "</br> " + error + "</br>" + JSON.stringify(response));
 									}
