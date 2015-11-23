@@ -36,6 +36,7 @@ exports.createWebhook = function(req, res) {
 
 		var hostBase = process.env['host']; //i.e https://emailmywebhooks.herokuapp.com/
 		var topic = decodeURIComponent(req.query.topic); //i.e customers/create
+
 		var specificEmail = decodeURIComponent(req.query.specificemail);
 		//TODO: ADD SPECIFIC EMAIL
 

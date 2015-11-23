@@ -30,12 +30,11 @@ exports.handleWebhook = function(req, res) {
 
          // var emailTo = webhookObject.email || shopObject.defaultEmail;
          // if (webhookObject.email != null && webhookObject.email != undefined)
-             // emailTo = webhookObject.email;
+         // emailTo = webhookObject.email;
 
-          var emailTo = shopObject.defaultEmail;
-
-          if(webhookObject.email === "undefined")
-            console.log("moo");
+         var emailTo = shopObject.defaultEmail;
+         if (webhookObject.email != "undefined" && webhookObject.email != undefined)
+            emailTo = webhookObject.email;
 
          console.log("SENDING EMAIL to " + emailTo + " " + webhookObject.email + " " + shopObject.defaultEmail);
 
@@ -43,7 +42,7 @@ exports.handleWebhook = function(req, res) {
                from: 'emailmywebhooks@noreply',
                to: emailTo,
                subject: subjectFromTopic(webhookObject.info.topic),
-               // text: emailContent
+               text: emailContent.body,
                html: emailContent
             },
             function(error, info) {
