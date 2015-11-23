@@ -33,8 +33,7 @@ function isValidShop(query, callback) {
 
 exports.verifyRequest = function (req, callback) {
 	// callback(isValid:bool])
-	console.log(req.query);
-	callback(isValidHmac(req.query) && isValidShopName(query.shop));
+	callback(isValidHmac(req.query) && isValidShopName(req.query.shop));
 }
 
 
