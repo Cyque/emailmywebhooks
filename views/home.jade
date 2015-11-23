@@ -14,5 +14,8 @@ body
 		ul
 			each isActive, webhookName in hasWebhook
 				li
-					input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked="#{isActive}")
+					if isActive 
+						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked:true)
+					else
+						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked:false)
 					| notify me when #{webhookName}.
