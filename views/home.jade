@@ -12,7 +12,7 @@ body
 
 	div
 		ul
-			each webhookName, isActive in hasWebhook
+			each isActive, webhookName in hasWebhook
 				li
 					input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked="#{isActive}")
 					| notify me when #{webhookName}.
