@@ -1,6 +1,6 @@
 //imports
 var oauth = require('../modules/oauth.js');
-var permisson = require('./permisson.js');
+var permisson = require('./permission.js');
 
 
 //home page
