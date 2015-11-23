@@ -15,7 +15,7 @@ exports.handleWebhook = function(req, res) {
          console.log("got the shop")
 
          console.log(webhookObject);
-         console.log(shopObject);
+         // console.log(shopObject);
          console.log(req.body);
 
          console.log("COMPILING JADE");
@@ -31,7 +31,7 @@ exports.handleWebhook = function(req, res) {
          var emailTo = webhookObject.email || shopObject.defaultEmail;
 
 
-         console.log("SENDING EMAIL");
+         console.log("SENDING EMAIL to" + emailTo);
          transporter.sendMail({
                from: 'emailmywebhooks@noreply',
                to: emailTo,
