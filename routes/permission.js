@@ -39,7 +39,7 @@ exports.confirm = function(req, res) {
 
 					var accTok = JSON.parse(body).access_token;
 					addAccessTokenFor(shop, accTok);
-					res.redirect("/home?shop=" + encodeURIComponent(shop) + "hmac=" + oauth.generateHmac({
+					res.redirect("/home?shop=" + encodeURIComponent(shop) + "&hmac=" + oauth.generateHmac({
 						shop: shop
 					}));
 				} else {
