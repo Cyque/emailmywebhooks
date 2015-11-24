@@ -8,7 +8,8 @@ var oauth = require('../modules/oauth.js')
 var shopOwnerPermissions = [
 	'read_customers',
 	'read_orders',
-	'read_fulfillments'
+	'read_fulfillments',
+	'read_disputes'
 ];
 
 //write_fulfillments
