@@ -5,6 +5,13 @@ var db = require('../modules/database.js')
 var oauth = require('../modules/oauth.js')
 
 
+var shopOwnerPermissions = [
+	'read_customers',
+	'read_orders',
+	'read_fulfillments'
+	];
+
+//write_fulfillments
 
 //called by the shopify API.
 exports.confirm = function(req, res) {
@@ -128,8 +135,7 @@ function getFirstTimePermission(req, res) {
 
 	var shop = req.query.shop;
 	var redirect_uri = encodeURIComponent("https://" + host + "/auth/confirm");
-	var scope = "read_customers,read_orders,read_fulfillments, write_fulfillments";
-	// var state = encodeURIComponent(registerTokenFor(shop));
+	var scope = shopOwnerPermissions.join(",");
 
 	registerTokenFor(shop, function(state) {
 		var getPermissionURL = "https://" + shop + "/admin/oauth/authorize?client_id=" + process.env.api_key + "&scope=" + scope + "&redirect_uri=" + redirect_uri + "&state=" + encodeURIComponent(state);
