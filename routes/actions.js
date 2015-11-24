@@ -162,11 +162,11 @@ exports.deleteWebhook = function(req, res) {
 
 		callprops.headers['X-Shopify-Access-Token'] = shopObject.accessToken;
 
-		deleteWebhook(callprops, topic, function() {
+		deleteWebhook(callprops, topic, function(error, response, body) {
 			if (!error) {
 				res.status(200).send("Webhook successfully deleted");
 			} else {
-				res.status(501).send("Webhook not deleted.");
+				res.status(501).send("Webhook not deleted." + body);
 			}
 		});
 	});
