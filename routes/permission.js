@@ -9,7 +9,7 @@ var shopOwnerPermissions = [
 	'read_customers',
 	'read_orders',
 	'read_fulfillments'
-	];
+];
 
 //write_fulfillments
 
@@ -178,8 +178,10 @@ function addShopInfoFor(shop, info) {
 	db.getShop(shop, function(shopObject) {
 		shopObject.shopInfo = info;
 
-		if (shopObject.defaultEmail == undefined)
+		if (shopObject.defaultEmail == undefined || shopObject.defaultEmail == "	undefined" || shopObject.defaultEmail == null) {
+
 			shopObject.defaultEmail = info.email;
+		}
 
 		db.saveShop(shop, shopObject);
 	});
