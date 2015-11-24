@@ -154,18 +154,23 @@ exports.deleteWebhook = function(req, res) {
 			pass: process.env['shared_secret']
 		},
 		headers: {
-			'X-Shopify-Access-Token': shopObject.accessToken
+			'X-Shopify-Access-Token': undefined;
 		},
 		baseUrl: "https://" + GLOB_SHOP + "/"
 	}
+	db.getShop(GLOB_SHOP, function(shopObject) {
 
-	deleteWebhook(callprops, topic, function() {
-		if (!error) {
-			res.status(200).send("Webhook successfully deleted");
-		} else {
-			res.status(501).send("Webhook not deleted.");
-		}
+		callprops.headers['X-Shopify-Access-Token'] = shopObject.accessToken;
+
+		deleteWebhook(callprops, topic, function() {
+			if (!error) {
+				res.status(200).send("Webhook successfully deleted");
+			} else {
+				res.status(501).send("Webhook not deleted.");
+			}
+		});
 	});
+
 }
 
 /*
