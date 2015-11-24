@@ -7,6 +7,24 @@ ShopifyApp.ready(function() {
 	ShopifyApp.Bar.loadingOff()
 });
 
+function changeEmail() {
+	var newEmail = document.getElementById("email").value;
+
+	// var xhttp = new XMLHttpRequest();
+	// xhttp.onreadystatechange = function() {
+	// 	if (xhttp.readyState == 4) {
+	// 		if (xhttp.status == 200) {
+	// 			console.log("Success Changing email");
+	// 		} else {
+	// 			console.log("Failed changing email");
+	// 		}
+	// 		console.log(xhttp.responseText);
+	// 	}
+	// };
+	// xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
+	// xhttp.send();
+
+}
 
 function toggleWebhook(checked, webhookName) {
 	console.log("toggled for " + webhookName);
@@ -37,6 +55,6 @@ function toggleWebhook(checked, webhookName) {
 			}
 		};
 		xhttp.open("GET", "action/removehook?topic=" + webhookName, true);
-		xhttp.send();		
+		xhttp.send();
 	}
 }
