@@ -154,7 +154,7 @@ exports.deleteWebhook = function(req, res) {
 			pass: process.env['shared_secret']
 		},
 		headers: {
-			'X-Shopify-Access-Token': undefined;
+			'X-Shopify-Access-Token': undefined
 		},
 		baseUrl: "https://" + GLOB_SHOP + "/"
 	}
