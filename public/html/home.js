@@ -17,7 +17,7 @@ function toggleWebhook(checked, webhookName) {
 				if (xhttp.status == 200) {
 					console.log("Success Adding Webhook");
 				} else {
-					console.log("Failed");
+					console.log("Failed Adding Webhook");
 				}
 				console.log(xhttp.responseText);
 			}
@@ -25,7 +25,18 @@ function toggleWebhook(checked, webhookName) {
 		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
 		xhttp.send();
 	} else {
-
-
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4) {
+				if (xhttp.status == 200) {
+					console.log("Success Removing Webhook");
+				} else {
+					console.log("Failed Removing Webhook");
+				}
+				console.log(xhttp.responseText);
+			}
+		};
+		xhttp.open("GET", "action/removehook?topic=" + webhookName, true);
+		xhttp.send();		
 	}
 }

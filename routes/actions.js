@@ -143,6 +143,31 @@ exports.createWebhook = function(req, res) {
 	});
 };
 
+
+exports.deleteWebhook = function(req, res) {
+	//GET url params:  topic
+	var topic = decodeURIComponent(req.query.topic);
+	var GLOB_SHOP = read_cookie("GLOB_SHOP", req.headers.cookie);
+	var callprops = {
+		auth: {
+			user: process.env['api_key'],
+			pass: process.env['shared_secret']
+		},
+		headers: {
+			'X-Shopify-Access-Token': shopObject.accessToken
+		},
+		baseUrl: "https://" + GLOB_SHOP + "/"
+	}
+
+	deleteWebhook(callprops, topic, function() {
+		if (!error) {
+			res.status(200).send("Webhook successfully deleted");
+		} else {
+			res.status(501).send("Webhook not deleted.");
+		}
+	});
+}
+
 /*
 Deletes all webhooks with the given topic.
 callback format: function (error, response, body) {}

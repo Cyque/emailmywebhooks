@@ -37,6 +37,7 @@ app.get('/auth/confirm', routes.permission.confirm);
 app.get('/home', routes.pages.home);
 
 app.get('/action/createhook', routes.actions.createWebhook);
+app.get('/action/removehook', routes.actions.deleteWebhook);
 app.post('/action/setdefaultemail', routes.actions.setDefaultEmail);
 app.post('/handlewebhook', routes.hookhandle.handleWebhook);
 
