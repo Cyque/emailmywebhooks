@@ -128,7 +128,7 @@ function getFirstTimePermission(req, res) {
 
 	var shop = req.query.shop;
 	var redirect_uri = encodeURIComponent("https://" + host + "/auth/confirm");
-	var scope = "read_customers,read_products,read_orders,read_content,read_themes,read_script_tags,read_fulfillments";
+	var scope = "read_customers,read_orders,read_fulfillments, write_fulfillments";
 	// var state = encodeURIComponent(registerTokenFor(shop));
 
 	registerTokenFor(shop, function(state) {
