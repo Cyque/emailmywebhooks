@@ -134,7 +134,7 @@ exports.verifyPermission = function(req, res, callback) {
 exports.accessTokenWasInvalid = function(req, res, shopObject) {
 
 	shopObject.accessToken = undefined;
-	db.saveShop(shop, shopObject);
+	db.saveShop(shopObject.shop, shopObject);
 	getFirstTimePermission(req, res);
 }
 
