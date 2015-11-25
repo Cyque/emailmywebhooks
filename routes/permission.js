@@ -131,7 +131,7 @@ exports.verifyPermission = function(req, res, callback) {
 };
 
 
-function getFirstTimePermission(req, res) {
+exports.getFirstTimePermission = function getFirstTimePermission(req, res) {
 	var host = req.headers.host;
 	if (host == undefined) {
 		host = "emailmywebhooks.herokuapp.com"

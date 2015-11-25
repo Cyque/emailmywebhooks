@@ -18,8 +18,8 @@ exports.home = function(req, res) {
 
 
 	permisson.verifyPermission(req, res, function(shopObject) {
+		console.log("Rendering Home");
 		renderHome(req, res, shopObject);
-		// res.send("worked");
 	});
 
 	//res.sendfile('public/html/home.html');
@@ -57,7 +57,14 @@ function renderHome(req, res, shopObject) {
 				hasWebhook: hasWebhook
 			});
 		} else {
-			res.status(response.statusCode)
+			console.log(response.body);
+			console.log("ERROR CODE: " + response.statusCode);
+			//special case: The access token was not valid, so try to get first time permission again. This can happen if the app is removed and re-added again to the shop.
+
+			shopObject.accessToken = undefined;
+			db.saveShop(shop, shopObject);
+			permisson.getFirstTimePermission(req, res);
+			//res.status(response.statusCode).send("Failed Access Code");
 		}
 	});
 
