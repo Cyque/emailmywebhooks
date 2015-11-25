@@ -119,6 +119,7 @@ exports.verifyPermission = function(req, res, callback) {
 				console.log("First Time permission!");
 				getFirstTimePermission(req, res);
 			} else {
+				console.log("Second+ Time permission");
 				// permission was already obtained!
 				res.cookie('GLOB_API_KEY', process.env.api_key);
 				res.cookie('GLOB_SHOP', req.query.shop);
