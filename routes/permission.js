@@ -114,7 +114,7 @@ exports.verifyPermission = function(req, res, callback) {
 	// check if the shop object already exists and has a private access token
 	oauth.verifyRequest(req, res, function() {
 		db.getShop(shop, function(shopObject) {
-			if (shopObject == undefined || shopObject.accessToken == undefined) {
+			if (shopObject == undefined || shopObject.accessToken == undefined || shopObject.accessToken == "undefined") {
 				//needs to get app permission
 				console.log("First Time permission!");
 				getFirstTimePermission(req, res);
