@@ -52,6 +52,7 @@ exports.confirm = function(req, res) {
 				addAccessTokenFor(shop, accTok);
 				callback(accTok);
 			} else {
+				console.log("access token could not be obtained");
 				res.status(401).send("There was a problem getting the access token.");
 			}
 		});
@@ -87,6 +88,7 @@ exports.confirm = function(req, res) {
 									shop: shop
 								}));
 							} else {
+								console.log("Access token failed");
 								db.getShop(shop, function(shopObject) {
 									shopObject.accessToken = undefined;
 									db.saveShop(shop, shopObject);
