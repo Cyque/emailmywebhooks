@@ -1,0 +1,20 @@
+doctype html
+html
+head
+	
+	script(src="https://cdn.shopify.com/s/assets/external/app.js" type="text/javascript")
+	script(src="/javascripts/cookie.js" type="text/javascript")
+	script(src="/html/home.js" type="text/javascript")
+body
+	input(type="email", id="email", value="#{defaultEmail}")
+	input(type="button", value="Change target email", onclick="changeEmail()")
+
+	div
+		ul
+			each isActive, webhookName in hasWebhook
+				li
+					if isActive 
+						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')", checked)
+					else
+						input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhookName}')")
+					| notify me when #{webhookName}.
