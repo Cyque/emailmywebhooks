@@ -18,7 +18,7 @@ exports.setDefaultEmail = function(req, res) {
 			db.saveShop(GLOB_SHOP, shopObject);
 
 			console.log("successfully changed shop email to " + shopObject.defaultEmail);
-			res.status(100).send();
+			res.send();
 			//.send("Default email changed to " + shopObject.defaultEmail);
 		} else {
 			res.status(503).send('Default email not set. Could not find shop.');
