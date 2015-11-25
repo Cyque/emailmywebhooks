@@ -61,10 +61,16 @@ function renderHome(req, res, shopObject) {
 			console.log("ERROR CODE: " + response.statusCode);
 			//special case: The access token was not valid, so try to get first time permission again. This can happen if the app is removed and re-added again to the shop.
 
-			shopObject.accessToken = undefined;
-			db.saveShop(shop, shopObject);
-			permisson.getFirstTimePermission(req, res);
-			//res.status(response.statusCode).send("Failed Access Code");
+			if (response.statusCode == 401 && response.body.indexOf("access token") != -1) {
+				// {"errors":"[API] Invalid API key or access token (unrecognized login or wrong password)"} 401
+
+				permisson.accessTokenWasInvalid(req, res, shopObject);
+
+			} else {
+				res.status(response.statusCode).send("Failed Access Code");
+
+			}
+
 		}
 	});
 

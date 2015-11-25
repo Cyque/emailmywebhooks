@@ -130,8 +130,14 @@ exports.verifyPermission = function(req, res, callback) {
 
 };
 
+export.accessTokenWasInvalid = function(req, res, shopObject) {
 
-exports.getFirstTimePermission = function getFirstTimePermission(req, res) {
+	shopObject.accessToken = undefined;
+	db.saveShop(shop, shopObject);
+	getFirstTimePermission(req, res);
+}
+
+function getFirstTimePermission(req, res) {
 	var host = req.headers.host;
 	if (host == undefined) {
 		host = "emailmywebhooks.herokuapp.com"
