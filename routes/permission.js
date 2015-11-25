@@ -130,7 +130,8 @@ exports.verifyPermission = function(req, res, callback) {
 
 };
 
-export.accessTokenWasInvalid = function(req, res, shopObject) {
+//called when an invalid access token was detected by shopify api
+exports.accessTokenWasInvalid = function(req, res, shopObject) {
 
 	shopObject.accessToken = undefined;
 	db.saveShop(shop, shopObject);
