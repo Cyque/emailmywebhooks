@@ -10,19 +10,28 @@ ShopifyApp.ready(function() {
 function changeEmail() {
 	var newEmail = document.getElementById("email").value;
 
-	// var xhttp = new XMLHttpRequest();
-	// xhttp.onreadystatechange = function() {
-	// 	if (xhttp.readyState == 4) {
-	// 		if (xhttp.status == 200) {
-	// 			console.log("Success Changing email");
-	// 		} else {
-	// 			console.log("Failed changing email");
-	// 		}
-	// 		console.log(xhttp.responseText);
-	// 	}
-	// };
-	// xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
-	// xhttp.send();
+
+	var xhttp = new XMLHttpRequest();
+
+	var params = "email=" + newEmail;
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.setRequestHeader("Content-length", params.length);
+	http.setRequestHeader("Connection", "close");
+
+
+
+	xhttp.onreadystatechange = function() {
+		if (xhttp.readyState == 4) {
+			if (xhttp.status == 200) {
+				console.log("Success Changing email");
+			} else {
+				console.log("Failed changing email");
+			}
+			console.log(xhttp.responseText);
+		}
+	};
+	xhttp.open("POST", "action/setdefaultemail" + webhookName, true);
+	xhttp.send(params);
 
 }
 
