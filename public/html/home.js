@@ -16,8 +16,8 @@ function changeEmail() {
 
 	var params = "email=" + newEmail;
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.setRequestHeader("Content-length", params.length);
-	http.setRequestHeader("Connection", "close");
+	// xhttp.setRequestHeader("Content-length", params.length);
+	// xhttp.setRequestHeader("Connection", "close");
 
 
 
