@@ -12,7 +12,7 @@ function changeEmail() {
 
 
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "action/setdefaultemail" + webhookName, true);
+	xhttp.open("POST", "action/setdefaultemail", true);
 
 	var params = "email=" + newEmail;
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
