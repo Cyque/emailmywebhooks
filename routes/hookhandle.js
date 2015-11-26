@@ -9,13 +9,13 @@ exports.handleWebhook = function(req, res) {
    console.log("RECIEVED A WEBHOOK CALL!!");
 
    db.getWebhook(req.query.id, function(webhookObject) {
-      console.log("got the webhook")
+      // console.log("got the webhook")
 
       db.getShop(webhookObject.shop, function(shopObject) {
-         console.log("got the shop")
+         // console.log("got the shop")
 
          //console.log(webhookObject);
-         console.log(shopObject);
+         // console.log(shopObject);
          //console.log(req.body);
 
          console.log("COMPILING JADE");
@@ -68,7 +68,7 @@ function subjectFromTopic(topic) {
       return "A new customer has been created.";
    } else if (topic == "orders\/create") {
       return "A new order has been created.";
-   } else if (topic == "carts\/create") {
+   } else if (topic == "disputes\/create") {
       return "A new cart has been created.";
    }
 }

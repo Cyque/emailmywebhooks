@@ -1,1 +1,15 @@
-fullfiled.jade
+doctype html
+html
+body
+	if shop.shopInfo.name
+		div Hello #{shop.shopInfo.name},
+	else 
+		div Hello Shop Manager,
+	br
+	div 
+		| A an order has been recently fulfilled for your shop.
+	br
+	div 
+		| Regards,
+	div
+		| EmailMyWebhooks

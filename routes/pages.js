@@ -49,19 +49,19 @@ function renderHome(req, res, shopObject) {
 			console.log(webhooks);
 			var hasWebhook = [];
 
+			//
+			//PREPARE jade objects for html render
+			//
+
 			//populate hasWebhook with supported hooks:
 			for (var i = 0; i < supportedWebhooks.length; i++) {
 				supportedWebhooks[i].isActive = false;
 				hasWebhook.push(supportedWebhooks[i]);
 			}
 
-			console.log(hasWebhook);
-
 			for (var i = 0; i < webhooks.length; i++) {
 				var thisTopic = webhooks[i].topic;
 				thisTopic = thisTopic.replace("\/", "_");
-
-				console.log(thisTopic);
 
 				for (var j = 0; j < supportedWebhooks.length; j++) {
 					if (thisTopic == supportedWebhooks[j].name) {
