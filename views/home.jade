@@ -37,8 +37,8 @@ html(xmlns='http://www.w3.org/1999/xhtml')
                 .checkbox
                   label
                     if webhook.isActive
-                      input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked=(webhook.isActive ? "checked", undefined))
-                    | #{webhook.description}   #{webhook.isActive}
+                      input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked=(webhook.isActive ? "checked":undefined))
+                    | #{webhook.description}
           #top-pad.col-xs-4.col-md-offset-1
             p Clear All Notifications
             button.btn.btn-default(type='reset', onclick="resetAllHooks()") Reset
