@@ -71,10 +71,10 @@ function resetAllHooks() {
 		if (xhttp.readyState == 4) {
 			if (xhttp.status == 200) {
 				console.log("Success Removing all");
-				var checks = document.getElementsByClassName("input");
+				var checks = document.getElementsByName("hookitem");
 
+				console.log(checks);
 				for (var i = 0; i < checks.length; checks++)
-					if (checks[i].type == "checkbox")
 						checks[i].checked = false;
 
 			} else {
