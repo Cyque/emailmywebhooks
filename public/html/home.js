@@ -36,7 +36,7 @@ function changeEmail() {
 		}
 	};
 	xhttp.send(params);
-
+	return false;
 }
 
 function toggleWebhook(checked, webhookName) {
