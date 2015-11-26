@@ -4,7 +4,11 @@ ShopifyApp.init({
 });
 
 ShopifyApp.ready(function() {
-	ShopifyApp.Bar.loadingOff()
+
+	
+
+	
+	ShopifyApp.Bar.loadingOff();
 });
 
 function changeEmail() {
