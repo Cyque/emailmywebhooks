@@ -4,10 +4,6 @@ ShopifyApp.init({
 });
 
 ShopifyApp.ready(function() {
-
-	
-
-	
 	ShopifyApp.Bar.loadingOff();
 });
 
@@ -20,19 +16,15 @@ function changeEmail() {
 
 	var params = "email=" + newEmail;
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	// xhttp.setRequestHeader("Content-length", params.length);
-	// xhttp.setRequestHeader("Connection", "close");
-
-
 
 	xhttp.onreadystatechange = function() {
 		if (xhttp.readyState == 4) {
 			if (xhttp.status == 200) {
-				console.log("Success Changing email");
+				// console.log("Success Changing email");
 			} else {
-				console.log("Failed changing email");
+				// console.log("Failed changing email");
 			}
-			console.log(xhttp.responseText);
+			// console.log(xhttp.responseText);
 		}
 	};
 	xhttp.send(params);
@@ -46,9 +38,9 @@ function toggleWebhook(checked, webhookName) {
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4) {
 				if (xhttp.status == 200) {
-					console.log("Success Adding Webhook");
+					// console.log("Success Adding Webhook");
 				} else {
-					console.log("Failed Adding Webhook");
+					// console.log("Failed Adding Webhook");
 				}
 				console.log(xhttp.responseText);
 			}
@@ -60,19 +52,36 @@ function toggleWebhook(checked, webhookName) {
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4) {
 				if (xhttp.status == 200) {
-					console.log("Success Removing Webhook");
+					// console.log("Success Removing Webhook");
 				} else {
-					console.log("Failed Removing Webhook");
+					// console.log("Failed Removing Webhook");
 				}
-				console.log(xhttp.responseText);
+				// console.log(xhttp.responseText);
 			}
 		};
-		xhttp.open("GET", "action/removehook?topic=" + webhookName, true);
+		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
 		xhttp.send();
 	}
 }
 
 
 function resetAllHooks() {
-	//todo
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (xhttp.readyState == 4) {
+			if (xhttp.status == 200) {
+				console.log("Success Removing all");
+				var checks = document.getElementsByClassName("checkbox");
+
+				for (int i = 0; i < checks.length; checks++)
+					checks[i].checked = false;
+
+			} else {
+				console.log("Failed Removing all");
+			}
+			// console.log(xhttp.responseText);
+		}
+	};
+	xhttp.open("GET", "action/createhook?topic=deleteall", true);
+	xhttp.send();
 }
