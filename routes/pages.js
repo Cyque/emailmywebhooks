@@ -53,6 +53,8 @@ function renderHome(req, res, shopObject) {
 			for (var i = 0; i < supportedWebhooks.length; i++)
 				hasWebhook.push(supportedWebhooks[i]);
 
+			console.log(hasWebhook);
+
 			function findSupportedHook(name) {
 				for (w in hasWebhook)
 					if (name == w.name)
@@ -64,7 +66,9 @@ function renderHome(req, res, shopObject) {
 				var thisTopic = webhooks[i].topic;
 				thisTopic = thisTopic.replace("\/", "_");
 
+				console.log(thisTopic);
 				var topicObj = findSupportedHook(thisTopic);
+				console.log(topicObj);
 
 				if (topicObj) {
 					topicObj.isActive = true;
