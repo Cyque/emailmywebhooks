@@ -42,7 +42,7 @@ function toggleWebhook(checked, webhookName) {
 				} else {
 					// console.log("Failed Adding Webhook");
 				}
-				console.log(xhttp.responseText);
+				//console.log(xhttp.responseText);
 			}
 		};
 		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
@@ -71,10 +71,11 @@ function resetAllHooks() {
 		if (xhttp.readyState == 4) {
 			if (xhttp.status == 200) {
 				console.log("Success Removing all");
-				var checks = document.getElementsByClassName("checkbox");
+				var checks = document.getElementsByClassName("input");
 
 				for (var i = 0; i < checks.length; checks++)
-					checks[i].checked = false;
+					if (checks[i].type == "checkbox")
+						checks[i].checked = false;
 
 			} else {
 				console.log("Failed Removing all");
