@@ -12,7 +12,7 @@ ShopifyApp.ready(function() {
 });
 
 function changeEmail() {
-	var newEmail = document.getElementById("email").value;
+	var newEmail = document.getElementById("webhook-email").value;
 
 
 	var xhttp = new XMLHttpRequest();
