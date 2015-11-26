@@ -13,8 +13,8 @@ var app = express();
 
 
 // SET PROCESS ENVIRONMENT VARS: (TO BE REMOVED AT LAUNCH)
-process.env['api_key'] = '4bf79cc58eecd7f509f94ce7cd61c6b0';
-process.env['shared_secret'] = '1604e972c082a4a3bb6384c1460f3458';
+process.env['api_key'] = 'f1be349aae9fb69d98fa6e9ab72a4081';
+process.env['shared_secret'] = '66c365f92eaed2c773315fad0355a81a';
 process.env['host'] = 'https://emailmywebhooks.herokuapp.com/';
 
 
