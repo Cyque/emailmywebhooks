@@ -36,8 +36,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
               each webhook in hasWebhook
                 .checkbox
                   label
-                    if webhook.isActive
-                      input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked=(webhook.isActive ? "checked":undefined))
+                    input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked=(webhook.isActive))
                     | #{webhook.description}
           #top-pad.col-xs-4.col-md-offset-1
             p Clear All Notifications
