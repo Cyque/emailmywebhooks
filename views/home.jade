@@ -23,9 +23,9 @@ html(xmlns='http://www.w3.org/1999/xhtml')
           .media-body
             h3.media-heading Change Target Email
             p Choose the email you wish to receive your email notifcations at.
-            form
+            div
               .form-group.col-xs-6
-                input#webhook-email.form-control(type='email', placeholder='Enter Email Address')
+                input#webhook-email.form-control(type='email', placeholder='Enter Email Address', value="#{defaultEmail}")
               button.btn.btn-default(type='submit', onclick="changeEmail()") Submit
           .media
             .media-left.col-md-1
