@@ -29,7 +29,6 @@ function changeEmail() {
 }
 
 function toggleWebhook(checked, webhookName) {
-	console.log("toggled for " + webhookName);
 	if (checked) {
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
