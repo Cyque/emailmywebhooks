@@ -50,8 +50,10 @@ function renderHome(req, res, shopObject) {
 			var hasWebhook = [];
 
 			//populate hasWebhook with supported hooks:
-			for (var i = 0; i < supportedWebhooks.length; i++)
+			for (var i = 0; i < supportedWebhooks.length; i++){
+				supportedWebhooks[i].isActive = false;
 				hasWebhook.push(supportedWebhooks[i]);
+			}
 
 			console.log(hasWebhook);
 
@@ -70,9 +72,9 @@ function renderHome(req, res, shopObject) {
 				var topicObj = findSupportedHook(thisTopic);
 				console.log(topicObj);
 
-				if (topicObj) {
+				// this value is used to determine the checked state of the checkbox in the jade compiled html
+				if (topicObj != false) {
 					topicObj.isActive = true;
-					// this value is used to determine the checked state of the checkbox in the jade compiled html
 				}
 			}
 			res.render('home', {
