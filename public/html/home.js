@@ -19,12 +19,9 @@ function changeEmail() {
 
 	xhttp.onreadystatechange = function() {
 		if (xhttp.readyState == 4) {
-			if (xhttp.status == 200) {
-				// console.log("Success Changing email");
-			} else {
-				// console.log("Failed changing email");
+			if (xhttp.status == 200) {} else {
+				location.reload();
 			}
-			// console.log(xhttp.responseText);
 		}
 	};
 	xhttp.send(params);
@@ -35,31 +32,25 @@ function toggleWebhook(checked, webhookName) {
 	console.log("toggled for " + webhookName);
 	if (checked) {
 		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4) {
-				if (xhttp.status == 200) {
-					// console.log("Success Adding Webhook");
-				} else {
-					// console.log("Failed Adding Webhook");
+				if (xhttp.status == 200) {} else {
+					location.reload();
 				}
-				//console.log(xhttp.responseText);
 			}
 		};
-		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
 		xhttp.send();
 	} else {
 		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4) {
-				if (xhttp.status == 200) {
-					// console.log("Success Removing Webhook");
-				} else {
-					// console.log("Failed Removing Webhook");
+				if (xhttp.status == 200) {} else {
+					location.reload();
 				}
-				// console.log(xhttp.responseText);
 			}
 		};
-		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
 		xhttp.send();
 	}
 }
@@ -68,19 +59,10 @@ function toggleWebhook(checked, webhookName) {
 function resetAllHooks() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
-		if (xhttp.readyState == 4) {
-			if (xhttp.status == 200) {
-				console.log("Success Removing all");
-				var checks = document.getElementsByName("hookitem");
-
-				console.log(checks);
-				for (var i = 0; i < checks.length; checks++)
-						checks[i].checked = false;
-
-			} else {
-				console.log("Failed Removing all");
-			}
-			console.log(xhttp.responseText);
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			var checks = document.getElementsByName("hookitem");
+			for (var i = 0; i < checks.length; checks++)
+				checks[i].checked = false;
 		}
 	};
 	xhttp.open("GET", "action/createhook?topic=deleteall", true);
