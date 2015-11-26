@@ -40,7 +40,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
                       input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked="checked")
                     else
                       input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')")
-                    | #{webhook.description}
+                    | #{webhook.description}   #{webhook.isActive}
           #top-pad.col-xs-4.col-md-offset-1
             p Clear All Notifications
             button.btn.btn-default(type='reset') Reset
