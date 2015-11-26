@@ -34,7 +34,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
               h3.media-heading Select Your Notifications
               p Select the Web Hooks you would like to receive email notifications for.
               each webhook in hasWebhook
-                .checkbox
+                .checkbox(checked="checked")
                   label
                     if isActive 
                       input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked="checked")
