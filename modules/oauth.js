@@ -81,7 +81,8 @@ function encodeParamsForSignature(object) {
 	var list = [];
 	for (var property in object) {
 		if (object.hasOwnProperty(property)) {
-			if (property != "hmac" && property != "signature")
+			// if (property != "hmac" && property != "signature")
+			if (property != "hmac")
 				list.push(property + "=" + object[property]);
 		}
 	}
