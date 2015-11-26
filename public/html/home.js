@@ -73,13 +73,13 @@ function resetAllHooks() {
 				console.log("Success Removing all");
 				var checks = document.getElementsByClassName("checkbox");
 
-				for (int i = 0; i < checks.length; checks++)
+				for (var i = 0; i < checks.length; checks++)
 					checks[i].checked = false;
 
 			} else {
 				console.log("Failed Removing all");
 			}
-			// console.log(xhttp.responseText);
+			console.log(xhttp.responseText);
 		}
 	};
 	xhttp.open("GET", "action/createhook?topic=deleteall", true);
