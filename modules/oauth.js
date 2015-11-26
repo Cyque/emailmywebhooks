@@ -69,7 +69,7 @@ function isValidHmac(query) {
 
 // 
 function generateHmac(query) {
-	// var shared_secret = process.env.shared_secret;
+	var shared_secret = process.env.shared_secret;
 	var preprocString = encodeParamsForSignature(query);
 	var calcedHmac = crypto.createHmac("SHA256", shared_secret).update(new Buffer(preprocString)).digest('hex');
 	console.log("GENERATED: " + calcedHmac);
