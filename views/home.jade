@@ -37,7 +37,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
                 .checkbox
                   label
                     if isActive 
-                      input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked="true")
+                      input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", checked="checked")
                     else
                       input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')")
                     | #{webhook.description}
