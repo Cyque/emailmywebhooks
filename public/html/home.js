@@ -61,6 +61,7 @@ function resetAllHooks() {
 	xhttp.onreadystatechange = function() {
 		if (xhttp.readyState == 4 && xhttp.status == 200) {
 			var checks = document.getElementsByName("hookitem");
+			console.log(checks);
 			for (var i = 0; i < checks.length; checks++)
 				checks[i].checked = false;
 		}
