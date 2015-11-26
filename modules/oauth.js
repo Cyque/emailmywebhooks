@@ -38,8 +38,6 @@ exports.verifyRequest = function(req, res, callback) {
 	if (valHmac && valShopName)
 		callback();
 	else {
-		console.log(req.verifyRequest);
-		// console.log("Verification failed:     valHmac=" + valHmac + ", valShopName=" + valShopName);
 		res.status(401).send("Could not verify the request.");
 	}
 }
@@ -60,6 +58,7 @@ function isValidHmac(query) {
 
 	if (givenHmac != calcedHmac) {
 		console.log("FAILED HMAC");
+		console.log(preprocString);
 		console.log(givenHmac);
 		console.log(calcedHmac);
 		return false;
