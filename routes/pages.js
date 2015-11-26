@@ -50,31 +50,23 @@ function renderHome(req, res, shopObject) {
 			var hasWebhook = [];
 
 			//populate hasWebhook with supported hooks:
-			for (var i = 0; i < supportedWebhooks.length; i++){
+			for (var i = 0; i < supportedWebhooks.length; i++) {
 				supportedWebhooks[i].isActive = false;
 				hasWebhook.push(supportedWebhooks[i]);
 			}
 
 			console.log(hasWebhook);
 
-			function findSupportedHook(name) {
-				for (w in hasWebhook)
-					if (name == w.name)
-						return w;
-				return false;
-			}
-
 			for (var i = 0; i < webhooks.length; i++) {
 				var thisTopic = webhooks[i].topic;
 				thisTopic = thisTopic.replace("\/", "_");
 
 				console.log(thisTopic);
-				var topicObj = findSupportedHook(thisTopic);
-				console.log(topicObj);
 
-				// this value is used to determine the checked state of the checkbox in the jade compiled html
-				if (topicObj != false) {
-					topicObj.isActive = true;
+				for (var j = 0; j < supportedWebhooks.length; j++) {
+					if (thisTopic == supportedWebhooks[j].name) {
+						hasWebhook[j].isActive = true;
+					}
 				}
 			}
 			res.render('home', {

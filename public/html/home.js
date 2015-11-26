@@ -71,3 +71,8 @@ function toggleWebhook(checked, webhookName) {
 		xhttp.send();
 	}
 }
+
+
+function resetAllHooks() {
+	//todo
+}
