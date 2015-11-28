@@ -18,30 +18,31 @@ html(xmlns='http://www.w3.org/1999/xhtml')
             h2 Email My Webhooks
             p
               | Email My Webhooks allows you to have event triggered notifications sent to your desired email for specified customer account activity. This app will let you know when a customer creates an account and what they’re doing on your site to help you strategize for the future.
-        .media
-          .media-left.col-md-1
-            img.media-object(src='images/edit_email_img.jpg', alt='Edit Email')
-          .media-body
-            h3.media-heading Change Target Email
-            p Choose the email you wish to receive your email notifcations at.
-            div
-              .form-group.col-xs-6
-                input#webhook-email.form-control(type='email', placeholder='Enter Email Address', value="#{defaultEmail}")
-              button.btn.btn-default(type='submit', onclick="changeEmail()") Submit
           .media
             .media-left.col-md-1
-              img.media-object(src='images/notification_select_img.jpg', alt='Select Notification')
+              img.media-object(src='images/edit_email_img.jpg', alt='Edit Email')
             .media-body
-              h3.media-heading Select Your Notifications
-              p Select the Web Hooks you would like to receive email notifications for.
-              each webhook in hasWebhook
-                .checkbox
-                  label
-                    input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", name="hookitem", checked=(webhook.isActive))
-                    | #{webhook.description}
-          #top-pad.col-xs-4.col-md-offset-1
-            p Clear All Notifications
-            button.btn.btn-default(type='reset', onclick="resetAllHooks()") Reset
+              h3.media-heading Change Target Email
+              p Choose the email you wish to receive your email notifcations at.
+              div
+                .form-group.col-xs-6
+                  input#webhook-email.form-control(type='email', placeholder='Enter Email Address', value="#{defaultEmail}")
+                button.btn.btn-default(type='submit', onclick="changeEmail()") Submit
+            .media
+              .media-left.col-md-1
+                img.media-object(src='images/notification_select_img.jpg', alt='Select Notification')
+              .media-body
+                h3.media-heading Select Your Notifications
+                p Select the Web Hooks you would like to receive email notifications for.
+                each webhook in hasWebhook
+                  .checkbox
+                    label
+                      input(type="checkbox", onchange="toggleWebhook(this.checked, '#{webhook.name}')", name="hookitem", checked=(webhook.isActive))
+                      | #{webhook.description}
+            #top-pad.col-xs-4.col-md-offset-1
+              p Clear All Notifications
+              button.btn.btn-default(type='reset', onclick="resetAllHooks()") Reset
+              
         // /container
         // IE10 viewport hack for Surface/desktop Windows 8 bug
         script(src='javascripts/ie10-viewport-bug-workaround.js')
