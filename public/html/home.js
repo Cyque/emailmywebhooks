@@ -19,7 +19,14 @@ function changeEmail() {
 
 	xhttp.onreadystatechange = function() {
 		if (xhttp.readyState == 4) {
-			if (xhttp.status == 200) {} else {
+			if (xhttp.status == 200) {
+				salert = document.getElementById("salert");
+				
+
+				window.setTimeout(function() {
+
+				}, 3000);
+			} else {
 				location.reload();
 			}
 		}
