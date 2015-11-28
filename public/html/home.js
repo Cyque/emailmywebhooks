@@ -24,6 +24,7 @@ function changeEmail() {
 
 				clearTimeout(waitToFaid);
 				salert.style.display = 'inline';
+				element.style.opacity = 1;
 
 				waitToFaid = window.setTimeout(function() {
 					fade(salert);
@@ -45,7 +46,6 @@ function fade(element) {
 		if (op <= 0.1) {
 			clearInterval(timer);
 			element.style.display = 'none';
-			element.style.opacity = 1;
 		}
 		element.style.opacity = op;
 		element.style.filter = 'alpha(opacity=' + op * 100 + ")";
