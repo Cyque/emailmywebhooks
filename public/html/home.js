@@ -22,9 +22,10 @@ function changeEmail() {
 			if (xhttp.status == 200) {
 				var salert = document.getElementById("salert");
 
+				clearTimeout(waitToFaid);
 				salert.style.display = 'inline';
 
-				window.setTimeout(function() {
+				waitToFaid = window.setTimeout(function() {
 					fade(salert);
 				}, 3000);
 			} else {
@@ -35,10 +36,12 @@ function changeEmail() {
 	xhttp.send(params);
 	return false;
 }
-
+var waitToFaid;
+var timer;
 function fade(element) {
+	clearInterval(timer);
 	var op = 1; // initial opacity
-	var timer = setInterval(function() {
+	timer = setInterval(function() {
 		if (op <= 0.1) {
 			clearInterval(timer);
 			element.style.display = 'none';

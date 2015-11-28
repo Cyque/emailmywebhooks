@@ -1,6 +1,12 @@
 @charset "utf-8";
 /* CSS Document */
 
+
+.alert.alert-success {
+	padding-left: 20px;
+	display: none;
+}
+
 body {
 	padding-top: 20px;
 	padding-bottom: 20px;
