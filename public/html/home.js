@@ -42,7 +42,7 @@ function toggleWebhook(checked, webhookName) {
 		xhttp.send();
 	} else {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "action/createhook?topic=" + webhookName, true);
+		xhttp.open("GET", "action/removehook?topic=" + webhookName, true);
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4) {
 				if (xhttp.status == 200) {} else {
