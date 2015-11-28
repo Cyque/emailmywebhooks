@@ -7,7 +7,10 @@ body
 		div Hello Shop Manager,
 	br
 	div 
-		| A an order has been recently fulfilled for your shop.
+		| A an order has been recently fulfilled for your shop. View the order 
+		a(href='https://#{shop.shop}/admin/orders/#{body.id}')
+			| here
+		|.
 	br
 	div 
 		| Regards,
