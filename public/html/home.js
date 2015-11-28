@@ -7,6 +7,24 @@ ShopifyApp.ready(function() {
 	ShopifyApp.Bar.loadingOff();
 });
 
+
+var waitToFaid;
+var timer;
+function fade(element) {
+	clearInterval(timer);
+	var op = 1; // initial opacity
+	timer = setInterval(function() {
+		if (op <= 0.1) {
+			clearInterval(timer);
+			element.style.display = 'none';
+		}
+		element.style.opacity = op;
+		element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+		op -= op * 0.1;
+	}, 50);
+}
+
+
 function changeEmail() {
 	var newEmail = document.getElementById("webhook-email").value;
 
@@ -24,7 +42,7 @@ function changeEmail() {
 
 				clearTimeout(waitToFaid);
 				salert.style.display = 'inline';
-				element.style.opacity = 1;
+				salert.style.opacity = 1;
 
 				waitToFaid = window.setTimeout(function() {
 					fade(salert);
@@ -36,21 +54,6 @@ function changeEmail() {
 	};
 	xhttp.send(params);
 	return false;
-}
-var waitToFaid;
-var timer;
-function fade(element) {
-	clearInterval(timer);
-	var op = 1; // initial opacity
-	timer = setInterval(function() {
-		if (op <= 0.1) {
-			clearInterval(timer);
-			element.style.display = 'none';
-		}
-		element.style.opacity = op;
-		element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-		op -= op * 0.1;
-	}, 50);
 }
 
 
