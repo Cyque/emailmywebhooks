@@ -20,11 +20,11 @@ function changeEmail() {
 	xhttp.onreadystatechange = function() {
 		if (xhttp.readyState == 4) {
 			if (xhttp.status == 200) {
-				salert = document.getElementById("salert");
-				
+				var salert = document.getElementById("salert");
+
 
 				window.setTimeout(function() {
-
+					fade(salert);
 				}, 3000);
 			} else {
 				location.reload();
@@ -34,6 +34,21 @@ function changeEmail() {
 	xhttp.send(params);
 	return false;
 }
+
+function fade(element) {
+	var op = 1; // initial opacity
+	var timer = setInterval(function() {
+		if (op <= 0.1) {
+			clearInterval(timer);
+			element.style.display = 'none';
+		}
+		element.style.opacity = op;
+		element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+		op -= op * 0.1;
+	}, 50);
+}
+
+
 
 function toggleWebhook(checked, webhookName) {
 	if (checked) {
