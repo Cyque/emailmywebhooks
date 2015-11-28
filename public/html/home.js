@@ -22,6 +22,7 @@ function changeEmail() {
 			if (xhttp.status == 200) {
 				var salert = document.getElementById("salert");
 
+				salert.style.display = 'inline';
 
 				window.setTimeout(function() {
 					fade(salert);

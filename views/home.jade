@@ -28,7 +28,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
               .form-group.col-xs-6
                 input#webhook-email.form-control(type='email', placeholder='Enter Email Address', value="#{defaultEmail}")
               button.btn.btn-default(type='submit', onclick="changeEmail()") Submit
-              .alert.alert-success(id='salert', visibility='hidden')
+              .alert.alert-success(id='salert', style='display:none')
                 strong Email changed!
           .media
             .media-left.col-md-1
